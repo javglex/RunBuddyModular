@@ -1,13 +1,7 @@
 pluginManagement {
     includeBuild("build-logic")
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -20,8 +14,10 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "RunBuddy"
+// work around to gradle bug "Unable to make progress running work" when no test classes are available
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
 
+rootProject.name = "RunBuddy"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS") // type-safe module access, when using implementation(project(":module"))
 include(":app")

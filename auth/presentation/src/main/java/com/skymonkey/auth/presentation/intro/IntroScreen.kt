@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,7 +22,9 @@ import androidx.compose.ui.unit.sp
 import com.skymonkey.auth.presentation.R
 import com.skymonkey.core.presentation.designsystem.LogoIcon
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
+import com.skymonkey.core.presentation.designsystem.components.ActionButton
 import com.skymonkey.core.presentation.designsystem.components.GradientBackground
+import com.skymonkey.core.presentation.designsystem.components.OutlinedActionButton
 
 @Composable
 fun IntroScreenRoot(
@@ -50,6 +53,41 @@ fun IntroScreen(
             contentAlignment = Alignment.Center
         ) {
             RunbuddyLogoVertical()
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .padding(bottom = 48.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.welcome_to_runbuddy),
+                color = MaterialTheme.colorScheme.onBackground,
+                fontSize = 20.sp
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(id = R.string.runbuddy_description),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            OutlinedActionButton(
+                text = stringResource(id = R.string.sign_in),
+                isLoading = false,
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    onAction(IntroAction.OnSignInClick)
+                }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            ActionButton(
+                text = stringResource(id = R.string.sign_up),
+                isLoading = false,
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    onAction(IntroAction.OnSignUpClick)
+                }
+            )
         }
     }
 }
