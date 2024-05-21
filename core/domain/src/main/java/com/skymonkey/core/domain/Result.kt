@@ -22,7 +22,7 @@ inline fun <T, E: Error, R> Result<T, E>.map(map: (T) -> R): Result<R, E> {
 /**
  * Converts result which contains data, to a result which contains no data (Unit)
  */
-fun <T, E: Error> Result<T, E>.asEmptyDataResult(): EmptyDataResult<E> {
+fun <T, E: Error> Result<T, E>.asEmptyDataResult(): EmptyResult<E> {
     return map { } // just maps to Unit type (empty)
 }
 
@@ -30,4 +30,4 @@ fun <T, E: Error> Result<T, E>.asEmptyDataResult(): EmptyDataResult<E> {
  * When we don't have data to return.
  * e.g logging-in may be successful, but there may be no data to return.
  */
-typealias EmptyDataResult<E> = Result<Unit, E>
+typealias EmptyResult<E> = Result<Unit, E>

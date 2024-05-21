@@ -18,4 +18,6 @@
     <string name="contains_lowercase_character">Contains lowercase character</string>
     <string name="contains_uppercase_character">Contains uppercase character</string>
     <string name="register">Register</string>
+    <string name="error_email_exists">User with that email already exists</string>
+    <string name="registration_successful">Registration success. You may log in now.</string>
 </resources>
