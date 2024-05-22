@@ -20,4 +20,9 @@
     <string name="register">Register</string>
     <string name="error_email_exists">User with that email already exists</string>
     <string name="registration_successful">Registration success. You may log in now.</string>
+    <string name="hi_there">Hi there!</string>
+    <string name="welcome_text">Welcome to your ultimate running buddy! Track, anaylize [placeholder]</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="youre_logged_in">You\'re logged in!</string>
+    <string name="error_email_password_incorrect">The email or password is incorrect</string>
 </resources>

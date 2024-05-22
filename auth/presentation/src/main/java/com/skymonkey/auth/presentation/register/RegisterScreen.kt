@@ -1,6 +1,5 @@
 package com.skymonkey.auth.presentation.register
 
-import android.service.autofill.UserData
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,25 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.RegisterReceiverFlags
 import com.skymonkey.auth.domain.PasswordValidationState
 import com.skymonkey.auth.domain.UserDataValidator
+import com.skymonkey.auth.presentation.ClickableEndText
 import com.skymonkey.auth.presentation.R
 import com.skymonkey.core.presentation.designsystem.CheckIcon
 import com.skymonkey.core.presentation.designsystem.CrossIcon
 import com.skymonkey.core.presentation.designsystem.EmailIcon
-import com.skymonkey.core.presentation.designsystem.Poppins
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.designsystem.RunbuddyDarkRed
-import com.skymonkey.core.presentation.designsystem.RunbuddyGray
 import com.skymonkey.core.presentation.designsystem.RunbuddyGreen
 import com.skymonkey.core.presentation.designsystem.components.ActionButton
 import com.skymonkey.core.presentation.designsystem.components.GradientBackground
@@ -85,7 +77,14 @@ fun RegisterScreenRoot(
 
     RegisterScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction
+        onAction = { action ->
+            when(action) {
+                RegisterAction.OnLoginClick -> {
+                    onSignInClick()
+                }
+                else -> viewModel.onAction(action)
+            }
+        }
     )
 }
 
@@ -107,40 +106,10 @@ private fun RegisterScreen(
                 text = stringResource(id = R.string.create_account),
                 style = MaterialTheme.typography.headlineMedium
             )
-            val annotatedString = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        fontFamily = Poppins,
-                        color = RunbuddyGray
-                    )
-                ) {
-                    append(stringResource(id = R.string.already_registered) + " ")
-                    pushStringAnnotation(
-                        tag = "clickable_text",
-                        annotation = stringResource(id = R.string.login)
-                    )
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontFamily = Poppins
-                        )
-                    ) {
-                        append(stringResource(id = R.string.login))
-                    }
-                }
-            }
-            ClickableText(
-                text = annotatedString,
-                onClick = { offset ->
-                    annotatedString.getStringAnnotations(
-                        tag = "clickable_text",
-                        start = offset,
-                        end = offset
-                    ).firstOrNull()?.let {
-                        onAction(RegisterAction.OnLoginClick)
-                    }
-                }
+            ClickableEndText(
+                normalText = stringResource(id = R.string.already_registered),
+                clickableText = stringResource(id = R.string.login),
+                onClick = { onAction(RegisterAction.OnLoginClick) }
             )
             Spacer(modifier = Modifier.height(48.dp))
             LargeTextField(

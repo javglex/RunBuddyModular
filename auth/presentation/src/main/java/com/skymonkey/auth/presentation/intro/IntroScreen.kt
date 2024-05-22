@@ -33,8 +33,8 @@ fun IntroScreenRoot(
 ) {
     IntroScreen(state = "", onAction = {
         when(it) {
-            IntroAction.OnSignInClick -> onSignUpClick()
-            IntroAction.OnSignUpClick -> onSignInClick()
+            IntroAction.OnSignInClick -> onSignInClick()
+            IntroAction.OnSignUpClick -> onSignUpClick()
         }
     })
 }

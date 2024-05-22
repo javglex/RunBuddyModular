@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.skymonkey.auth.presentation.intro.IntroScreenRoot
+import com.skymonkey.auth.presentation.login.LoginScreenRoot
 import com.skymonkey.auth.presentation.register.RegisterScreenRoot
 
 @Composable
@@ -19,6 +20,7 @@ fun NavigationRoot(
         startDestination = "auth"
     ) {
         authGraph(navController)
+        runGraph(navController)
     }
 }
 
@@ -33,7 +35,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
                     navController.navigate("register")
                 },
                 onSignInClick = {
-                    navController.navigate("register")
+                    navController.navigate("login")
                 }
             )
         }
@@ -54,7 +56,35 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
             )
         }
         composable(route = "login") {
-            Text("you are loggy inny. congrats sir")
+            LoginScreenRoot(
+                onLoginSuccess = {
+                    navController.navigate("run") {
+                        popUpTo("auth") { // pop everything from the auth graph
+                            inclusive = true
+                        }
+                    }
+                },
+                onSignUpClick = {
+                    navController.navigate("register") {
+                        popUpTo("login") {
+                            inclusive = true // pop the login screen as well
+                            saveState = true
+                        }
+                        restoreState = true // restore register screen state
+                    }
+                }
+            )
+        }
+    }
+}
+
+private fun NavGraphBuilder.runGraph(navController: NavHostController) {
+    navigation(
+        startDestination = "run_overview",
+        route = "run"
+    ) {
+        composable("run_overview") {
+            Text("Run overview!")
         }
     }
 }
