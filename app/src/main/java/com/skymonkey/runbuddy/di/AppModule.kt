@@ -7,6 +7,8 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 import com.skymonkey.runbuddy.MainViewModel
+import com.skymonkey.runbuddy.RunbuddyApplication
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * Defines Koin app-wide dependencies such as db.
@@ -24,6 +26,9 @@ val appModule = module {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+    }
+    single<CoroutineScope> {
+        (androidApplication() as RunbuddyApplication).applicationScope
     }
     
     viewModelOf(::MainViewModel)

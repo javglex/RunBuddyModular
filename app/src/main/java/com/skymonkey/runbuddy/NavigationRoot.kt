@@ -10,6 +10,8 @@ import androidx.navigation.compose.navigation
 import com.skymonkey.auth.presentation.intro.IntroScreenRoot
 import com.skymonkey.auth.presentation.login.LoginScreenRoot
 import com.skymonkey.auth.presentation.register.RegisterScreenRoot
+import com.skymonkey.run.presentation.active_run.ActiveRunScreenRoot
+import com.skymonkey.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable
 fun NavigationRoot(
@@ -85,7 +87,14 @@ private fun NavGraphBuilder.runGraph(navController: NavHostController) {
         route = "run"
     ) {
         composable("run_overview") {
-            Text("Run overview!")
+            RunOverviewScreenRoot(
+                onStartRunClick = {
+                    navController.navigate("active_run")
+                }
+            )
+        }
+        composable("active_run") {
+            ActiveRunScreenRoot()
         }
     }
 }

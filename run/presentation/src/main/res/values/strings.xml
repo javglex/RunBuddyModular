@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="runbuddy">RunBuddy</string>
+    <string name="analytics">Analytics</string>
+    <string name="logout">Logout</string>
+    <string name="active_run">Active Run</string>
+    <string name="pause_run">Pause Run</string>
+    <string name="start_run">Start Run</string>
+    <string name="duration">Duration</string>
+    <string name="distance">Distance</string>
+    <string name="pace">Pace</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="location_notification_rationale">In order to track your location and display the current time as anotification, this app needs your permission for that. Please press on \"Ok\" to manage permissions again.</string>
+    <string name="location_rationale">"In order to track location. blah blah "</string>
+    <string name="notification_rationale">In order to display current time as notification, blah blah</string>
+    <string name="ok">Ok</string>
+</resources>
