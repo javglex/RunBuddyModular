@@ -5,7 +5,7 @@ import com.skymonkey.run.domain.RunData
 import kotlin.time.Duration
 
 data class ActiveRunState(
-    val elapsedTimeZone: Duration = Duration.ZERO,
+    val elapsedTime: Duration = Duration.ZERO,
     val runData: RunData = RunData(),
     val shouldTrack: Boolean = false,
     val hasStartedRunning: Boolean = false,

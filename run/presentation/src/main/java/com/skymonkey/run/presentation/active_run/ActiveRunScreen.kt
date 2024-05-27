@@ -31,6 +31,7 @@ import com.skymonkey.core.presentation.designsystem.components.RunFloatingAction
 import com.skymonkey.core.presentation.designsystem.components.TwoActionDialog
 import com.skymonkey.run.presentation.R
 import com.skymonkey.run.presentation.active_run.components.RunDataCard
+import com.skymonkey.run.presentation.active_run.maps.TrackerMap
 import com.skymonkey.run.presentation.util.hasLocationPermission
 import com.skymonkey.run.presentation.util.hasNotificationPermission
 import com.skymonkey.run.presentation.util.shouldShowLocationPermissionRationale
@@ -135,7 +136,7 @@ private fun ActiveRunScreen(
             RunFloatingActionButton(
                 icon = if(state.shouldTrack) { StopIcon } else { StartIcon },
                 onClick = {
-                    ActiveRunAction.OnToggleRunClick
+                    onAction(ActiveRunAction.OnToggleRunClick)
                 },
                 iconSize = 20.dp,
                 contentDescription = if (state.shouldTrack)
@@ -148,8 +149,16 @@ private fun ActiveRunScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
+            TrackerMap(
+                isRunFinished = state.isRunFinished,
+                currentLocation = state.currentLocation,
+                locations = state.runData.locations,
+                onSnapshot = {},
+                modifier = Modifier
+                    .fillMaxSize()
+            )
             RunDataCard(
-                elapsedTime = state.elapsedTimeZone,
+                elapsedTime = state.elapsedTime,
                 runData = state.runData,
                 modifier = Modifier
                     .padding(16.dp)
