@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.designsystem.StartIcon
 import com.skymonkey.core.presentation.designsystem.StopIcon
+import com.skymonkey.core.presentation.designsystem.components.ActionButton
 import com.skymonkey.core.presentation.designsystem.components.AppMenuToolbar
 import com.skymonkey.core.presentation.designsystem.components.OutlinedActionButton
 import com.skymonkey.core.presentation.designsystem.components.RunBuddyScaffold
@@ -32,6 +33,7 @@ import com.skymonkey.core.presentation.designsystem.components.TwoActionDialog
 import com.skymonkey.run.presentation.R
 import com.skymonkey.run.presentation.active_run.components.RunDataCard
 import com.skymonkey.run.presentation.active_run.maps.TrackerMap
+import com.skymonkey.run.presentation.active_run.service.ActiveRunService
 import com.skymonkey.run.presentation.util.hasLocationPermission
 import com.skymonkey.run.presentation.util.hasNotificationPermission
 import com.skymonkey.run.presentation.util.shouldShowLocationPermissionRationale
@@ -40,10 +42,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ActiveRunScreenRoot(
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     viewModel: ActiveRunViewModel = koinViewModel(),
 ) {
     ActiveRunScreen(
         state = viewModel.state,
+        onServiceToggle = onServiceToggle,
         onAction = viewModel::onAction
     )
 }
@@ -52,6 +56,7 @@ fun ActiveRunScreenRoot(
 @Composable
 private fun ActiveRunScreen(
     state: ActiveRunState,
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     onAction: (ActiveRunAction) -> Unit
 ) {
     val context = LocalContext.current
@@ -119,6 +124,18 @@ private fun ActiveRunScreen(
         }
     }
 
+    LaunchedEffect(key1 = state.shouldTrack) {
+        if(context.hasLocationPermission() && state.shouldTrack) {
+            onServiceToggle(true)
+        }
+    }
+
+    LaunchedEffect(key1 = state.isRunFinished) {
+        if(state.isRunFinished) {
+            onServiceToggle(false)
+        }
+    }
+
     RunBuddyScaffold(
         withGradient = false,
         topAppBar = {
@@ -166,6 +183,36 @@ private fun ActiveRunScreen(
                     .fillMaxWidth()
             )
         }
+    }
+
+    if(!state.shouldTrack && state.hasStartedRunning) {
+        TwoActionDialog(
+            title = stringResource(id = R.string.running_is_paused),
+            onDismiss = {
+                onAction(ActiveRunAction.OnResumeRunClick)
+            },
+            description = stringResource(id = R.string.resume_or_finish_run),
+            primaryButton = {
+                ActionButton(
+                    text = stringResource(id = R.string.resume),
+                    isLoading = false,
+                    onClick = {
+                        onAction(ActiveRunAction.OnResumeRunClick)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            },
+            secondaryButton = {
+                OutlinedActionButton(
+                    text = stringResource(id = R.string.finish),
+                    isLoading = state.isSaving,
+                    onClick = {
+                        onAction(ActiveRunAction.OnFinishRunClick)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        )
     }
 
     if(state.showLocationRationale || state.showNotificationRationale) {
@@ -230,6 +277,7 @@ private fun ActiveRunScreenPreview() {
      RunBuddyTheme{
         ActiveRunScreen(
             state = (ActiveRunState()),
+            onServiceToggle = {},
             onAction = {}
         )
     }

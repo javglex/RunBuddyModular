@@ -34,7 +34,9 @@ class RunningTracker(
     private val _runData = MutableStateFlow(RunData())
     val runData = _runData.asStateFlow()
 
-    private val isTracking = MutableStateFlow(false) // is the run active?
+    private val _isTracking = MutableStateFlow(false) // is the run active?
+    val isTracking = _isTracking.asStateFlow()
+
     private val isObservingLocation = MutableStateFlow(false) // are we listening to locations? e.g not just for tracking runs but also for updating user on the map
 
     private val _elapsedTime = MutableStateFlow(Duration.ZERO)
@@ -56,6 +58,19 @@ class RunningTracker(
 
     init {
         isTracking
+            .onEach { isTracking -> // when no longer tracking, append an empty list
+                if(!isTracking) {
+                    val newList = buildList {
+                        addAll(runData.value.locations)
+                        add(emptyList<LocationTimestamp>())
+                    }.toList()
+                    _runData.update {
+                        it.copy(
+                            locations = newList // update our location state with new list which includes empty list at end
+                        )
+                    }
+                }
+            }
             .flatMapLatest {  isTracking ->
                 if (isTracking) {
                     Timer.timeAndEmit()
@@ -121,7 +136,7 @@ class RunningTracker(
     }
 
     fun setIsTracking(isTracking: Boolean) {
-        this.isTracking.value = isTracking
+        _isTracking.value = isTracking
     }
 
     fun startObservingLocation() {
