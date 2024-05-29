@@ -21,7 +21,8 @@ val DarkColorScheme = darkColorScheme(
     onBackground = RunbuddyWhite,
     onSurface = RunbuddyWhite,
     onSurfaceVariant = RunbuddyGray,
-    error = RunbuddyDarkRed
+    error = RunbuddyDarkRed,
+    errorContainer = RunbuddyDarkRed5
 )
 
 @Composable

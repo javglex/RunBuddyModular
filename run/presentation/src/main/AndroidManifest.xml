@@ -11,7 +11,6 @@
 
         <service android:name=".active_run.service.ActiveRunService"
             android:foregroundServiceType="location" />
-
     </application>
 
 </manifest>
