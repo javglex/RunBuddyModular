@@ -17,4 +17,5 @@ sealed interface ActiveRunAction {
         val showNotificationRationale: Boolean
     ) : ActiveRunAction
     data object DismissRationaleDialog: ActiveRunAction
+    data class OnRunProcessed(val mapPictureBytes: ByteArray): ActiveRunAction
 }

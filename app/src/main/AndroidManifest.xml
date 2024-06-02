@@ -32,6 +32,20 @@
                 <data android:scheme="runbuddy" android:host="active_run"/>
             </intent-filter>
         </activity>
+
+        <!-- allows for our own way of initializing our workers (which contain more than the two
+        default parameters context & params) -->
+        <provider
+            android:authorities="${applicationId}.androidx-startup"
+            android:name="androidx.startup.InitializationProvider"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
     </application>
 
 </manifest>
