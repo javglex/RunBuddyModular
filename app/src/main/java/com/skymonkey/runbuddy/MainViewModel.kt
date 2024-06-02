@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skymonkey.core.domain.SessionStorage
+import com.skymonkey.core.domain.auth.SessionStorage
 import kotlinx.coroutines.launch
 
 class MainViewModel(

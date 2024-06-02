@@ -1,4 +1,4 @@
-package com.skymonkey.core.domain
+package com.skymonkey.core.domain.auth
 
 data class AuthInfo(
     val accessToken: String,

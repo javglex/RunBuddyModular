@@ -5,17 +5,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skymonkey.core.domain.auth.LogoutRepository
+import com.skymonkey.core.domain.auth.SessionStorage
 import com.skymonkey.core.domain.run.RunRepository
 import com.skymonkey.core.domain.run.SyncRunScheduler
 import com.skymonkey.run.presentation.run_overview.mapper.toRunUI
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlin.math.log
 import kotlin.time.Duration.Companion.minutes
 
 class RunOverviewViewModel(
     private val runRepository: RunRepository,
-    private val syncRunScheduler: SyncRunScheduler
+    private val logoutRepository: LogoutRepository,
+    private val syncRunScheduler: SyncRunScheduler,
+    private val sessionStorage: SessionStorage,
+    private val applicationScope: CoroutineScope
 ): ViewModel() {
 
     var state by mutableStateOf(RunOverviewState())
@@ -45,7 +52,7 @@ class RunOverviewViewModel(
     fun onAction(action:RunOverviewAction) {
         when(action) {
             RunOverviewAction.OnAnalyticsClick -> Unit
-            RunOverviewAction.OnLogoutClick -> Unit
+            RunOverviewAction.OnLogoutClick -> logout()
             RunOverviewAction.OnStartClick -> Unit
             is RunOverviewAction.DeleteRun -> {
                 viewModelScope.launch {
@@ -53,5 +60,19 @@ class RunOverviewViewModel(
                 }
             }
         }
+    }
+
+    private fun logout() {
+        applicationScope.launch {
+            // cancel pending syncs with work manager
+            syncRunScheduler.cancelAllSyncs()
+            // clear db data
+            runRepository.deleteAllRuns()
+            // clear session storage user data
+            sessionStorage.set(null)
+            // logout from server
+            logoutRepository.logout()
+        }
+
     }
 }

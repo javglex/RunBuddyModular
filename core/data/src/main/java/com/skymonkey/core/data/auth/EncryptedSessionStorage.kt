@@ -2,9 +2,8 @@ package com.skymonkey.core.data.auth
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import com.skymonkey.core.domain.AuthInfo
-import com.skymonkey.core.domain.SessionStorage
-import io.ktor.utils.io.concurrent.shared
+import com.skymonkey.core.domain.auth.AuthInfo
+import com.skymonkey.core.domain.auth.SessionStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString

@@ -1,6 +1,6 @@
 package com.skymonkey.core.data.auth
 
-import com.skymonkey.core.domain.AuthInfo
+import com.skymonkey.core.domain.auth.AuthInfo
 
 fun AuthInfo.toAuthInfoSerializable() : AuthInfoSerializable {
     return AuthInfoSerializable(

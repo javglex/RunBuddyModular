@@ -1,9 +1,9 @@
 package com.skymonkey.core.data.networking
 
 import com.skymonkey.core.data.BuildConfig
-import com.skymonkey.core.domain.AuthInfo
+import com.skymonkey.core.domain.auth.AuthInfo
 import com.skymonkey.core.domain.Result
-import com.skymonkey.core.domain.SessionStorage
+import com.skymonkey.core.domain.auth.SessionStorage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.auth.Auth

@@ -5,7 +5,7 @@ import com.skymonkey.core.database.mappers.toRun
 import com.skymonkey.core.domain.DataError
 import com.skymonkey.core.domain.EmptyResult
 import com.skymonkey.core.domain.Result
-import com.skymonkey.core.domain.SessionStorage
+import com.skymonkey.core.domain.auth.SessionStorage
 import com.skymonkey.core.domain.asEmptyDataResult
 import com.skymonkey.core.domain.run.LocalRunDataSource
 import com.skymonkey.core.domain.run.RemoteRunDataSource
@@ -126,6 +126,10 @@ class OfflineRunRepository(
         }
 
         return remoteResult.asEmptyDataResult()
+    }
+
+    override suspend fun deleteAllRuns(): EmptyResult<DataError> {
+        return localRunDataSource.deleteAllRuns()
     }
 
     override suspend fun syncPendingRuns() {

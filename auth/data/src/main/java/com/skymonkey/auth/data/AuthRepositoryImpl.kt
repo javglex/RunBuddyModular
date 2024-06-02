@@ -2,11 +2,11 @@ package com.skymonkey.auth.data
 
 import com.skymonkey.auth.domain.AuthRepository
 import com.skymonkey.core.data.networking.post
-import com.skymonkey.core.domain.AuthInfo
+import com.skymonkey.core.domain.auth.AuthInfo
 import com.skymonkey.core.domain.DataError
 import com.skymonkey.core.domain.EmptyResult
 import com.skymonkey.core.domain.Result
-import com.skymonkey.core.domain.SessionStorage
+import com.skymonkey.core.domain.auth.SessionStorage
 import com.skymonkey.core.domain.asEmptyDataResult
 import io.ktor.client.HttpClient
 

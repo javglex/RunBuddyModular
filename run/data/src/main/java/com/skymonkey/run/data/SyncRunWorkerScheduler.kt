@@ -13,7 +13,7 @@ import com.skymonkey.core.database.dao.RunPendingSyncDao
 import com.skymonkey.core.database.entity.DeletedRunPendingSyncEntity
 import com.skymonkey.core.database.entity.RunPendingSyncEntity
 import com.skymonkey.core.database.mappers.toRunEntity
-import com.skymonkey.core.domain.SessionStorage
+import com.skymonkey.core.domain.auth.SessionStorage
 import com.skymonkey.core.domain.run.Run
 import com.skymonkey.core.domain.run.RunId
 import com.skymonkey.core.domain.run.SyncRunScheduler
