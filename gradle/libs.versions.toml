@@ -123,6 +123,7 @@ runbuddy-android-library = { id = "runbuddy.android.library", version = "unspeci
 runbuddy-android-library-compose = { id = "runbuddy.android.library.compose", version = "unspecified" }
 runbuddy-android-feature-ui = { id = "runbuddy.android.feature.ui", version = "unspecified" }
 runbuddy-android-room = { id = "runbuddy.android.room", version = "unspecified" }
+runbuddy-android-dynamic-feature = { id = "runbuddy.android.dynamic.feature", version = "unspecified" }
 runbuddy-jvm-library = { id = "runbuddy.jvm.library", version = "unspecified" }
 runbuddy-jvm-ktor = { id = "runbuddy.jvm.ktor", version = "unspecified" }
 

@@ -40,6 +40,10 @@ gradlePlugin {
             id = "runbuddy.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
+        register("androidDynamicFeature") {
+            id = "runbuddy.android.dynamic.feature"
+            implementationClass = "AndroidDynamicFeatureConventionPlugin"
+        }
         register("jvmLibrary") {
             id = "runbuddy.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"

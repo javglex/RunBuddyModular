@@ -1,6 +1,8 @@
 package com.skymonkey.runbuddy
 
 import android.app.Application
+import android.content.Context
+import com.google.android.play.core.splitcompat.SplitCompat
 import com.skymonkey.auth.data.di.authDataModule
 import com.skymonkey.auth.presentation.di.authViewModelModule
 import com.skymonkey.core.data.di.coreDataModule
@@ -44,5 +46,10 @@ class RunbuddyApplication: Application() {
                 appModule
             )
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
     }
 }

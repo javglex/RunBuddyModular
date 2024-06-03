@@ -139,7 +139,7 @@ private fun AppMenuToolbarPreview() {
     RunBuddyTheme {
         AppMenuToolbar(
             showBackButton = true,
-            title = "Runique",
+            title = "Runbuddy",
             modifier = Modifier.fillMaxWidth(),
             startContent = {
                 Icon(

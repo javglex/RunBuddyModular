@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.milliseconds
 fun RunEntity.toRun(): Run {
     return Run(
         id = id,
-        duration = durationMilis.milliseconds,
+        duration = durationMillis.milliseconds,
         dateTimeUtc = Instant.parse(dateTimeUtc).atZone(ZoneId.of("UTC")),
         distanceMeters = distanceMeters,
         location = Location(
@@ -27,7 +27,7 @@ fun RunEntity.toRun(): Run {
 fun Run.toRunEntity(): RunEntity {
     return RunEntity(
         id = id ?: ObjectId().toHexString(),
-        durationMilis = duration.inWholeMilliseconds,
+        durationMillis = duration.inWholeMilliseconds,
         maxSpeedKmh = maxSpeedKmh,
         dateTimeUtc = dateTimeUtc.toInstant().toString(),
         latitude = location.latitude,

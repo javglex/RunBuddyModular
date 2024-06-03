@@ -6,7 +6,7 @@ import org.bson.types.ObjectId
 
 @Entity
 data class RunEntity(
-    val durationMilis: Long,
+    val durationMillis: Long,
     val distanceMeters: Int,
     val dateTimeUtc: String,
     val latitude: Double,
