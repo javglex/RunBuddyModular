@@ -41,8 +41,6 @@ fun RunbuddyPolylines(
                 color = polyUi.color,
                 jointType = JointType.BEVEL // defines what joint looks like when going around a corner
             )
-
         }
-
     }
 }

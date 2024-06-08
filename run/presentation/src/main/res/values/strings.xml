@@ -25,4 +25,9 @@
     <string name="max_speed">Max Speed</string>
     <string name="total_elevation">Total Elevation</string>
     <string name="delete">Delete</string>
+    <string name="no_runs_recorded">You don\'t have any runs. Tap the button below to start a new run!</string>
+    <string name="this_is_your_buddy">This is your run buddy</string>
+    <string name="lets_go">Let\'s go for a run!</string>
+    <string name="dog_bark">*Woof Woof!*</string>
+    <string name="loading_chunks">Drawing your run path, please wait.</string>
 </resources>

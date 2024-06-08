@@ -38,6 +38,12 @@ kotlinx-serialization = "1.6.3"
 secretsPlugin = "2.0.1"
 playServicesMaps = "18.2.0"
 annotation = "1.7.1"
+# Wear OS specific
+composeWearOs = "1.3.1"
+composeMaterialWearOs = "1.0.0-alpha20"
+health = "1.0.0-rc02"
+play-services-wearable = "18.1.0"
+wear = "1.3.0"
 
 # Project versions
 projectApplicationId = "com.skymonkey.runbuddy"
@@ -46,6 +52,8 @@ projectMinSdkVersion = "26"
 projectTargetSdkVersion = "34"
 projectCompileSdkVersion = "34"
 projectVersionCode = "1"
+composeMaterial = "1.2.1"
+composeFoundation = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -99,12 +107,22 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 google-maps-android-utils-ktx = { module = "com.google.maps.android:maps-utils-ktx", version.ref = "mapsUtils"}
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 
+#WearOS dependencies
+androidx-wear-compose-material = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeMaterialWearOs" }
+androidx-wear-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeWearOs" }
+androidx-wear-compose-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeWearOs" }
+play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "play-services-wearable" }
+androidx-health-services-client = { group = "androidx.health", name = "health-services-client", version.ref = "health" }
+androidx-wear = { group = "androidx.wear", name = "wear", version.ref = "wear" }
+
 # Gradle
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
+androidx-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeFoundation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -126,6 +144,7 @@ runbuddy-android-room = { id = "runbuddy.android.room", version = "unspecified" 
 runbuddy-android-dynamic-feature = { id = "runbuddy.android.dynamic.feature", version = "unspecified" }
 runbuddy-jvm-library = { id = "runbuddy.jvm.library", version = "unspecified" }
 runbuddy-jvm-ktor = { id = "runbuddy.jvm.ktor", version = "unspecified" }
+runbuddy-android-application-wear-compose = { id = "runbuddy.android.application.wear.compose", version = "unspecified"}
 
 [bundles]
 compose = [

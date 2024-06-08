@@ -11,13 +11,18 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -225,6 +230,21 @@ private fun ActiveRunScreen(
                     .padding(paddingValues)
                     .fillMaxWidth()
             )
+            if(state.showLoadingChunks) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        LinearProgressIndicator()
+                        Text(
+                            text = stringResource(id = R.string.loading_chunks)
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -319,7 +339,9 @@ private fun ActivityResultLauncher<Array<String>>.requestRunbuddyPermissions(
 private fun ActiveRunScreenPreview() {
      RunBuddyTheme{
         ActiveRunScreen(
-            state = (ActiveRunState()),
+            state = ActiveRunState(
+                showLoadingChunks = true
+            ),
             onServiceToggle = {},
             onAction = {}
         )

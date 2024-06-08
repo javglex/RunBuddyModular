@@ -8,31 +8,48 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skymonkey.core.domain.Result
 import com.skymonkey.core.domain.location.Location
+import com.skymonkey.core.domain.location.LocationTimestamp
 import com.skymonkey.core.domain.run.Run
 import com.skymonkey.core.domain.run.RunRepository
 import com.skymonkey.core.presentation.ui.asUiText
 import com.skymonkey.run.domain.LocationDataCalculator
+import com.skymonkey.run.domain.RunData
 import com.skymonkey.run.domain.RunningTracker
 import com.skymonkey.run.presentation.active_run.service.ActiveRunService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
     private val runRepository: RunRepository
 ): ViewModel() {
+    private var previousLocations: List<List<LocationTimestamp>> = emptyList()
+
     var state by mutableStateOf(ActiveRunState(
         shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTracking.value,
-        hasStartedRunning = ActiveRunService.isServiceActive
+        hasStartedRunning = ActiveRunService.isServiceActive,
+        showLoadingChunks = true
     ))
         private set
 
@@ -85,8 +102,16 @@ class ActiveRunViewModel(
 
         runningTracker
             .runData
-            .onEach {
-                state = state.copy(runData = it)
+            .flatMapConcat { runData ->
+                throttleRunData(runData.locations, previousLocations) {
+                    state = state.copy(showLoadingChunks = false)
+                }.map { locations ->
+                    runData.copy(locations = locations)
+                }
+            }
+            .onEach { runData ->
+                previousLocations = runData.locations
+                state = state.copy(runData = runData)
             }
             .launchIn(viewModelScope)
 
@@ -179,6 +204,38 @@ class ActiveRunViewModel(
             state = state.copy(isSaving = false)
         }
     }
+
+    /*
+    Throttles the location dataset that is sent to the Active Run Screen.
+    This function is necessary to prevent overwhelming and crashing the Google Map composable if
+    it was reconstructing the polylines from scratch at once.
+    It will only throttle location data that hasn't been previously throttled before.
+    So if new location data comes we don't throttle the entire list again.
+     */
+    private fun throttleRunData(
+        locations: List<List<LocationTimestamp>>,
+        prevLocations: List<List<LocationTimestamp>>,
+        finished: () -> Unit,
+    ): Flow<List<List<LocationTimestamp>>> = flow {
+        val chunkSize = 20
+        val outerList = mutableListOf<List<LocationTimestamp>>()
+        for ((nextIndex, innerList) in locations.withIndex()) {
+            // populate outer list with previously throttled location list data
+            val currentInnerList = prevLocations.getOrNull(nextIndex)?.toMutableList() ?: mutableListOf()
+            outerList.add(currentInnerList)
+            val newItems = innerList.filter { it !in currentInnerList}
+            if (nextIndex == locations.size - 1 && newItems.size <= chunkSize) { //if we're within our last chunk, consider finished.
+                finished()
+            }
+            newItems.chunked(chunkSize).forEach { chunk ->
+                currentInnerList.addAll(chunk)
+                outerList[nextIndex] = currentInnerList
+                emit(outerList.map { it.toList() })  // Emit a copy of the current state
+                delay(10L)
+            }
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()

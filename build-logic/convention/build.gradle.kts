@@ -24,6 +24,10 @@ gradlePlugin {
             id = "runbuddy.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+        register("androidApplicationWearCompose") {
+            id = "runbuddy.android.application.wear.compose"
+            implementationClass = "AndroidApplicationWearComposeConventionPlugin"
+        }
         register("androidLibrary") {
             id = "runbuddy.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
