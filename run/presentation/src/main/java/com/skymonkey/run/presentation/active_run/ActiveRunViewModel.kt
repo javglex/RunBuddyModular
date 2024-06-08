@@ -39,7 +39,7 @@ import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
     private val runRepository: RunRepository
@@ -49,7 +49,6 @@ class ActiveRunViewModel(
     var state by mutableStateOf(ActiveRunState(
         shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTracking.value,
         hasStartedRunning = ActiveRunService.isServiceActive,
-        showLoadingChunks = true
     ))
         private set
 
@@ -103,11 +102,16 @@ class ActiveRunViewModel(
         runningTracker
             .runData
             .flatMapConcat { runData ->
-                throttleRunData(runData.locations, previousLocations) {
-                    state = state.copy(showLoadingChunks = false)
-                }.map { locations ->
-                    runData.copy(locations = locations)
-                }
+                throttleRunData(
+                    runData.locations,
+                    previousLocations,
+                    loading = {
+                        state = state.copy(showLoadingChunks = true)
+                    }, finished = {
+                        state = state.copy(showLoadingChunks = false)
+                    }).map { locations ->
+                        runData.copy(locations = locations)
+                    }
             }
             .onEach { runData ->
                 previousLocations = runData.locations
@@ -172,6 +176,8 @@ class ActiveRunViewModel(
     }
 
     private fun finishRun(mapPictureBytes: ByteArray) {
+        previousLocations = listOf() // clear cached locations
+
         val locations = state.runData.locations
         // if we have no locations or only one location, cancel
         if(locations.isEmpty() || locations.first().size <= 1) {
@@ -201,7 +207,7 @@ class ActiveRunViewModel(
                 }
             }
 
-            state = state.copy(isSaving = false)
+            state = state.copy(isSaving = false, showLoadingChunks = false)
         }
     }
 
@@ -215,6 +221,7 @@ class ActiveRunViewModel(
     private fun throttleRunData(
         locations: List<List<LocationTimestamp>>,
         prevLocations: List<List<LocationTimestamp>>,
+        loading: () -> Unit,
         finished: () -> Unit,
     ): Flow<List<List<LocationTimestamp>>> = flow {
         val chunkSize = 20
@@ -226,6 +233,8 @@ class ActiveRunViewModel(
             val newItems = innerList.filter { it !in currentInnerList}
             if (nextIndex == locations.size - 1 && newItems.size <= chunkSize) { //if we're within our last chunk, consider finished.
                 finished()
+            } else {
+                loading()
             }
             newItems.chunked(chunkSize).forEach { chunk ->
                 currentInnerList.addAll(chunk)

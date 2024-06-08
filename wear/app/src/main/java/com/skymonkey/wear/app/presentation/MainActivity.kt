@@ -23,7 +23,9 @@ import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.TimeText
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
+import com.skymonkey.core.presentation.designsystem_wear.RunbuddyWearTheme
 import com.skymonkey.wear.app.R
+import com.skymonkey.wear.run.presentation.TrackerScreenRoot
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,29 +36,8 @@ class MainActivity : ComponentActivity() {
         setTheme(android.R.style.Theme_DeviceDefault)
 
         setContent {
-            WearApp("Hello Android!")
-        }
-    }
-}
-
-@Composable
-fun WearApp(greetingName: String) {
-    RunBuddyTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-        ) {
-            TimeText {
-                text(greetingName)
-            }
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(onClick = {}) {
-                    Text("click me !")
-                }
+            RunbuddyWearTheme {
+                TrackerScreenRoot()
             }
         }
     }

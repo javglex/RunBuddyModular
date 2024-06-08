@@ -43,7 +43,7 @@ private val WearColors = createColorScheme()
 private val WearTypography = createTypography()
 
 @Composable
-fun RunbuddyTheme(content: @Composable () -> Unit) {
+fun RunbuddyWearTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = WearColors,
         typography = WearTypography

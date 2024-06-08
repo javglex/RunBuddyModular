@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="must_connect_phone_app">Please install and connect Runbuddy phone app to continue.</string>
+    <string name="hear_rate">Heart Rate</string>
+    <string name="unsupported">N/A</string>
+    <string name="distance">Distance</string>
+    <string name="open_active_run_screen">Please open the new run screen on your phone to get started.</string>
+    <string name="pause_run">Pause run</string>
+    <string name="start_run">Start Run</string>
+    <string name="finish_run">Finish Run</string>
+</resources>
