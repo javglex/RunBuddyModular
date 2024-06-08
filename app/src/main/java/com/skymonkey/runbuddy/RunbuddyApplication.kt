@@ -5,6 +5,7 @@ import android.content.Context
 import com.google.android.play.core.splitcompat.SplitCompat
 import com.skymonkey.auth.data.di.authDataModule
 import com.skymonkey.auth.presentation.di.authViewModelModule
+import com.skymonkey.core.connectivity.data.di.coreConnectivityDataModule
 import com.skymonkey.core.data.di.coreDataModule
 import com.skymonkey.core.database.di.databaseModule
 import com.skymonkey.run.di.runDataModule
@@ -43,6 +44,7 @@ class RunbuddyApplication: Application() {
                 networkModule,
                 coreDataModule,
                 runDataModule,
+                coreConnectivityDataModule,
                 appModule
             )
         }

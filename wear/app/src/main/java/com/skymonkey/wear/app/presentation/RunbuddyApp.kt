@@ -1,6 +1,7 @@
 package com.skymonkey.wear.app.presentation
 
 import android.app.Application
+import com.skymonkey.core.connectivity.data.di.coreConnectivityDataModule
 import com.skymonkey.wear.run.data.di.wearRunDataModule
 import com.skymonkey.wear.run.presentation.di.wearRunPresentationModule
 import org.koin.android.ext.koin.androidContext
@@ -15,7 +16,8 @@ class RunbuddyApp: Application() {
             androidContext(this@RunbuddyApp) //let koin know about our application context
             modules( // specify our koin modules
                 wearRunPresentationModule,
-                wearRunDataModule
+                wearRunDataModule,
+                coreConnectivityDataModule
             )
         }
     }
