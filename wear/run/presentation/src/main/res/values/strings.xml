@@ -8,4 +8,7 @@
     <string name="pause_run">Pause run</string>
     <string name="start_run">Start Run</string>
     <string name="finish_run">Finish Run</string>
+    <string name="error_ongoing_exercise">This app already has an ongoing exercise. Please end it.</string>
+    <string name="error_other_ongoing_exercise">Another app already has an ongoing exercise. Please end it.</string>
+    <string name="error_exercise_already_ended">Exercise has already ended.</string>
 </resources>
