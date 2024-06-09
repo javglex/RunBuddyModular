@@ -21,8 +21,8 @@ class WearNodeDiscovery(
     override fun observeConnectedDevices(localDeviceType: DeviceType): Flow<Set<DeviceNode>> {
         return callbackFlow {
             val remoteCapability = when(localDeviceType) {
-                DeviceType.PHONE -> "runbuddy_wear_app"
-                DeviceType.WATCH -> "runbuddy_phone_app"
+                DeviceType.PHONE -> "runbuddy_wear_capability"
+                DeviceType.WATCH -> "runbuddy_phone_capability"
             }
 
             try {

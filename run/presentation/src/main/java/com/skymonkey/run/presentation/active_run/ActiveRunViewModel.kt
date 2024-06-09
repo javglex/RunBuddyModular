@@ -15,6 +15,7 @@ import com.skymonkey.core.presentation.ui.asUiText
 import com.skymonkey.run.domain.LocationDataCalculator
 import com.skymonkey.run.domain.RunData
 import com.skymonkey.run.domain.RunningTracker
+import com.skymonkey.run.domain.WatchConnector
 import com.skymonkey.run.presentation.active_run.service.ActiveRunService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -36,13 +38,15 @@ import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
-    private val runRepository: RunRepository
+    private val runRepository: RunRepository,
+    private val watchConnector: WatchConnector
 ): ViewModel() {
     private var previousLocations: List<List<LocationTimestamp>> = emptyList()
 
@@ -77,6 +81,15 @@ class ActiveRunViewModel(
     )
 
     init {
+
+        watchConnector
+            .connectedDevice
+            .filterNotNull()
+            .onEach {
+                Timber.i("New device detected: ${it.displayName}")
+            }
+            .launchIn(viewModelScope)
+
         hasLocationPermission
             .onEach { hasPermission ->
                 if (hasPermission) {

@@ -8,7 +8,7 @@ import com.skymonkey.auth.presentation.di.authViewModelModule
 import com.skymonkey.core.connectivity.data.di.coreConnectivityDataModule
 import com.skymonkey.core.data.di.coreDataModule
 import com.skymonkey.core.database.di.databaseModule
-import com.skymonkey.run.di.runDataModule
+import com.skymonkey.run.data.di.runDataModule
 import com.skymonkey.run.location.di.locationModule
 import com.skymonkey.run.network.di.networkModule
 import com.skymonkey.run.presentation.di.runViewModelModule
