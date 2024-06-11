@@ -30,4 +30,8 @@
     <string name="lets_go">Let\'s go for a run!</string>
     <string name="dog_bark">*Woof Woof!*</string>
     <string name="loading_chunks">Drawing your run path, please wait.</string>
+    <string name="heart_rate">Heart rate</string>
+    <string name="unavailable">N/a</string>
+    <string name="avg_heart">Average HR</string>
+    <string name="max_heart">Max HR</string>
 </resources>

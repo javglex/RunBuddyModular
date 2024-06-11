@@ -252,6 +252,14 @@ private fun DataGrid(
         RunCellData(
             name = stringResource(id = R.string.total_elevation),
             value = run.totalElevation
+        ),
+        RunCellData(
+            name = stringResource(id = R.string.avg_heart),
+            value = run.avgHeartRate
+        ),
+        RunCellData(
+            name = stringResource(id = R.string.max_heart),
+            value = run.maxHeartRate
         )
     )
 
@@ -315,7 +323,9 @@ private fun RunListItemPreview() {
                 location = Location(0.0, 0.0),
                 maxSpeedKmh = 15.6544,
                 totalElevationMeters = 123,
-                mapPictureUrl = null
+                mapPictureUrl = null,
+                avgHeartRate = 30,
+                maxHeartRate = 40
             ).toRunUI(),
             onDeleteClick = { })
     }
@@ -334,7 +344,9 @@ private fun DataGridPreview() {
                 location = Location(0.0, 0.0),
                 maxSpeedKmh = 15.6544,
                 totalElevationMeters = 123,
-                mapPictureUrl = null
+                mapPictureUrl = null,
+                avgHeartRate = 30,
+                maxHeartRate = 40
             ).toRunUI()
         )
     }

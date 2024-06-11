@@ -84,6 +84,7 @@ class RunningTracker(
                 watchToPhoneConnector.sendActionToPhone(MessagingAction.HeartRateUpdate(heartRate))
                 _heartRate.value = heartRate
             }
+            .launchIn(applicationScope)
     }
 
     fun setIsTracking(isTracking: Boolean) {

@@ -76,7 +76,7 @@ class TrackerViewModel(
             .onEach { isTracking ->
                 val result = when {
                     isTracking && !state.hasStartedRunning -> { // we just hit play for the first time
-                        exerciseTracker.stopExercise()
+                        exerciseTracker.startExercise()
                     }
                     isTracking && state.hasStartedRunning -> {
                         exerciseTracker.resumeExercise()
@@ -142,8 +142,27 @@ class TrackerViewModel(
                     startTrackingExercise()
                 }
             }
-            TrackerAction.OnFinishRunClick -> Unit
-            TrackerAction.OnToggleRunClick -> Unit
+            TrackerAction.OnFinishRunClick -> {
+                viewModelScope.launch {
+                    exerciseTracker.stopExercise()
+                    eventChannel.send(TrackerEvent.RunFinished)
+
+                    state = state.copy( // reset our state
+                        elapsedDuration = Duration.ZERO,
+                        distanceMeters = 0,
+                        heartRate = 0,
+                        hasStartedRunning = false,
+                        isRunActive = false
+                    )
+                }
+            }
+            TrackerAction.OnToggleRunClick -> {
+                if(state.isTrackable) {
+                    state = state.copy(
+                        isRunActive = !state.isRunActive
+                    )
+                }
+            }
         }
     }
 

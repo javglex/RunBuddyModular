@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.ui.formatted
+import com.skymonkey.core.presentation.ui.toFormattedHeartRate
 import com.skymonkey.core.presentation.ui.toFormattedKm
 import com.skymonkey.core.presentation.ui.toFormattedPace
 import com.skymonkey.run.domain.RunData
@@ -58,6 +59,12 @@ fun RunDataCard(
             RunDataItem(
                 title = stringResource(id = R.string.distance),
                 value = (runData.distanceMeters / 1000.0).toFormattedKm(),
+                modifier = Modifier
+                    .defaultMinSize(75.dp)
+            )
+            RunDataItem(
+                title = stringResource(id = R.string.heart_rate),
+                value = runData.heartRates.lastOrNull().toFormattedHeartRate(),
                 modifier = Modifier
                     .defaultMinSize(75.dp)
             )
@@ -105,7 +112,8 @@ private fun RunDataCardPreview() {
             elapsedTime = 10.minutes,
             runData = RunData(
                 distanceMeters = 12,
-                pace = 3.minutes
+                pace = 3.minutes,
+                heartRates = listOf(90)
             )
         )
     }

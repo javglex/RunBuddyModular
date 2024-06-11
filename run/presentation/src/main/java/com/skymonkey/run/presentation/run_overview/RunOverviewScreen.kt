@@ -204,7 +204,9 @@ private fun RunOverviewScreenWithRunsPreview() {
                         maxSpeed = "900 kmh",
                         pace = "4:00",
                         totalElevation = "5m",
-                        mapPictureUrl = ""
+                        mapPictureUrl = "",
+                        avgHeartRate = "90 bpm",
+                        maxHeartRate = "100 bpm"
                     ),
                     RunUi(
                         id = "12",
@@ -215,7 +217,9 @@ private fun RunOverviewScreenWithRunsPreview() {
                         maxSpeed = "900 kmh",
                         pace = "4:00",
                         totalElevation = "5m",
-                        mapPictureUrl = ""
+                        mapPictureUrl = "",
+                        avgHeartRate = "90 bpm",
+                        maxHeartRate = "100 bpm"
                     )
                 )
             ),

@@ -8,6 +8,7 @@ import kotlin.time.Duration
  * @param distanceMeters - the distance the user has ran, in meters
  * @param pace - run pace
  * @param locations - nested list of tracked locations. sublist tracks a series of location data
+ * @param heartRates - track heart rates to get an average value
  * and represents it as a line. The outer list tracks different lines a user may create by pausing tracked run
  * and moving to a new location before resuming the tracking.
  */
@@ -15,4 +16,5 @@ data class RunData(
     val distanceMeters: Int = 0,
     val pace: Duration = Duration.ZERO,
     val locations: List<List<LocationTimestamp>> = emptyList(),
+    val heartRates: List<Int> = emptyList()
 )

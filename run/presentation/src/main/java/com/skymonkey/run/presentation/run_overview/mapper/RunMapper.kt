@@ -2,6 +2,7 @@ package com.skymonkey.run.presentation.run_overview.mapper
 
 import com.skymonkey.core.domain.run.Run
 import com.skymonkey.core.presentation.ui.formatted
+import com.skymonkey.core.presentation.ui.toFormattedHeartRate
 import com.skymonkey.core.presentation.ui.toFormattedKm
 import com.skymonkey.core.presentation.ui.toFormattedKmh
 import com.skymonkey.core.presentation.ui.toFormattedMeters
@@ -28,7 +29,8 @@ fun Run.toRunUI(): RunUi {
         maxSpeed = maxSpeedKmh.toFormattedKmh(),
         pace = duration.toFormattedPace(distanceKm),
         totalElevation = totalElevationMeters.toFormattedMeters(),
-        mapPictureUrl = mapPictureUrl
-
+        mapPictureUrl = mapPictureUrl,
+        avgHeartRate = avgHeartRate.toFormattedHeartRate(),
+        maxHeartRate = maxHeartRate.toFormattedHeartRate()
     )
 }

@@ -147,7 +147,7 @@ private fun TrackerScreen(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 RunDataCard(
-                    title = stringResource(id = R.string.hear_rate),
+                    title = stringResource(id = R.string.distance),
                     value = (state.distanceMeters / 1000.0).toFormattedKm(),
                     modifier = Modifier.weight(1f)
                 )
