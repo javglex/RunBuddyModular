@@ -15,6 +15,7 @@ import androidx.health.services.client.data.ExerciseConfig
 import androidx.health.services.client.data.ExerciseLapSummary
 import androidx.health.services.client.data.ExerciseTrackedStatus
 import androidx.health.services.client.data.ExerciseType
+import androidx.health.services.client.data.ExerciseTypeConfig
 import androidx.health.services.client.data.ExerciseUpdate
 import androidx.health.services.client.data.WarmUpConfig
 import androidx.health.services.client.endExercise
@@ -24,6 +25,7 @@ import androidx.health.services.client.pauseExercise
 import androidx.health.services.client.prepareExercise
 import androidx.health.services.client.resumeExercise
 import androidx.health.services.client.startExercise
+import androidx.work.await
 import com.skymonkey.core.domain.EmptyResult
 import com.skymonkey.core.domain.Result
 import com.skymonkey.wear.run.domain.ExerciseError
@@ -128,7 +130,7 @@ class HealthServicesExerciseTracker(
 
         val config = ExerciseConfig.builder(ExerciseType.RUNNING)
             .setDataTypes(setOf(DataType.HEART_RATE_BPM))
-            .setIsAutoPauseAndResumeEnabled(false) // dont let api assume when users pause. users have buttons to do so
+            .setIsAutoPauseAndResumeEnabled(false) // don't let api assume when users pause. users have buttons to do so
             .build()
 
         client.startExercise(config)
@@ -165,8 +167,8 @@ class HealthServicesExerciseTracker(
 
         val result = getActiveExerciseInfo()
 
-        // its ok to resume when we have an ongoing exercise that we own.
-        // however we must throw an error if we try to resume when another app has an ongoing exercise.
+        // its ok to pause when we have an ongoing exercise that we own.
+        // however we must throw an error if we try to pause when another app has an ongoing exercise.
         if (result is Result.Error && result.error == ExerciseError.ONGOING_OTHER_EXERCISE){
             return result
         }
@@ -186,9 +188,9 @@ class HealthServicesExerciseTracker(
 
         val result = getActiveExerciseInfo()
 
-        // its ok to resume when we have an ongoing exercise that we own.
-        // however we must throw an error if we try to resume when another app has an ongoing exercise.
-        if (result is Result.Error){
+        // its ok to stop when we have an ongoing exercise that we own.
+        // however we must throw an error if we try to stop when another app has an ongoing exercise.
+        if (result is Result.Error && result.error == ExerciseError.ONGOING_OTHER_EXERCISE){
             return result
         }
 

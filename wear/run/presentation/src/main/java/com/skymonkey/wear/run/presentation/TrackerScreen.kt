@@ -12,25 +12,35 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -38,9 +48,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
+import androidx.wear.compose.ui.tooling.preview.WearPreviewLargeRound
 import com.skymonkey.core.presentation.designsystem.ExclamationMarkIcon
 import com.skymonkey.core.presentation.designsystem.FinishIcon
 import com.skymonkey.core.presentation.designsystem.PauseIcon
+import com.skymonkey.core.presentation.designsystem.RunbuddyBlue
+import com.skymonkey.core.presentation.designsystem.RunbuddyGreen
+import com.skymonkey.core.presentation.designsystem.RunbuddyNeonBlue
+import com.skymonkey.core.presentation.designsystem.RunbuddyWhite
 import com.skymonkey.core.presentation.designsystem.StartIcon
 import com.skymonkey.core.presentation.designsystem_wear.RunbuddyWearTheme
 import com.skymonkey.core.presentation.service.ActiveRunService
@@ -143,7 +158,7 @@ private fun TrackerScreen(
         }
     )
 
-    if(state.isConnectedPhoneNearby){
+    if(state.isConnectedPhoneNearby) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -155,10 +170,13 @@ private fun TrackerScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.Center
             ){
                 RunDataCard(
-                    title = stringResource(id = R.string.hear_rate),
+                    drawable = R.drawable.heart_rate_icon,
+                    drawableTint = Color.Red,
                     value = if (state.canTrackHeartRate) {
                         state.heartRate.toFormattedHeartRate()
                     } else {
@@ -171,61 +189,67 @@ private fun TrackerScreen(
                     },
                     modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
                 RunDataCard(
-                    title = stringResource(id = R.string.distance),
+                    drawable = R.drawable.run_icon,
+                    drawableTint = RunbuddyBlue,
                     value = (state.distanceMeters / 1000.0).toFormattedKm(),
                     modifier = Modifier.weight(1f)
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = state.elapsedDuration.formatted(),
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.padding(8.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if(state.isTrackable) {
+            if(state.isTrackable) {
+                Text(
+                    text = state.elapsedDuration.formatted(),
+                    style = MaterialTheme.typography.displayLarge,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
                     ToggleRunButton(
                         isRunActive = state.isRunActive,
+                        hasStartedRunning = state.hasStartedRunning,
                         onClick = {
                             onAction(TrackerAction.OnToggleRunClick)
-                        }
+                        },
+                        modifier = Modifier.weight(2f)
                     )
                     if(!state.isRunActive && state.hasStartedRunning) {
+                        Spacer(modifier = Modifier.padding(8.dp))
+
                         FilledTonalIconButton(
                             onClick = {
                                 onAction(TrackerAction.OnFinishRunClick)
                             },
                             colors = IconButtonDefaults.filledTonalIconButtonColors(
-                                contentColor = MaterialTheme.colorScheme.onBackground
-                            )
+                                contentColor = MaterialTheme.colorScheme.onSurface
+                            ),
+                            modifier = Modifier.weight(1f)
                         ) {
                             Icon(
                                 imageVector = FinishIcon,
-                                contentDescription = stringResource(id = R.string.finish_run)
+                                contentDescription = stringResource(id = R.string.finish_run),
+                                tint = MaterialTheme.colorScheme.surface
                             )
                         }
                     }
-                } else {
-                    Text(
-                        text = stringResource(id = R.string.open_active_run_screen),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    )
                 }
+            }
+            else {
+                Text(
+                    text = stringResource(id = R.string.open_active_run_screen),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
             }
         }
     } else {
@@ -255,24 +279,31 @@ private fun TrackerScreen(
 @Composable
 fun ToggleRunButton(
     isRunActive: Boolean,
+    hasStartedRunning: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    OutlinedIconButton(
+    OutlinedButton(
         onClick = onClick,
         modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(.5f),
+        colors = ButtonDefaults.outlinedButtonColors().copy(
+            containerColor = if (!hasStartedRunning) RunbuddyGreen else Color.Transparent
+        ),
+        shape = if (!hasStartedRunning) RectangleShape else RoundedCornerShape(32.dp)
     ) {
         if(isRunActive) {
-            Icon(
-                imageVector = PauseIcon,
-                contentDescription = stringResource(id = R.string.pause_run),
-                tint = MaterialTheme.colorScheme.onBackground
+            Text(
+                text = stringResource(id = R.string.pause_run)
+            )
+        } else if (!hasStartedRunning){
+            Text(
+                text = stringResource(id = R.string.start_run),
             )
         } else {
-            Icon(
-                imageVector = StartIcon,
-                contentDescription = stringResource(id = R.string.start_run),
-                tint = MaterialTheme.colorScheme.onBackground
+            Text(
+                text = stringResource(id = R.string.resume_run),
             )
         }
     }
@@ -296,6 +327,42 @@ private fun TrackerScreenPreview() {
 @WearPreviewDevices
 @Composable
 private fun TrackerScreenRunningPreview() {
+    RunbuddyWearTheme {
+        TrackerScreen(
+            state = TrackerState(
+                isConnectedPhoneNearby = true,
+                heartRate = 80,
+                canTrackHeartRate = true,
+                isRunActive = false,
+                hasStartedRunning = false,
+                isTrackable = true,
+            ),
+            onAction = {}
+        )
+    }
+}
+
+@WearPreviewLargeRound
+@Composable
+private fun TrackerScreenPausePreview() {
+    RunbuddyWearTheme {
+        TrackerScreen(
+            state = TrackerState(
+                isConnectedPhoneNearby = true,
+                heartRate = 80,
+                canTrackHeartRate = true,
+                isRunActive = true,
+                hasStartedRunning = true,
+                isTrackable = true,
+            ),
+            onAction = {}
+        )
+    }
+}
+
+@WearPreviewLargeRound
+@Composable
+private fun TrackerScreenResumePreview() {
     RunbuddyWearTheme {
         TrackerScreen(
             state = TrackerState(

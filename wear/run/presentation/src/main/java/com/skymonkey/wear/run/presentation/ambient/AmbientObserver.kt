@@ -19,7 +19,9 @@ fun AmbientObserver(
     onExitAmbient: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
+    // does not play nice with preview components. We quickly exit before resolving anything.
+    val context = LocalContext.current as? ComponentActivity ?: return
+
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     /*
     DisposableEffect is a subscription mechanism that allows for cleanup when our composable is removed.
