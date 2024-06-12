@@ -8,10 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skymonkey.core.connectivity.domain.messaging.MessagingAction
 import com.skymonkey.core.domain.Result
+import com.skymonkey.core.presentation.service.ActiveRunService
 import com.skymonkey.wear.run.domain.ExerciseTracker
 import com.skymonkey.wear.run.domain.PhoneConnector
 import com.skymonkey.wear.run.domain.RunningTracker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,18 +25,28 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class TrackerViewModel(
     private val exerciseTracker: ExerciseTracker,
     private val phoneConnector: PhoneConnector,
     private val runningTracker: RunningTracker
 ): ViewModel() {
 
-    var state by mutableStateOf(TrackerState())
+    var state by mutableStateOf(TrackerState(
+        /*
+        If app is restarted and the active run foreground service is already running, it
+        can be assumed that the app was terminated while a run was in progress.
+         */
+        hasStartedRunning = ActiveRunService.isServiceActive.value,
+        isRunActive = ActiveRunService.isServiceActive.value && runningTracker.isTracking.value,
+        isTrackable = ActiveRunService.isServiceActive.value
+    ))
         private set
 
     private val hasBodyPermission = MutableStateFlow(false)
@@ -104,22 +116,52 @@ class TrackerViewModel(
             state = state.copy(canTrackHeartRate = isHeartRateSupported)
         }
 
-        runningTracker
-            .heartRate
+        // send metrics to UI. if in ambient mode, we send updates every 10 seconds instead.
+
+        val isAmbientMode = snapshotFlow { state.isAmbientMode }
+        isAmbientMode
+            .flatMapLatest {
+                if(it) {
+                    runningTracker
+                        .heartRate
+                        .sample(10.seconds)
+                } else {
+                    runningTracker
+                        .heartRate
+                }
+            }
             .onEach {
                 state = state.copy(heartRate = it)
             }
             .launchIn(viewModelScope)
 
-        runningTracker
-            .distanceMeters
+        isAmbientMode
+            .flatMapLatest {
+                if(it) {
+                    runningTracker
+                        .distanceMeters
+                        .sample(10.seconds)
+                } else {
+                    runningTracker
+                        .distanceMeters
+                }
+            }
             .onEach {
                 state = state.copy(distanceMeters = it)
             }
             .launchIn(viewModelScope)
 
-        runningTracker
-            .elapsedTime
+        isAmbientMode
+            .flatMapLatest {
+                if(it) {
+                    runningTracker
+                        .elapsedTime
+                        .sample(10.seconds)
+                } else {
+                    runningTracker
+                        .elapsedTime
+                }
+            }
             .onEach {
                 state = state.copy(elapsedDuration = it)
             }
@@ -162,6 +204,15 @@ class TrackerViewModel(
                         isRunActive = !state.isRunActive
                     )
                 }
+            }
+            is TrackerAction.OnEnterAmbientMode -> {
+                state = state.copy(
+                    isAmbientMode = true,
+                    burnInProtectionRequired = action.burnInProtectionRequired
+                )
+            }
+            TrackerAction.OnExitAmbientMode -> {
+                state = state.copy(isAmbientMode = false)
             }
         }
     }

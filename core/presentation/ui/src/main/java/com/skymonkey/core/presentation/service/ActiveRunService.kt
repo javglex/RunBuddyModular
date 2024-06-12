@@ -1,4 +1,4 @@
-package com.skymonkey.run.presentation.active_run.service
+package com.skymonkey.core.presentation.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,22 +9,24 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
+import com.skymonkey.core.presentation.ui.R
 import com.skymonkey.core.presentation.ui.formatted
-import com.skymonkey.run.domain.RunningTracker
-import com.skymonkey.run.presentation.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.sample
 import org.koin.android.ext.android.inject
+import kotlin.time.Duration
 
 class ActiveRunService: Service() {
 
@@ -32,7 +34,7 @@ class ActiveRunService: Service() {
         getSystemService<NotificationManager>()
     }
 
-    private val runningTracker by inject<RunningTracker>()
+    private val elapsedTime by inject<StateFlow<Duration>>() // ellapsed time provided by RunningTracker via DI
 
     private val baseNotification by lazy {
         NotificationCompat.Builder(applicationContext, CHANNEL_ID)
@@ -72,8 +74,8 @@ class ActiveRunService: Service() {
      * have access to the MainActivity located in our app module.
      */
     private fun start(activityClass: Class<*>) {
-        if (!isServiceActive) {
-            isServiceActive = true
+        if (!isServiceActive.value) {
+            _isServiceActive.value = false
             createNotificationChannel()
 
             val activityIntent = Intent(applicationContext, activityClass).apply {
@@ -98,7 +100,7 @@ class ActiveRunService: Service() {
 
     private fun stop() {
         stopSelf()
-        isServiceActive = false
+        _isServiceActive.value = false
         serviceScope.cancel() // cancel current jobs
 
         // after we've cancelled our scope, we need to create a new one as it can't be restarted.
@@ -109,8 +111,7 @@ class ActiveRunService: Service() {
 
     @OptIn(FlowPreview::class) // for sample
     private fun updateNotification() {
-        runningTracker
-            .elapsedTime
+        elapsedTime
             .sample(1000) // throttle but don't wait on our values
             .onEach { elapsedTime ->
             val notification = baseNotification
@@ -134,7 +135,8 @@ class ActiveRunService: Service() {
     }
 
     companion object {
-        var isServiceActive = false
+        private var _isServiceActive = MutableStateFlow(false)
+        val isServiceActive = _isServiceActive.asStateFlow()
         const val DEEPLINK_URI = "runbuddy://active_run"
         private const val ACTION_START = "ACTION_START"
         private const val ACTION_STOP = "ACTION_STOP"

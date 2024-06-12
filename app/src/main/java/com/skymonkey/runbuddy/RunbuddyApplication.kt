@@ -11,7 +11,7 @@ import com.skymonkey.core.database.di.databaseModule
 import com.skymonkey.run.data.di.runDataModule
 import com.skymonkey.run.location.di.locationModule
 import com.skymonkey.run.network.di.networkModule
-import com.skymonkey.run.presentation.di.runViewModelModule
+import com.skymonkey.run.presentation.di.runPresentationModule
 import com.skymonkey.runbuddy.di.appModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -38,7 +38,7 @@ class RunbuddyApplication: Application() {
             modules( // specify our koin modules
                 authDataModule,
                 authViewModelModule,
-                runViewModelModule,
+                runPresentationModule,
                 locationModule,
                 databaseModule,
                 networkModule,

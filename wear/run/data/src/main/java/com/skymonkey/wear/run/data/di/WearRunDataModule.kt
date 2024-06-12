@@ -13,4 +13,9 @@ val wearRunDataModule = module {
     singleOf(::HealthServicesExerciseTracker).bind<ExerciseTracker>()
     singleOf(::WatchToPhoneConnector).bind<PhoneConnector>()
     singleOf(::RunningTracker)
+    single{
+        // get previous injected instance of running tracker
+        // and inject elapstedTime StateFlow<Duration>
+        get<RunningTracker>().elapsedTime
+    }
 }

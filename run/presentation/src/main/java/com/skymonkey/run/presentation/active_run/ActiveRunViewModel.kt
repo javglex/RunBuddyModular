@@ -14,14 +14,11 @@ import com.skymonkey.core.domain.run.Run
 import com.skymonkey.core.domain.run.RunRepository
 import com.skymonkey.core.presentation.ui.asUiText
 import com.skymonkey.run.domain.LocationDataCalculator
-import com.skymonkey.run.domain.RunData
 import com.skymonkey.run.domain.RunningTracker
 import com.skymonkey.run.domain.WatchConnector
-import com.skymonkey.run.presentation.active_run.service.ActiveRunService
+import com.skymonkey.core.presentation.service.ActiveRunService
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -31,15 +28,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -55,8 +49,8 @@ class ActiveRunViewModel(
     private var previousLocations: List<List<LocationTimestamp>> = emptyList()
 
     var state by mutableStateOf(ActiveRunState(
-        shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTracking.value,
-        hasStartedRunning = ActiveRunService.isServiceActive,
+        shouldTrack = ActiveRunService.isServiceActive.value && runningTracker.isTracking.value,
+        hasStartedRunning = ActiveRunService.isServiceActive.value,
     ))
         private set
 
@@ -359,7 +353,7 @@ class ActiveRunViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        if(!ActiveRunService.isServiceActive) {
+        if(!ActiveRunService.isServiceActive.value) {
             applicationScope.launch {  // launched in application scope because viewmodel scope will be cleared by now.
                 watchConnector.sendActionToWatch(MessagingAction.Untrackable)
             }

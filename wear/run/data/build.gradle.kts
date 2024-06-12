@@ -6,7 +6,7 @@ android {
     namespace = "com.skymonkey.wear.run.data"
 
     defaultConfig {
-        minSdk = 30
+        minSdk = libs.versions.projectMinWearSdkVersion.get().toInt()
     }
 }
 

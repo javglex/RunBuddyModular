@@ -24,6 +24,7 @@ import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.TimeText
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.designsystem_wear.RunbuddyWearTheme
+import com.skymonkey.core.presentation.service.ActiveRunService
 import com.skymonkey.wear.app.R
 import com.skymonkey.wear.run.presentation.TrackerScreenRoot
 
@@ -37,7 +38,22 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             RunbuddyWearTheme {
-                TrackerScreenRoot()
+                TrackerScreenRoot(
+                    onServiceToggle = { shouldStartRunning ->
+                        if(shouldStartRunning) {
+                            startService(
+                                ActiveRunService.createStartIntent(
+                                    applicationContext, MainActivity::class.java
+                                )
+                            )
+                        } else {
+                            startService(
+                                ActiveRunService.createStopIntent(applicationContext)
+                            )
+                        }
+
+                    }
+                )
             }
         }
     }

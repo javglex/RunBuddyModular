@@ -1,6 +1,5 @@
 package com.skymonkey.runbuddy
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -13,7 +12,7 @@ import com.skymonkey.auth.presentation.intro.IntroScreenRoot
 import com.skymonkey.auth.presentation.login.LoginScreenRoot
 import com.skymonkey.auth.presentation.register.RegisterScreenRoot
 import com.skymonkey.run.presentation.active_run.ActiveRunScreenRoot
-import com.skymonkey.run.presentation.active_run.service.ActiveRunService
+import com.skymonkey.core.presentation.service.ActiveRunService
 import com.skymonkey.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable
