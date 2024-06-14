@@ -1,4 +1,4 @@
-RunBuddy (READ ME AND PROJECT UNDER CONSTRUCTION. DO NOT BUILD.)
+RunBuddy (READ ME AND PROJECT UNDER CONSTRUCTION. FUNCTIONAL BUT DO NOT BUILD.)
 -----
 
 Offline-first Android application for tracking runs (ktor/room/koin/multi-module/convention-plugins).
