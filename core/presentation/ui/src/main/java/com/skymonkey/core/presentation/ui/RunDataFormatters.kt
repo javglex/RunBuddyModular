@@ -55,3 +55,7 @@ private fun Double.roundToDecimals(decimalCount: Int): Double {
 fun Int?.toFormattedHeartRate(): String {
     return if(this != null) "$this bpm" else "-"
 }
+
+fun Int?.toFormattedCalories(): String {
+    return if(this != null) "$this Cal" else "-"
+}

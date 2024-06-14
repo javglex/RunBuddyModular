@@ -44,10 +44,10 @@ import com.skymonkey.core.presentation.ui.ObserveAsEvents
 import com.skymonkey.run.presentation.R
 import com.skymonkey.run.presentation.active_run.components.RunDataCard
 import com.skymonkey.run.presentation.active_run.maps.TrackerMap
-import com.skymonkey.run.presentation.util.hasLocationPermission
-import com.skymonkey.run.presentation.util.hasNotificationPermission
-import com.skymonkey.run.presentation.util.shouldShowLocationPermissionRationale
-import com.skymonkey.run.presentation.util.shouldShowNotificationPermissionRationale
+import com.skymonkey.core.presentation.util.hasLocationPermission
+import com.skymonkey.core.presentation.util.hasNotificationPermission
+import com.skymonkey.core.presentation.util.shouldShowLocationPermissionRationale
+import com.skymonkey.core.presentation.util.shouldShowNotificationPermissionRationale
 import org.koin.androidx.compose.koinViewModel
 import java.io.ByteArrayOutputStream
 

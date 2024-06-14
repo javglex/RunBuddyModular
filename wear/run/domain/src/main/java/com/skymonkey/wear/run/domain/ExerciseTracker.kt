@@ -5,7 +5,7 @@ import com.skymonkey.core.domain.Error
 import kotlinx.coroutines.flow.Flow
 
 interface ExerciseTracker {
-    val heartRate: Flow<Int>
+    val metrics: Flow<HealthServicesMetrics>
 
     suspend fun isHeartRateTrackingSupported(): Boolean
     suspend fun prepareExercise(): EmptyResult<ExerciseError>

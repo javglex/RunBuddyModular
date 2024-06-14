@@ -167,6 +167,22 @@ class TrackerViewModel(
             }
             .launchIn(viewModelScope)
 
+        isAmbientMode
+            .flatMapLatest {
+                if(it) {
+                    runningTracker
+                        .calories
+                        .sample(10.seconds)
+                } else {
+                    runningTracker
+                        .calories
+                }
+            }
+            .onEach {
+                state = state.copy(calories = it)
+            }
+            .launchIn(viewModelScope)
+
         listenToPhoneActions()
 
     }
@@ -178,6 +194,9 @@ class TrackerViewModel(
         sendActionToPhone(action)
 
         when(action) {
+            is TrackerAction.OnActivityRecognitionPermissionResult -> {
+//                hasActivityPermission.value = action.isGranted
+            }
             is TrackerAction.OnBodySensorPermissionResult -> {
                 hasBodyPermission.value = action.isGranted
                 if (action.isGranted) {

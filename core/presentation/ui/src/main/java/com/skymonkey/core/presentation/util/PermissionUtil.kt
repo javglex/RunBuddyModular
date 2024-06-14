@@ -1,4 +1,4 @@
-package com.skymonkey.run.presentation.util
+package com.skymonkey.core.presentation.util
 
 import android.Manifest
 import android.content.Context
@@ -18,6 +18,14 @@ fun ComponentActivity.shouldShowNotificationPermissionRationale(): Boolean {
 
 fun Context.hasLocationPermission(): Boolean {
     return hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) // if fine location granted, we can assume we have coarse permission
+}
+
+fun Context.hasBodyPermission(): Boolean {
+    return hasPermission(Manifest.permission.BODY_SENSORS)
+}
+
+fun Context.hasActivityPermission(): Boolean {
+    return hasPermission(Manifest.permission.ACTIVITY_RECOGNITION)
 }
 
 fun Context.hasNotificationPermission(): Boolean {

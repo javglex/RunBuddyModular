@@ -21,6 +21,8 @@ sealed interface MessagingActionDto {
     @Serializable
     data class HeartRateUpdate(val heartRate: Int): MessagingActionDto
     @Serializable
+    data class CaloriesUpdate(val calories: Int): MessagingActionDto
+    @Serializable
     data class DistanceUpdate(val distanceMeters: Int): MessagingActionDto
     @Serializable
     data class TimeUpdate(val elapsedDuration: Duration): MessagingActionDto

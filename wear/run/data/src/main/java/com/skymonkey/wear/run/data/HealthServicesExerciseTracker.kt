@@ -11,6 +11,7 @@ import androidx.health.services.client.HealthServicesException
 import androidx.health.services.client.clearUpdateCallback
 import androidx.health.services.client.data.Availability
 import androidx.health.services.client.data.DataType
+import androidx.health.services.client.data.DeltaDataType
 import androidx.health.services.client.data.ExerciseConfig
 import androidx.health.services.client.data.ExerciseLapSummary
 import androidx.health.services.client.data.ExerciseTrackedStatus
@@ -30,6 +31,7 @@ import com.skymonkey.core.domain.EmptyResult
 import com.skymonkey.core.domain.Result
 import com.skymonkey.wear.run.domain.ExerciseError
 import com.skymonkey.wear.run.domain.ExerciseTracker
+import com.skymonkey.wear.run.domain.HealthServicesMetrics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -45,7 +47,7 @@ class HealthServicesExerciseTracker(
 ): ExerciseTracker {
 
     private val client = HealthServices.getClient(context).exerciseClient
-    override val heartRate: Flow<Int>
+    override val metrics: Flow<HealthServicesMetrics>
         get() = callbackFlow {
             val callback = object : ExerciseUpdateCallback {
                 override fun onAvailabilityChanged(
@@ -55,10 +57,15 @@ class HealthServicesExerciseTracker(
 
                 override fun onExerciseUpdateReceived(update: ExerciseUpdate) {
                     val heartRates = update.latestMetrics.getData(DataType.HEART_RATE_BPM)
+                    val calories = update.latestMetrics.getData(DataType.CALORIES)
                     val currentHeartRate = heartRates.firstOrNull()?.value
-                    currentHeartRate?.let {
-                        trySend(currentHeartRate.roundToInt())
-                    }
+                    val currentCalories = calories.firstOrNull()?.value
+
+                    trySend(HealthServicesMetrics(
+                        calories = currentCalories?.roundToInt(),
+                        heartRate = currentHeartRate?.roundToInt()
+                    ))
+
                 }
 
                 override fun onLapSummaryReceived(lapSummary: ExerciseLapSummary) = Unit
@@ -104,10 +111,13 @@ class HealthServicesExerciseTracker(
         }
 
         // start tracking user's exercise
-
+        val dataTypeSet: MutableSet<DeltaDataType<*,*>> = mutableSetOf(DataType.HEART_RATE_BPM)
+        if (hasActivityRecognitionPermission()) {
+            dataTypeSet.add(DataType.CALORIES)
+        }
         val config = WarmUpConfig(
             exerciseType = ExerciseType.RUNNING,
-            dataTypes = setOf(DataType.HEART_RATE_BPM)
+            dataTypes = dataTypeSet
         )
 
         client.prepareExercise(config)
@@ -128,8 +138,13 @@ class HealthServicesExerciseTracker(
             return result
         }
 
+        val dataTypeSet: MutableSet<DataType<*,*>> = mutableSetOf(DataType.HEART_RATE_BPM)
+        if (hasActivityRecognitionPermission()) {
+            dataTypeSet.add(DataType.CALORIES)
+        }
+
         val config = ExerciseConfig.builder(ExerciseType.RUNNING)
-            .setDataTypes(setOf(DataType.HEART_RATE_BPM))
+            .setDataTypes(dataTypeSet)
             .setIsAutoPauseAndResumeEnabled(false) // don't let api assume when users pause. users have buttons to do so
             .build()
 
@@ -220,6 +235,14 @@ class HealthServicesExerciseTracker(
         return ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.BODY_SENSORS
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+
+    private fun hasActivityRecognitionPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACTIVITY_RECOGNITION
         ) == PackageManager.PERMISSION_GRANTED
     }
 
