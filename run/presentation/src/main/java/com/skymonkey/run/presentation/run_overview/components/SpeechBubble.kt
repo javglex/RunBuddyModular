@@ -36,7 +36,7 @@ fun SpeechBubble(
     texts: List<String>,
     modifier: Modifier = Modifier,
     isExpanded: Boolean = true,
-    showBubbleTriangle: Boolean = true,
+    showBubbleTriangle: Boolean = true
 ) {
     var isExpanded by remember { mutableStateOf(isExpanded) }
     var selectedIndex by remember { mutableStateOf(0) }

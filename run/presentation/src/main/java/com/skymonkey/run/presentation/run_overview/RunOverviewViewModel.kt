@@ -21,7 +21,7 @@ class RunOverviewViewModel(
     private val logoutRepository: LogoutRepository,
     private val syncRunScheduler: SyncRunScheduler,
     private val sessionStorage: SessionStorage,
-    private val applicationScope: CoroutineScope,
+    private val applicationScope: CoroutineScope
 ) : ViewModel() {
     var state by mutableStateOf(RunOverviewState())
         private set

@@ -7,7 +7,7 @@ import kotlin.math.sqrt
 
 data class Location(
     val latitude: Double,
-    val longitude: Double,
+    val longitude: Double
 ) {
     /**
      * calculates distance between two locations (this & parameter)

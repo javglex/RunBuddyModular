@@ -34,7 +34,7 @@ fun ClickableEndText(
             color = MaterialTheme.colorScheme.primary,
             fontFamily = Poppins
         ),
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     val annotatedString =
         buildAnnotatedString {

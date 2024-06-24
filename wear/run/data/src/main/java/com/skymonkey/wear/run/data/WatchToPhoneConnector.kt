@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.shareIn
 class WatchToPhoneConnector(
     nodeDiscovery: NodeDiscovery,
     applicationScope: CoroutineScope,
-    private val messagingClient: MessagingClient,
+    private val messagingClient: MessagingClient
 ) : PhoneConnector {
     private val _connectedNode = MutableStateFlow<DeviceNode?>(null)
     override val connectedNode: StateFlow<DeviceNode?>

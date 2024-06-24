@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.milliseconds
 
 class RoomAnalyticsRepository(
-    private val analyticsDao: AnalyticsDao,
+    private val analyticsDao: AnalyticsDao
 ) : AnalyticsRepository {
     override suspend fun getAnalyticsValues(): AnalyticsValues =
         withContext(Dispatchers.IO) {

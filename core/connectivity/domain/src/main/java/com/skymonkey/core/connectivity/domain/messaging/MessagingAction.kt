@@ -16,18 +16,18 @@ sealed interface MessagingAction {
     data object ConnectionRequest : MessagingAction
 
     data class HeartRateUpdate(
-        val heartRate: Int,
+        val heartRate: Int
     ) : MessagingAction
 
     data class CaloriesUpdate(
-        val calories: Int,
+        val calories: Int
     ) : MessagingAction
 
     data class DistanceUpdate(
-        val distanceMeters: Int,
+        val distanceMeters: Int
     ) : MessagingAction
 
     data class TimeUpdate(
-        val elapsedDuration: Duration,
+        val elapsedDuration: Duration
     ) : MessagingAction
 }

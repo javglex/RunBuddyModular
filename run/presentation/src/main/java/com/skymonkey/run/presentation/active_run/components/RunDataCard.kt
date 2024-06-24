@@ -35,7 +35,7 @@ import kotlin.time.Duration.Companion.minutes
 fun RunDataCard(
     elapsedTime: Duration,
     runData: RunData,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier =
@@ -91,7 +91,7 @@ private fun RunDataItem(
     title: String,
     value: String,
     modifier: Modifier = Modifier,
-    valuesFontSize: TextUnit = 16.sp,
+    valuesFontSize: TextUnit = 16.sp
 ) {
     Column(
         modifier = modifier,

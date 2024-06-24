@@ -6,6 +6,6 @@ sealed interface TrackerEvent {
     data object RunFinished : TrackerEvent
 
     data class Error(
-        val message: UiText,
+        val message: UiText
     ) : TrackerEvent
 }

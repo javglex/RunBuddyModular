@@ -56,7 +56,7 @@ fun TrackerMap(
     currentLocation: Location?,
     locations: List<List<LocationTimestamp>>,
     onSnapshot: (Bitmap) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val mapStyle =

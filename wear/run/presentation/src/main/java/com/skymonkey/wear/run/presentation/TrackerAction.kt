@@ -6,15 +6,15 @@ sealed interface TrackerAction {
     data object OnFinishRunClick : TrackerAction
 
     data class OnBodySensorPermissionResult(
-        val isGranted: Boolean,
+        val isGranted: Boolean
     ) : TrackerAction
 
     data class OnActivityRecognitionPermissionResult(
-        val isGranted: Boolean,
+        val isGranted: Boolean
     ) : TrackerAction
 
     data class OnEnterAmbientMode(
-        val burnInProtectionRequired: Boolean,
+        val burnInProtectionRequired: Boolean
     ) : TrackerAction
 
     data object OnExitAmbientMode : TrackerAction

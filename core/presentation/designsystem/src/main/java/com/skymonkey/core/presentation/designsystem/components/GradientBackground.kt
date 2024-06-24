@@ -24,7 +24,7 @@ import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 fun GradientBackground(
     modifier: Modifier = Modifier,
     hasToolbar: Boolean = true,
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current

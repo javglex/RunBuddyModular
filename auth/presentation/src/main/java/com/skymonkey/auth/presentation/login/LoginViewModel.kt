@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 class LoginViewModel(
     private val authRepository: AuthRepository,
-    private val userDataValidator: UserDataValidator,
+    private val userDataValidator: UserDataValidator
 ) : ViewModel() {
     var state by mutableStateOf(LoginState())
         private set

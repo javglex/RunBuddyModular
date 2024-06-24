@@ -12,7 +12,7 @@ fun RunBuddyScaffold(
     withGradient: Boolean = true,
     topAppBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
-    content: @Composable (PaddingValues) -> Unit,
+    content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
         topBar = topAppBar,

@@ -11,7 +11,7 @@ import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.plugins.plugin
 
 class LogoutRepositoryImpl(
-    private val client: HttpClient,
+    private val client: HttpClient
 ) : LogoutRepository {
     override suspend fun logout(): EmptyResult<DataError.Network> {
         val result =

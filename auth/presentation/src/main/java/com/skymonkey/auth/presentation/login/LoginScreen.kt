@@ -37,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreenRoot(
     onLoginSuccess: () -> Unit,
     onSignUpClick: () -> Unit,
-    viewModel: LoginViewModel = koinViewModel(),
+    viewModel: LoginViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -83,7 +83,7 @@ fun LoginScreenRoot(
 @Composable
 private fun LoginScreen(
     state: LoginState,
-    onAction: (LoginAction) -> Unit,
+    onAction: (LoginAction) -> Unit
 ) {
     GradientBackground {
         Column(

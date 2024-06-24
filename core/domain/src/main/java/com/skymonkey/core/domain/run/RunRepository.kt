@@ -11,7 +11,7 @@ interface RunRepository {
 
     suspend fun upsertRun(
         run: Run,
-        mapPicture: ByteArray,
+        mapPicture: ByteArray
     ): EmptyResult<DataError>
 
     suspend fun deleteRun(id: RunId): EmptyResult<DataError>

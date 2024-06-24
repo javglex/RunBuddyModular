@@ -14,17 +14,17 @@ sealed interface ActiveRunAction {
 
     data class SubmitLocationPermissionInfo(
         val acceptedLocationPermission: Boolean,
-        val showLocationRationale: Boolean,
+        val showLocationRationale: Boolean
     ) : ActiveRunAction
 
     data class SubmitNotificationPermissionInfo(
         val acceptedNotificationPermission: Boolean,
-        val showNotificationRationale: Boolean,
+        val showNotificationRationale: Boolean
     ) : ActiveRunAction
 
     data object DismissRationaleDialog : ActiveRunAction
 
     data class OnRunProcessed(
-        val mapPictureBytes: ByteArray,
+        val mapPictureBytes: ByteArray
     ) : ActiveRunAction
 }

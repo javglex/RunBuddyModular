@@ -10,7 +10,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class EncryptedSessionStorage(
-    private val sharedPreferences: SharedPreferences,
+    private val sharedPreferences: SharedPreferences
 ) : SessionStorage {
     override suspend fun get(): AuthInfo? =
         withContext(Dispatchers.IO) {

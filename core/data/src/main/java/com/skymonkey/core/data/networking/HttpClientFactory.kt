@@ -22,7 +22,7 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 
 class HttpClientFactory(
-    val sessionStorage: SessionStorage,
+    val sessionStorage: SessionStorage
 ) {
     fun build(): HttpClient =
         HttpClient(CIO) {

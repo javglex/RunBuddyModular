@@ -25,7 +25,7 @@ fun RunFloatingActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    iconSize: Dp = 25.dp,
+    iconSize: Dp = 25.dp
 ) {
     Box(
         modifier =

@@ -25,7 +25,7 @@ fun RunDataCard(
     value: String,
     modifier: Modifier = Modifier,
     drawableTint: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface,
-    valueTextColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface,
+    valueTextColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface
 ) {
     Column(
         modifier =

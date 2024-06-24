@@ -12,7 +12,7 @@ class CreateRunWorker(
     context: Context,
     private val params: WorkerParameters,
     private val remoteRunDataSource: RemoteRunDataSource,
-    private val pendingSyncDao: RunPendingSyncDao,
+    private val pendingSyncDao: RunPendingSyncDao
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         if (runAttemptCount >= MAX_TRIES) {

@@ -9,5 +9,5 @@ import com.skymonkey.core.domain.location.Location
 data class PolyLineUi(
     val locationA: Location,
     val locationB: Location,
-    val color: Color,
+    val color: Color
 )

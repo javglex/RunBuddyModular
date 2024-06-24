@@ -68,7 +68,7 @@ import kotlin.time.Duration.Companion.seconds
 fun RunListItem(
     runUi: RunUi,
     onDeleteClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
@@ -162,7 +162,7 @@ fun RunListItem(
 @Composable
 private fun RunningDateSection(
     dateTime: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
@@ -184,7 +184,7 @@ private fun RunningDateSection(
 @Composable
 private fun RunningTimeSection(
     duration: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,
@@ -229,7 +229,7 @@ private fun RunningTimeSection(
 @Composable
 private fun MapImage(
     imageUrl: String?,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     SubcomposeAsyncImage(
         model = imageUrl,
@@ -274,7 +274,7 @@ private fun MapImage(
 @Composable
 private fun DataGrid(
     run: RunUi,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val runDataUiList =
         listOf(
@@ -338,7 +338,7 @@ private fun DataGrid(
 @Composable
 private fun DataGridCell(
     run: RunCellData,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier

@@ -20,7 +20,7 @@ import com.skymonkey.analytics.presentation.R
 fun AnalyticsCard(
     title: String,
     value: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier =

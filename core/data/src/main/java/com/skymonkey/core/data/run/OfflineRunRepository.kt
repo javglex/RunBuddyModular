@@ -26,7 +26,7 @@ class OfflineRunRepository(
     private val runPendingSyncDao: RunPendingSyncDao,
     private val sessionStorage: SessionStorage,
     private val syncRunScheduler: SyncRunScheduler,
-    private val applicationScope: CoroutineScope,
+    private val applicationScope: CoroutineScope
 ) : RunRepository {
     /**
      * Get run data only from local database. Our local database will ideally be updated by network data.
@@ -54,7 +54,7 @@ class OfflineRunRepository(
 
     override suspend fun upsertRun(
         run: Run,
-        mapPicture: ByteArray,
+        mapPicture: ByteArray
     ): EmptyResult<DataError> {
         // first insert our run into local db, which will generate it's ID.
         val localResult = localRunDataSource.upsertRun(run)

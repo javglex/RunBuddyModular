@@ -45,7 +45,7 @@ fun RunOverviewScreenRoot(
     onStartRunClick: () -> Unit,
     onLogoutClick: () -> Unit,
     onAnalyticsClick: () -> Unit,
-    viewModel: RunOverviewViewModel = koinViewModel(),
+    viewModel: RunOverviewViewModel = koinViewModel()
 ) {
     RunOverviewScreen(
         state = viewModel.state,
@@ -65,7 +65,7 @@ fun RunOverviewScreenRoot(
 @Composable
 private fun RunOverviewScreen(
     state: RunOverviewState,
-    onAction: (RunOverviewAction) -> Unit,
+    onAction: (RunOverviewAction) -> Unit
 ) {
     val topAppBarState = rememberTopAppBarState()
     var scrollBehavior =

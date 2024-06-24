@@ -19,7 +19,7 @@ import com.skymonkey.run.presentation.run_overview.RunOverviewScreenRoot
 fun NavigationRoot(
     navController: NavHostController,
     onAnalyticsClick: () -> Unit,
-    isLoggedIn: Boolean,
+    isLoggedIn: Boolean
 ) {
     NavHost(
         navController = navController,
@@ -87,7 +87,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
 
 private fun NavGraphBuilder.runGraph(
     navController: NavHostController,
-    onAnalyticsClick: () -> Unit,
+    onAnalyticsClick: () -> Unit
 ) {
     navigation(
         startDestination = "run_overview",

@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
  * Room datasource for managing our runs locally
  */
 class RoomLocalRunDataSource(
-    private val runDao: RunDao,
+    private val runDao: RunDao
 ) : LocalRunDataSource {
     override fun getRuns(): Flow<List<Run>> =
         runDao

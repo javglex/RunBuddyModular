@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class HealthServicesExerciseTracker(
-    private val context: Context,
+    private val context: Context
 ) : ExerciseTracker {
     private val client = HealthServices.getClient(context).exerciseClient
     override val metrics: Flow<HealthServicesMetrics>
@@ -49,7 +49,7 @@ class HealthServicesExerciseTracker(
                     object : ExerciseUpdateCallback {
                         override fun onAvailabilityChanged(
                             dataType: DataType<*, *>,
-                            availability: Availability,
+                            availability: Availability
                         ) = Unit
 
                         override fun onExerciseUpdateReceived(update: ExerciseUpdate) {
@@ -135,10 +135,9 @@ class HealthServicesExerciseTracker(
 
         val result = getActiveExerciseInfo()
 
-        if (result is Result.Error)
-            {
-                return result
-            }
+        if (result is Result.Error) {
+            return result
+        }
 
         val dataTypeSet: MutableSet<DataType<*, *>> = mutableSetOf(DataType.HEART_RATE_BPM)
         if (hasActivityRecognitionPermission()) {
@@ -166,10 +165,9 @@ class HealthServicesExerciseTracker(
 
         // its ok to resume when we have an ongoing exercise that we own.
         // however we must throw an error if we try to resume when another app has an ongoing exercise.
-        if (result is Result.Error && result.error == ExerciseError.ONGOING_OTHER_EXERCISE)
-            {
-                return result
-            }
+        if (result is Result.Error && result.error == ExerciseError.ONGOING_OTHER_EXERCISE) {
+            return result
+        }
 
         return try {
             client.resumeExercise()
@@ -188,10 +186,9 @@ class HealthServicesExerciseTracker(
 
         // its ok to pause when we have an ongoing exercise that we own.
         // however we must throw an error if we try to pause when another app has an ongoing exercise.
-        if (result is Result.Error && result.error == ExerciseError.ONGOING_OTHER_EXERCISE)
-            {
-                return result
-            }
+        if (result is Result.Error && result.error == ExerciseError.ONGOING_OTHER_EXERCISE) {
+            return result
+        }
 
         return try {
             client.pauseExercise()
@@ -210,10 +207,9 @@ class HealthServicesExerciseTracker(
 
         // its ok to stop when we have an ongoing exercise that we own.
         // however we must throw an error if we try to stop when another app has an ongoing exercise.
-        if (result is Result.Error && result.error == ExerciseError.ONGOING_OTHER_EXERCISE)
-            {
-                return result
-            }
+        if (result is Result.Error && result.error == ExerciseError.ONGOING_OTHER_EXERCISE) {
+            return result
+        }
 
         return try {
             client.endExercise()

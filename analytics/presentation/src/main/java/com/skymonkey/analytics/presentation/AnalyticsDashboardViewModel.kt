@@ -9,7 +9,7 @@ import com.skymonkey.analytics.domain.AnalyticsRepository
 import kotlinx.coroutines.launch
 
 class AnalyticsDashboardViewModel(
-    private val analyticsRepository: AnalyticsRepository,
+    private val analyticsRepository: AnalyticsRepository
 ) : ViewModel() {
     var state by mutableStateOf<AnalyticsDashboardState>(AnalyticsDashboardState())
         private set

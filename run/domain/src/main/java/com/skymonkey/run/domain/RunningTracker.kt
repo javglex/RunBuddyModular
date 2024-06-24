@@ -35,7 +35,7 @@ import kotlin.time.Duration.Companion.seconds
 class RunningTracker(
     private val locationObserver: LocationObserver,
     private val applicationScope: CoroutineScope,
-    private val watchConnector: WatchConnector,
+    private val watchConnector: WatchConnector
 ) {
     private val _runData = MutableStateFlow(RunData())
     val runData = _runData.asStateFlow()

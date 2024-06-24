@@ -14,5 +14,5 @@ data class ActiveRunState(
     val isSaving: Boolean = false,
     val showLocationRationale: Boolean = false,
     val showNotificationRationale: Boolean = false,
-    val showLoadingChunks: Boolean = false,
+    val showLoadingChunks: Boolean = false
 )

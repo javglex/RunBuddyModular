@@ -9,16 +9,16 @@ interface SyncRunScheduler {
 
     sealed interface SyncType {
         data class FetchRuns(
-            val interval: Duration,
+            val interval: Duration
         ) : SyncType
 
         data class DeleteRun(
-            val runId: RunId,
+            val runId: RunId
         ) : SyncType
 
         class CreateRun(
             val run: Run,
-            val mapPictureBytes: ByteArray,
+            val mapPictureBytes: ByteArray
         ) : SyncType
     }
 }

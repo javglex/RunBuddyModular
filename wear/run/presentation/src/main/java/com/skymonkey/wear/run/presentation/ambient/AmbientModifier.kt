@@ -52,7 +52,7 @@ internal fun Modifier.ambientGray(isAmbientMode: Boolean): Modifier =
 
 fun Modifier.ambientMode(
     isAmbientMode: Boolean,
-    burnInProtectionRequired: Boolean,
+    burnInProtectionRequired: Boolean
 ) = composed {
     // composed is used if modifier has it's own internal state that could change.
     val translationX by rememberBurnInTranslation(isAmbientMode, burnInProtectionRequired)
@@ -68,7 +68,7 @@ fun Modifier.ambientMode(
 @Composable
 private fun rememberBurnInTranslation(
     isAmbientMode: Boolean,
-    burnInProtectionRequired: Boolean,
+    burnInProtectionRequired: Boolean
 ): State<Float> {
     val translation =
         remember {

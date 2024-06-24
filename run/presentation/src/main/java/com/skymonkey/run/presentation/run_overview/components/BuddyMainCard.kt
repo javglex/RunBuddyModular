@@ -21,7 +21,7 @@ import com.skymonkey.run.presentation.R
 @Composable
 fun BuddyMainCard(
     isExpanded: Boolean = false,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     if (isExpanded) {
         Box(

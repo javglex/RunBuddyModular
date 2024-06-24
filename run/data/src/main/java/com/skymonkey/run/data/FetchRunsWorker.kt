@@ -11,7 +11,7 @@ const val MAX_TRIES = 5
 class FetchRunsWorker(
     context: Context,
     params: WorkerParameters,
-    private val runRepository: RunRepository,
+    private val runRepository: RunRepository
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
         if (runAttemptCount >= MAX_TRIES) {

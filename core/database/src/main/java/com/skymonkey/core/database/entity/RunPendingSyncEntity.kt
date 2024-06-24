@@ -13,7 +13,7 @@ data class RunPendingSyncEntity(
     @PrimaryKey(autoGenerate = false)
     val runId: String = run.id,
     val mapPictureBytes: ByteArray,
-    val userId: String,
+    val userId: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

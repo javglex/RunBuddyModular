@@ -53,7 +53,7 @@ fun LargeTextField(
     modifier: Modifier = Modifier,
     error: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
-    additionalInfo: String? = null,
+    additionalInfo: String? = null
 ) {
     var isFocused by remember {
         mutableStateOf(false)

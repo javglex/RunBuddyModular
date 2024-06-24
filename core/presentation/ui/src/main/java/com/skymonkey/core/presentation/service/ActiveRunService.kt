@@ -48,7 +48,7 @@ class ActiveRunService : Service() {
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
-        startId: Int,
+        startId: Int
     ): Int {
         when (intent?.action) {
             ACTION_START -> {
@@ -155,7 +155,7 @@ class ActiveRunService : Service() {
 
         fun createStartIntent(
             context: Context,
-            activityClass: Class<*>,
+            activityClass: Class<*>
         ): Intent =
             Intent(context, ActiveRunService::class.java).apply {
                 action = ACTION_START

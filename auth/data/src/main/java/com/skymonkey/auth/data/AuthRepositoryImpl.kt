@@ -12,11 +12,11 @@ import io.ktor.client.HttpClient
 
 class AuthRepositoryImpl(
     private val httpClient: HttpClient,
-    private val sessionStorage: SessionStorage,
+    private val sessionStorage: SessionStorage
 ) : AuthRepository {
     override suspend fun register(
         email: String,
-        password: String,
+        password: String
     ): EmptyResult<DataError.Network> =
         httpClient.post<RegisterRequest, Unit>(
             route = "/register",
@@ -29,7 +29,7 @@ class AuthRepositoryImpl(
 
     override suspend fun login(
         email: String,
-        password: String,
+        password: String
     ): EmptyResult<DataError.Network> {
         val result =
             httpClient.post<LoginRequest, LoginResponse>(

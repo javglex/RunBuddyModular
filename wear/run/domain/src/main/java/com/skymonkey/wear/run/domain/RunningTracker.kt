@@ -20,7 +20,7 @@ import kotlin.time.Duration
 class RunningTracker(
     private val watchToPhoneConnector: PhoneConnector,
     private val exerciseTracker: ExerciseTracker,
-    applicationScope: CoroutineScope,
+    applicationScope: CoroutineScope
 ) {
     private val _heartRate = MutableStateFlow(0)
     val heartRate = _heartRate.asStateFlow()

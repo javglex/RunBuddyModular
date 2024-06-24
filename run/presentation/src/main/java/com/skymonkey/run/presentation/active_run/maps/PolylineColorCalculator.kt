@@ -12,7 +12,7 @@ import kotlin.math.abs
 object PolylineColorCalculator {
     fun locationsToColor(
         locationA: LocationTimestamp,
-        locationB: LocationTimestamp,
+        locationB: LocationTimestamp
     ): Color {
         val distanceMeters = locationA.locationWithAltitude.location.distanceTo(locationB.locationWithAltitude.location)
         val timeDiff = abs((locationB.durationTimeStamp - locationA.durationTimeStamp).inWholeSeconds)
@@ -32,7 +32,7 @@ object PolylineColorCalculator {
         maxSpeed: Double = 20.0,
         colorStart: Color,
         colorMid: Color,
-        colorEnd: Color,
+        colorEnd: Color
     ): Color {
         val ratio = ((speedKmh - minSpeed) / (maxSpeed - minSpeed)).coerceIn(0.0..1.0)
         val colorInt =

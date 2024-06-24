@@ -256,7 +256,7 @@ data class ColorFamily(
     val color: Color,
     val onColor: Color,
     val colorContainer: Color,
-    val onColorContainer: Color,
+    val onColorContainer: Color
 )
 
 val unspecified_scheme =
@@ -274,7 +274,7 @@ fun RunBuddyTheme(
     dynamicColor: Boolean = false,
     content:
         @Composable()
-        () -> Unit,
+        () -> Unit
 ) {
     val colorScheme =
         when {

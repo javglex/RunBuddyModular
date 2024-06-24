@@ -9,7 +9,7 @@ import com.skymonkey.core.domain.auth.SessionStorage
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val sessionStorage: SessionStorage,
+    private val sessionStorage: SessionStorage
 ) : ViewModel() {
     var state by mutableStateOf(MainState())
         private set

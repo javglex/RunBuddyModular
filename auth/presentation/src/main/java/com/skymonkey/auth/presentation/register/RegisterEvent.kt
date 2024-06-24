@@ -6,6 +6,6 @@ sealed interface RegisterEvent {
     data object RegistrationSuccess : RegisterEvent
 
     data class Error(
-        val error: UiText,
+        val error: UiText
     ) : RegisterEvent
 }

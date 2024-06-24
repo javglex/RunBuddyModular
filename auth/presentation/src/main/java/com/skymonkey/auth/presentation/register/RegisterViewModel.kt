@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 class RegisterViewModel(
     private val userDataValidator: UserDataValidator,
-    private val repository: AuthRepository,
+    private val repository: AuthRepository
 ) : ViewModel() {
     var state by mutableStateOf(RegisterState())
         private set

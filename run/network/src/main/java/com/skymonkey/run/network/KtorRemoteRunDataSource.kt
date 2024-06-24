@@ -20,7 +20,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class KtorRemoteRunDataSource(
-    private val httpClient: HttpClient,
+    private val httpClient: HttpClient
 ) : RemoteRunDataSource {
     override suspend fun getRuns(): Result<List<Run>, DataError.Network> =
         httpClient
@@ -34,7 +34,7 @@ class KtorRemoteRunDataSource(
 
     override suspend fun postRun(
         run: Run,
-        mapPicture: ByteArray,
+        mapPicture: ByteArray
     ): Result<Run, DataError.Network> {
         val createRunRequestJson = Json.encodeToString(run.toCreateRunRequest())
         val result =

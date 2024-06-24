@@ -17,7 +17,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class WearMessagingClient(
-    context: Context,
+    context: Context
 ) : MessagingClient {
     private val client = Wearable.getMessageClient(context)
     private val messageQueue = mutableListOf<MessagingAction>()

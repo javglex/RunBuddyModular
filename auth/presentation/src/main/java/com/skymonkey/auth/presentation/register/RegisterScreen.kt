@@ -46,7 +46,7 @@ import org.koin.androidx.compose.koinViewModel
 fun RegisterScreenRoot(
     onSignInClick: () -> Unit,
     onSuccessfulRegistration: () -> Unit,
-    viewModel: RegisterViewModel = koinViewModel(),
+    viewModel: RegisterViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -93,7 +93,7 @@ fun RegisterScreenRoot(
 @Composable
 private fun RegisterScreen(
     state: RegisterState,
-    onAction: (RegisterAction) -> Unit,
+    onAction: (RegisterAction) -> Unit
 ) {
     GradientBackground {
         Column(
@@ -176,7 +176,7 @@ private fun RegisterScreen(
 fun PasswordRequirement(
     text: String,
     isValid: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier,

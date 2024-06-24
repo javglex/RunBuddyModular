@@ -56,7 +56,7 @@ fun ActiveRunScreenRoot(
     onFinishRun: () -> Unit,
     onNavigateBack: () -> Unit,
     onServiceToggle: (isServiceRunning: Boolean) -> Unit,
-    viewModel: ActiveRunViewModel = koinViewModel(),
+    viewModel: ActiveRunViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     ObserveAsEvents(flow = viewModel.events) { event ->
@@ -97,7 +97,7 @@ fun ActiveRunScreenRoot(
 private fun ActiveRunScreen(
     state: ActiveRunState,
     onServiceToggle: (isServiceRunning: Boolean) -> Unit,
-    onAction: (ActiveRunAction) -> Unit,
+    onAction: (ActiveRunAction) -> Unit
 ) {
     val context = LocalContext.current
     val permissionLauncher =

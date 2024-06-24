@@ -30,7 +30,7 @@ fun ActionButton(
     isLoading: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Button(
         onClick = onClick,
@@ -79,7 +79,7 @@ fun OutlinedActionButton(
     isLoading: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     OutlinedButton(
         onClick = onClick,

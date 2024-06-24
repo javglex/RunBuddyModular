@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.shareIn
 class PhoneToWatchConnector(
     nodeDiscovery: NodeDiscovery,
     private val applicationScope: CoroutineScope,
-    private val messagingClient: MessagingClient,
+    private val messagingClient: MessagingClient
 ) : WatchConnector {
     private val isTrackable = MutableStateFlow(false)
 

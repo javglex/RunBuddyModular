@@ -14,7 +14,7 @@ import com.skymonkey.core.domain.location.LocationTimestamp
 @Composable
 fun RunbuddyPolylines(
     locations: List<List<LocationTimestamp>>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val polylines =
         remember(locations) {

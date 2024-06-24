@@ -1,7 +1,7 @@
 package com.skymonkey.auth.domain
 
 class UserDataValidator(
-    private val patternValidator: PatternValidator,
+    private val patternValidator: PatternValidator
 ) {
     fun isValidEmail(email: String): Boolean = patternValidator.matches(email.trim())
 

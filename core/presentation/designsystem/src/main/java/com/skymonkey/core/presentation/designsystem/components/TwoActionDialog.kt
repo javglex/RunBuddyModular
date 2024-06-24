@@ -29,7 +29,7 @@ fun TwoActionDialog(
     description: String,
     primaryButton: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
-    secondaryButton: @Composable RowScope.() -> Unit = {},
+    secondaryButton: @Composable RowScope.() -> Unit = {}
 ) {
     Dialog(
         onDismissRequest = onDismiss

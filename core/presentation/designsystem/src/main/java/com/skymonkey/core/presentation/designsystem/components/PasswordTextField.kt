@@ -51,7 +51,7 @@ fun PasswordTextField(
     onTogglePasswordVisibility: () -> Unit,
     hint: String,
     title: String?,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     var isFocused by remember {
         mutableStateOf(false)

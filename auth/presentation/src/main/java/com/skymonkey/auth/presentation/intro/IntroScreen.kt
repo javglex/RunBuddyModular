@@ -27,7 +27,7 @@ import com.skymonkey.core.presentation.designsystem.components.OutlinedActionBut
 @Composable
 fun IntroScreenRoot(
     onSignUpClick: () -> Unit,
-    onSignInClick: () -> Unit,
+    onSignInClick: () -> Unit
 ) {
     IntroScreen(state = "", onAction = {
         when (it) {
@@ -41,7 +41,7 @@ fun IntroScreenRoot(
 fun IntroScreen(
     state: String,
     onAction: (IntroAction) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     GradientBackground {
         Box(

@@ -44,7 +44,7 @@ class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
     private val runRepository: RunRepository,
     private val watchConnector: WatchConnector,
-    private val applicationScope: CoroutineScope,
+    private val applicationScope: CoroutineScope
 ) : ViewModel() {
     private var previousLocations: List<List<LocationTimestamp>> = emptyList()
 
@@ -308,7 +308,7 @@ class ActiveRunViewModel(
         locations: List<List<LocationTimestamp>>,
         prevLocations: List<List<LocationTimestamp>>,
         loading: () -> Unit,
-        finished: () -> Unit,
+        finished: () -> Unit
     ): Flow<List<List<LocationTimestamp>>> =
         flow {
             val chunkSize = 20

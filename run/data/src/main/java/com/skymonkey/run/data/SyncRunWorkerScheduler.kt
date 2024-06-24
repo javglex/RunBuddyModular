@@ -33,7 +33,7 @@ class SyncRunWorkerScheduler(
     private val context: Context,
     private val pendingSyncDao: RunPendingSyncDao,
     private val sessionStorage: SessionStorage,
-    private val applicationScope: CoroutineScope,
+    private val applicationScope: CoroutineScope
 ) : SyncRunScheduler {
     private val workManager = WorkManager.getInstance(context)
 
@@ -82,7 +82,7 @@ class SyncRunWorkerScheduler(
 
     private suspend fun scheduleCreateRunWorker(
         run: Run,
-        mapPictureBytes: ByteArray,
+        mapPictureBytes: ByteArray
     ) {
         val userId = sessionStorage.get()?.userId ?: return
         val pendingRun =

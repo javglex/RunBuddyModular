@@ -33,7 +33,7 @@ import kotlin.time.Duration.Companion.seconds
 class TrackerViewModel(
     private val exerciseTracker: ExerciseTracker,
     private val phoneConnector: PhoneConnector,
-    private val runningTracker: RunningTracker,
+    private val runningTracker: RunningTracker
 ) : ViewModel() {
     var state by mutableStateOf(
         TrackerState(

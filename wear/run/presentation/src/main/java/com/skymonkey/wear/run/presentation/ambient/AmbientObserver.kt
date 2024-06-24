@@ -17,7 +17,7 @@ import androidx.wear.ambient.AmbientLifecycleObserver
 fun AmbientObserver(
     onEnterAmbient: (AmbientLifecycleObserver.AmbientDetails) -> Unit,
     onExitAmbient: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     // does not play nice with preview components. We quickly exit before resolving anything.
     val context = LocalContext.current as? ComponentActivity ?: return

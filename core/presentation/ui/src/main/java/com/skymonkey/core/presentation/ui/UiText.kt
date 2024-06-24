@@ -14,7 +14,7 @@ sealed interface UiText {
      * Plain strings
      */
     data class DynamicString(
-        val value: String,
+        val value: String
     ) : UiText
 
     /**
@@ -22,7 +22,7 @@ sealed interface UiText {
      */
     class StringResource(
         @StringRes val id: Int,
-        val args: Array<Any> = arrayOf(),
+        val args: Array<Any> = arrayOf()
     ) : UiText
 
     @Composable

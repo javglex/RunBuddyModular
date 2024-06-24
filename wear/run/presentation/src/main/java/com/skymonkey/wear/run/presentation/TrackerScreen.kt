@@ -63,7 +63,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun TrackerScreenRoot(
     onServiceToggle: (isServiceRunning: Boolean) -> Unit,
-    viewModel: TrackerViewModel = koinViewModel(),
+    viewModel: TrackerViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val state = viewModel.state
@@ -98,7 +98,7 @@ fun TrackerScreenRoot(
 @Composable
 private fun TrackerScreen(
     state: TrackerState,
-    onAction: (TrackerAction) -> Unit,
+    onAction: (TrackerAction) -> Unit
 ) {
     /*
     Permission check
@@ -322,7 +322,7 @@ fun ToggleRunButton(
     isRunActive: Boolean,
     hasStartedRunning: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     OutlinedButton(
         onClick = onClick,

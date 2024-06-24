@@ -25,5 +25,5 @@ enum class ExerciseError : Error {
     ONGOING_EXERCISE, // already tracking an exercise from our own app
     ONGOING_OTHER_EXERCISE, // already tracking an exercise in another app
     EXERCISE_ALREADY_ENDED,
-    UNKNOWN,
+    UNKNOWN
 }

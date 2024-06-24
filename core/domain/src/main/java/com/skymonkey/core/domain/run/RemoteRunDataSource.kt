@@ -9,7 +9,7 @@ interface RemoteRunDataSource {
 
     suspend fun postRun(
         run: Run,
-        mapPicture: ByteArray,
+        mapPicture: ByteArray
     ): Result<Run, DataError.Network>
 
     suspend fun deleteRun(id: String): EmptyResult<DataError.Network>

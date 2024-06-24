@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 class AndroidLocationObserver(
-    private val context: Context,
+    private val context: Context
 ) : LocationObserver {
     private val client = LocationServices.getFusedLocationProviderClient(context)
 

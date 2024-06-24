@@ -5,5 +5,5 @@ import com.skymonkey.core.domain.Error
 enum class MessagingError : Error {
     CONNECTION_INTERRUPTED,
     DISCONNECTED,
-    UNKNOWN,
+    UNKNOWN
 }

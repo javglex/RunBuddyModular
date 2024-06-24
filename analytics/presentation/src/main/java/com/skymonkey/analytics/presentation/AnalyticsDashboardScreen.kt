@@ -23,7 +23,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AnalyticsDashboardScreenRoot(
     onBackClick: () -> Unit,
-    viewModel: AnalyticsDashboardViewModel = koinViewModel(),
+    viewModel: AnalyticsDashboardViewModel = koinViewModel()
 ) {
     AnalyticsDashboardScreen(
         state = viewModel.state,
@@ -40,7 +40,7 @@ fun AnalyticsDashboardScreenRoot(
 @Composable
 private fun AnalyticsDashboardScreen(
     state: AnalyticsDashboardState,
-    onAction: (AnalyticsAction) -> Unit,
+    onAction: (AnalyticsAction) -> Unit
 ) {
     RunBuddyScaffold(
         topAppBar = {

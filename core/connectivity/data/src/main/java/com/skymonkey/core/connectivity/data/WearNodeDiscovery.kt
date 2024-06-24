@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class WearNodeDiscovery(
-    context: Context,
+    context: Context
 ) : NodeDiscovery {
     private val capabilityClient = Wearable.getCapabilityClient(context)
 
