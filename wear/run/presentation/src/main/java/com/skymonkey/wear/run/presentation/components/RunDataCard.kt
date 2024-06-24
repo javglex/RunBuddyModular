@@ -1,6 +1,5 @@
 package com.skymonkey.wear.run.presentation.components
 
-import android.graphics.Color
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

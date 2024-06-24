@@ -11,10 +11,9 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 [*.{kt,kts}]
-ktlint_code_style = ktlint_official
-
-no-unused-imports = true
-keyword-spacing = false
-ij_kotlin_packages_to_use_import_on_demand = unset
+ij_kotlin_space_before_when_parentheses = false
+ij_kotlin_space_before_while_parentheses = false
+ij_kotlin_packages_to_use_import_on_demand = true
 ij_kotlin_allow_trailing_comma_on_call_site = false
 ij_kotlin_allow_trailing_comma = false
+ktlint_function_naming_ignore_when_annotated_with=Composable

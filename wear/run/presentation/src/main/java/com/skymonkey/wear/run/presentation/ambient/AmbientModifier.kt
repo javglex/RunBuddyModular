@@ -1,6 +1,5 @@
 package com.skymonkey.wear.run.presentation.ambient
 
-import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable

@@ -12,7 +12,6 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.skymonkey.core.presentation.designsystem_wear.RunbuddyWearTheme
 import com.skymonkey.core.presentation.service.ActiveRunService
-import com.skymonkey.wear.app.R
 import com.skymonkey.wear.run.presentation.TrackerScreenRoot
 
 class MainActivity : ComponentActivity() {
