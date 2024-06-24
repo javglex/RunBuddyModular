@@ -23,43 +23,48 @@ fun ClickableEndText(
     normalText: String,
     clickableText: String,
     modifier: Modifier = Modifier,
-    textStyle: SpanStyle = SpanStyle(
-        fontFamily = Poppins,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    ),
-    clickableTextStyle: SpanStyle = SpanStyle(
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.primary,
-        fontFamily = Poppins
-    ),
-    onClick: () -> Unit
+    textStyle: SpanStyle =
+        SpanStyle(
+            fontFamily = Poppins,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
+    clickableTextStyle: SpanStyle =
+        SpanStyle(
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.primary,
+            fontFamily = Poppins
+        ),
+    onClick: () -> Unit,
 ) {
-    val annotatedString = buildAnnotatedString {
-        withStyle(
-            style = textStyle
-        ) {
-            append("$normalText ")
-            pushStringAnnotation(
-                tag = "clickable_text",
-                annotation = clickableText
-            )
+    val annotatedString =
+        buildAnnotatedString {
             withStyle(
-                style = clickableTextStyle
+                style = textStyle
             ) {
-                append(clickableText)
+                append("$normalText ")
+                pushStringAnnotation(
+                    tag = "clickable_text",
+                    annotation = clickableText
+                )
+                withStyle(
+                    style = clickableTextStyle
+                ) {
+                    append(clickableText)
+                }
             }
         }
-    }
     ClickableText(
         text = annotatedString,
         onClick = { offset ->
-            annotatedString.getStringAnnotations(
-                tag = "clickable_text",
-                start = offset,
-                end = offset
-            ).firstOrNull()?.let {
-                onClick()
-            }
+            annotatedString
+                .getStringAnnotations(
+                    tag = "clickable_text",
+                    start = offset,
+                    end = offset
+                ).firstOrNull()
+                ?.let {
+                    onClick()
+                }
         }
     )
 }

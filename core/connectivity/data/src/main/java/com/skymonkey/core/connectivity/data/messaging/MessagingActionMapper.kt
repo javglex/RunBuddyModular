@@ -2,8 +2,8 @@ package com.skymonkey.core.connectivity.data.messaging
 
 import com.skymonkey.core.connectivity.domain.messaging.MessagingAction
 
-fun MessagingAction.toMessagingActionDto(): MessagingActionDto {
-    return when(this) {
+fun MessagingAction.toMessagingActionDto(): MessagingActionDto =
+    when (this) {
         MessagingAction.ConnectionRequest -> MessagingActionDto.ConnectionRequest
         is MessagingAction.DistanceUpdate -> MessagingActionDto.DistanceUpdate(distanceMeters)
         MessagingAction.Finish -> MessagingActionDto.Finish
@@ -15,10 +15,9 @@ fun MessagingAction.toMessagingActionDto(): MessagingActionDto {
         MessagingAction.Untrackable -> MessagingActionDto.Untrackable
         is MessagingAction.CaloriesUpdate -> MessagingActionDto.CaloriesUpdate(calories)
     }
-}
 
-fun MessagingActionDto.toMessagingAction(): MessagingAction {
-    return when(this) {
+fun MessagingActionDto.toMessagingAction(): MessagingAction =
+    when (this) {
         MessagingActionDto.ConnectionRequest -> MessagingAction.ConnectionRequest
         is MessagingActionDto.DistanceUpdate -> MessagingAction.DistanceUpdate(distanceMeters)
         MessagingActionDto.Finish -> MessagingAction.Finish
@@ -30,4 +29,3 @@ fun MessagingActionDto.toMessagingAction(): MessagingAction {
         MessagingActionDto.Untrackable -> MessagingAction.Untrackable
         is MessagingActionDto.CaloriesUpdate -> MessagingAction.CaloriesUpdate(calories)
     }
-}

@@ -9,10 +9,10 @@ import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.milliseconds
 
 class RoomAnalyticsRepository(
-    private val analyticsDao: AnalyticsDao
-): AnalyticsRepository {
-    override suspend fun getAnalyticsValues(): AnalyticsValues {
-        return withContext(Dispatchers.IO) {
+    private val analyticsDao: AnalyticsDao,
+) : AnalyticsRepository {
+    override suspend fun getAnalyticsValues(): AnalyticsValues =
+        withContext(Dispatchers.IO) {
             val totalDistance = async { analyticsDao.getTotalDistance() }
             val totalTimeMillis = async { analyticsDao.getTotalTimeRun() }
             val maxRunSpeed = async { analyticsDao.getMaxRunSpeed() }
@@ -27,5 +27,4 @@ class RoomAnalyticsRepository(
                 avgPacePerRun = avgPacePerRun.await()
             )
         }
-    }
 }

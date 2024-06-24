@@ -41,13 +41,13 @@ import com.skymonkey.core.presentation.designsystem.components.RunFloatingAction
 import com.skymonkey.core.presentation.designsystem.components.TwoActionDialog
 import com.skymonkey.core.presentation.service.ActiveRunService
 import com.skymonkey.core.presentation.ui.ObserveAsEvents
-import com.skymonkey.run.presentation.R
-import com.skymonkey.run.presentation.active_run.components.RunDataCard
-import com.skymonkey.run.presentation.active_run.maps.TrackerMap
 import com.skymonkey.core.presentation.util.hasLocationPermission
 import com.skymonkey.core.presentation.util.hasNotificationPermission
 import com.skymonkey.core.presentation.util.shouldShowLocationPermissionRationale
 import com.skymonkey.core.presentation.util.shouldShowNotificationPermissionRationale
+import com.skymonkey.run.presentation.R
+import com.skymonkey.run.presentation.active_run.components.RunDataCard
+import com.skymonkey.run.presentation.active_run.maps.TrackerMap
 import org.koin.androidx.compose.koinViewModel
 import java.io.ByteArrayOutputStream
 
@@ -60,26 +60,26 @@ fun ActiveRunScreenRoot(
 ) {
     val context = LocalContext.current
     ObserveAsEvents(flow = viewModel.events) { event ->
-        when(event) {
+        when (event) {
             is ActiveRunEvent.Error -> {
-                Toast.makeText(
-                    context,
-                    event.error.asString(context),
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        event.error.asString(context),
+                        Toast.LENGTH_LONG
+                    ).show()
             }
             is ActiveRunEvent.RunSaved -> {
                 onFinishRun()
             }
         }
-        
     }
 
     ActiveRunScreen(
         state = viewModel.state,
         onServiceToggle = onServiceToggle,
         onAction = { action ->
-            when(action) {
+            when (action) {
                 is ActiveRunAction.OnBackClick -> {
                     if (!viewModel.state.hasStartedRunning) {
                         onNavigateBack()
@@ -97,48 +97,51 @@ fun ActiveRunScreenRoot(
 private fun ActiveRunScreen(
     state: ActiveRunState,
     onServiceToggle: (isServiceRunning: Boolean) -> Unit,
-    onAction: (ActiveRunAction) -> Unit
+    onAction: (ActiveRunAction) -> Unit,
 ) {
     val context = LocalContext.current
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestMultiplePermissions()
-    ) { perms ->
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestMultiplePermissions()
+        ) { perms ->
 
-        /* This block is called after permission requests are denied or accepted by the user. */
+            // This block is called after permission requests are denied or accepted by the user.
 
-        val hasCoarseLocationPermission = perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-        val hasFineLocationPermission = perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
-        val hasNotificationPermission = if (Build.VERSION.SDK_INT >= 33) {
-            perms[Manifest.permission.POST_NOTIFICATIONS] == true
-        } else true
+            val hasCoarseLocationPermission = perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+            val hasFineLocationPermission = perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
+            val hasNotificationPermission =
+                if (Build.VERSION.SDK_INT >= 33) {
+                    perms[Manifest.permission.POST_NOTIFICATIONS] == true
+                } else {
+                    true
+                }
 
-        // check if rationale should be displayed (if permissions denied)
-        val activity = context as ComponentActivity
-        val showLocationRationale = activity.shouldShowLocationPermissionRationale()
-        val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
+            // check if rationale should be displayed (if permissions denied)
+            val activity = context as ComponentActivity
+            val showLocationRationale = activity.shouldShowLocationPermissionRationale()
+            val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
 
-        // tell our viewmodel whether to display rationale or if we have accepted permissions
-        onAction(
-            ActiveRunAction.SubmitLocationPermissionInfo(
-                acceptedLocationPermission = hasCoarseLocationPermission && hasFineLocationPermission,
-                showLocationRationale = showLocationRationale
+            // tell our viewmodel whether to display rationale or if we have accepted permissions
+            onAction(
+                ActiveRunAction.SubmitLocationPermissionInfo(
+                    acceptedLocationPermission = hasCoarseLocationPermission && hasFineLocationPermission,
+                    showLocationRationale = showLocationRationale
+                )
             )
-        )
-        onAction(
-            ActiveRunAction.SubmitNotificationPermissionInfo(
-                acceptedNotificationPermission = hasNotificationPermission,
-                showNotificationRationale = showNotificationRationale
+            onAction(
+                ActiveRunAction.SubmitNotificationPermissionInfo(
+                    acceptedNotificationPermission = hasNotificationPermission,
+                    showNotificationRationale = showNotificationRationale
+                )
             )
-        )
-    }
-
+        }
 
     LaunchedEffect(key1 = true) {
         /*
             This block is called when our composable is created/recreated.
             Deals with the edge case of user denying permissions, and exiting app before
             dealing with the rationale dialogs.
-        */
+         */
 
         // check if we should re-display rationale
         val activity = context as ComponentActivity
@@ -159,23 +162,23 @@ private fun ActiveRunScreen(
         )
 
         // if we don't have to display any rationales, do a permission check
-        if(!showLocationRationale && !showNotificationRationale) {
+        if (!showLocationRationale && !showNotificationRationale) {
             permissionLauncher.requestRunbuddyPermissions(context)
         }
     }
 
     val isServiceActive by ActiveRunService.isServiceActive.collectAsStateWithLifecycle()
     LaunchedEffect(state.shouldTrack, isServiceActive) {
-        if(context.hasLocationPermission()
-            && state.shouldTrack
-            && !isServiceActive
-            ) {
+        if (context.hasLocationPermission() &&
+            state.shouldTrack &&
+            !isServiceActive
+        ) {
             onServiceToggle(true)
         }
     }
 
     LaunchedEffect(key1 = state.isRunFinished) {
-        if(state.isRunFinished) {
+        if (state.isRunFinished) {
             onServiceToggle(false)
         }
     }
@@ -184,31 +187,40 @@ private fun ActiveRunScreen(
         withGradient = false,
         topAppBar = {
             AppMenuToolbar(
-                showBackButton = true, 
+                showBackButton = true,
                 title = stringResource(id = R.string.active_run),
                 onBackClick = {
                     onAction(ActiveRunAction.OnBackClick)
                 }
             ) {
-                
             }
         },
         floatingActionButton = {
             RunFloatingActionButton(
-                icon = if(state.shouldTrack) { StopIcon } else { StartIcon },
+                icon =
+                    if (state.shouldTrack) {
+                        StopIcon
+                    } else {
+                        StartIcon
+                    },
                 onClick = {
                     onAction(ActiveRunAction.OnToggleRunClick)
                 },
                 iconSize = 20.dp,
-                contentDescription = if (state.shouldTrack)
-                    stringResource(id = R.string.pause_run) else stringResource(id = R.string.start_run)
+                contentDescription =
+                    if (state.shouldTrack) {
+                        stringResource(id = R.string.pause_run)
+                    } else {
+                        stringResource(id = R.string.start_run)
+                    }
             )
         }
     ) { paddingValues ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
         ) {
             TrackerMap(
                 isRunFinished = state.isRunFinished,
@@ -225,26 +237,29 @@ private fun ActiveRunScreen(
                     }
                     onAction(ActiveRunAction.OnRunProcessed(stream.toByteArray()))
                 },
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .fillMaxSize()
             )
             RunDataCard(
                 elapsedTime = state.elapsedTime,
                 runData = state.runData,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .padding(paddingValues)
-                    .fillMaxWidth()
-            )
-            if(state.showLoadingChunks) {
-                Box(
-                    modifier = Modifier
+                modifier =
+                    Modifier
+                        .padding(16.dp)
+                        .padding(paddingValues)
                         .fillMaxWidth()
-                        .fillMaxHeight(.75f),
+            )
+            if (state.showLoadingChunks) {
+                Box(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(.75f),
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         LinearProgressIndicator()
                         Text(
@@ -256,7 +271,7 @@ private fun ActiveRunScreen(
         }
     }
 
-    if(!state.shouldTrack && state.hasStartedRunning) {
+    if (!state.shouldTrack && state.hasStartedRunning) {
         TwoActionDialog(
             title = stringResource(id = R.string.running_is_paused),
             onDismiss = {
@@ -286,48 +301,51 @@ private fun ActiveRunScreen(
         )
     }
 
-    if(state.showLocationRationale || state.showNotificationRationale) {
+    if (state.showLocationRationale || state.showNotificationRationale) {
         TwoActionDialog(
             title = stringResource(id = R.string.permission_required),
             onDismiss = {
-                        /* Normal dismiss not allowed for permission request dialogs */
-                        },
-            description = when {
-                state.showNotificationRationale && state.showLocationRationale ->
-                    stringResource(id = R.string.location_notification_rationale)
-                state.showLocationRationale ->
-                    stringResource(id = R.string.location_rationale)
-                else ->
-                    stringResource(id = R.string.notification_rationale)
+                // Normal dismiss not allowed for permission request dialogs
             },
-                primaryButton = {
-                    OutlinedActionButton(
-                        text = stringResource(id = R.string.ok),
-                        isLoading = false,
-                        onClick = {
-                            onAction(ActiveRunAction.DismissRationaleDialog)
-                            permissionLauncher.requestRunbuddyPermissions(context)
-                        }
-                    )
-                }
+            description =
+                when {
+                    state.showNotificationRationale && state.showLocationRationale ->
+                        stringResource(id = R.string.location_notification_rationale)
+                    state.showLocationRationale ->
+                        stringResource(id = R.string.location_rationale)
+                    else ->
+                        stringResource(id = R.string.notification_rationale)
+                },
+            primaryButton = {
+                OutlinedActionButton(
+                    text = stringResource(id = R.string.ok),
+                    isLoading = false,
+                    onClick = {
+                        onAction(ActiveRunAction.DismissRationaleDialog)
+                        permissionLauncher.requestRunbuddyPermissions(context)
+                    }
+                )
+            }
         )
     }
 }
 
-private fun ActivityResultLauncher<Array<String>>.requestRunbuddyPermissions(
-    context: Context
-) {
+private fun ActivityResultLauncher<Array<String>>.requestRunbuddyPermissions(context: Context) {
     val hasLocationPermission = context.hasLocationPermission()
     val hasNotificationPermission = context.hasNotificationPermission()
 
-    val locationPermissions = arrayOf(
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION
-    )
+    val locationPermissions =
+        arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
 
-    val notificationPermission = if(Build.VERSION.SDK_INT >= 33) {
-        arrayOf(Manifest.permission.POST_NOTIFICATIONS)
-    } else arrayOf()
+    val notificationPermission =
+        if (Build.VERSION.SDK_INT >= 33) {
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            arrayOf()
+        }
 
     when {
         !hasLocationPermission && !hasNotificationPermission -> {
@@ -345,11 +363,12 @@ private fun ActivityResultLauncher<Array<String>>.requestRunbuddyPermissions(
 @Preview
 @Composable
 private fun ActiveRunScreenPreview() {
-     RunBuddyTheme{
+    RunBuddyTheme {
         ActiveRunScreen(
-            state = ActiveRunState(
-                showLoadingChunks = true
-            ),
+            state =
+                ActiveRunState(
+                    showLoadingChunks = true
+                ),
             onServiceToggle = {},
             onAction = {}
         )

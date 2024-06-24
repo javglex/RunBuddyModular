@@ -12,5 +12,6 @@ interface WatchConnector {
     val messagingActions: Flow<MessagingAction>
 
     suspend fun sendActionToWatch(action: MessagingAction): EmptyResult<MessagingError>
+
     fun setIsTrackable(isTrackable: Boolean)
 }

@@ -5,16 +5,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.toDuration
 
 /**
  * Emits time elapsed (milliseconds) in 200ms blocks
  */
 object Timer {
-    fun timeAndEmit(): Flow<Duration> {
-        return flow {
+    fun timeAndEmit(): Flow<Duration> =
+        flow {
             var lastEmitTime = System.currentTimeMillis()
-            while(true) {
+            while (true) {
                 delay(200L)
                 val currentTime = System.currentTimeMillis()
                 val elapsedTime = currentTime - lastEmitTime
@@ -22,5 +21,4 @@ object Timer {
                 lastEmitTime = currentTime
             }
         }
-    }
 }

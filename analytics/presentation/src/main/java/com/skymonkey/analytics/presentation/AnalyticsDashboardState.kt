@@ -5,5 +5,5 @@ data class AnalyticsDashboardState(
     val totalTimeRun: String = "",
     val fastestRun: String = "",
     val avgDistance: String = "",
-    val avgPace: String = ""
+    val avgPace: String = "",
 )

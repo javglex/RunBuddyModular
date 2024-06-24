@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 fun <T> ObserveAsEvents(
     flow: Flow<T>,
     key: Any? = null,
-    onEvent: (T) -> Unit
+    onEvent: (T) -> Unit,
 ) {
     val lifeCycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(flow, lifeCycleOwner.lifecycle, key) {

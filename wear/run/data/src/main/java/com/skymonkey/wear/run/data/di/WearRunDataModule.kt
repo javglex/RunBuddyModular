@@ -9,13 +9,14 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-val wearRunDataModule = module {
-    singleOf(::HealthServicesExerciseTracker).bind<ExerciseTracker>()
-    singleOf(::WatchToPhoneConnector).bind<PhoneConnector>()
-    singleOf(::RunningTracker)
-    single{
-        // get previous injected instance of running tracker
-        // and inject elapstedTime StateFlow<Duration>
-        get<RunningTracker>().elapsedTime
+val wearRunDataModule =
+    module {
+        singleOf(::HealthServicesExerciseTracker).bind<ExerciseTracker>()
+        singleOf(::WatchToPhoneConnector).bind<PhoneConnector>()
+        singleOf(::RunningTracker)
+        single {
+            // get previous injected instance of running tracker
+            // and inject elapstedTime StateFlow<Duration>
+            get<RunningTracker>().elapsedTime
+        }
     }
-}

@@ -12,11 +12,13 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 fun Run.toRunUI(): RunUi {
-    val dateTimeInLocalTime = dateTimeUtc
-        .withZoneSameInstant(ZoneId.systemDefault())
-    val formattedDateTime = DateTimeFormatter
-        .ofPattern("MMM dd, yyyy - hh:mma")
-        .format(dateTimeInLocalTime)
+    val dateTimeInLocalTime =
+        dateTimeUtc
+            .withZoneSameInstant(ZoneId.systemDefault())
+    val formattedDateTime =
+        DateTimeFormatter
+            .ofPattern("MMM dd, yyyy - hh:mma")
+            .format(dateTimeInLocalTime)
 
     val distanceKm = distanceMeters / 1000.0
 

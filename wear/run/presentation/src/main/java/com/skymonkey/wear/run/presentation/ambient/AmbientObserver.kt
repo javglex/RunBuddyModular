@@ -17,7 +17,7 @@ import androidx.wear.ambient.AmbientLifecycleObserver
 fun AmbientObserver(
     onEnterAmbient: (AmbientLifecycleObserver.AmbientDetails) -> Unit,
     onExitAmbient: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     // does not play nice with preview components. We quickly exit before resolving anything.
     val context = LocalContext.current as? ComponentActivity ?: return
@@ -27,17 +27,18 @@ fun AmbientObserver(
     DisposableEffect is a subscription mechanism that allows for cleanup when our composable is removed.
      */
     DisposableEffect(key1 = lifecycle) {
-        val callback = object: AmbientLifecycleObserver.AmbientLifecycleCallback {
-            override fun onEnterAmbient(ambientDetails: AmbientLifecycleObserver.AmbientDetails) {
-                super.onEnterAmbient(ambientDetails)
-                onEnterAmbient(ambientDetails)
-            }
+        val callback =
+            object : AmbientLifecycleObserver.AmbientLifecycleCallback {
+                override fun onEnterAmbient(ambientDetails: AmbientLifecycleObserver.AmbientDetails) {
+                    super.onEnterAmbient(ambientDetails)
+                    onEnterAmbient(ambientDetails)
+                }
 
-            override fun onExitAmbient() {
-                super.onExitAmbient()
-                onExitAmbient()
+                override fun onExitAmbient() {
+                    super.onExitAmbient()
+                    onExitAmbient()
+                }
             }
-        }
 
         val observer = AmbientLifecycleObserver(context as ComponentActivity, callback)
         lifecycle.addObserver(observer)

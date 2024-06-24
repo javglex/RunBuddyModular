@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.runbuddy.jvm.library)
-
 }
 
 dependencies {

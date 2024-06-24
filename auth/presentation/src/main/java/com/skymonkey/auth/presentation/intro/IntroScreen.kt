@@ -1,10 +1,8 @@
 package com.skymonkey.auth.presentation.intro
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,10 +27,10 @@ import com.skymonkey.core.presentation.designsystem.components.OutlinedActionBut
 @Composable
 fun IntroScreenRoot(
     onSignUpClick: () -> Unit,
-    onSignInClick: () -> Unit
+    onSignInClick: () -> Unit,
 ) {
     IntroScreen(state = "", onAction = {
-        when(it) {
+        when (it) {
             IntroAction.OnSignInClick -> onSignInClick()
             IntroAction.OnSignUpClick -> onSignUpClick()
         }
@@ -43,22 +41,25 @@ fun IntroScreenRoot(
 fun IntroScreen(
     state: String,
     onAction: (IntroAction) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     GradientBackground {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f), // box takes up all remaining space in column
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+            // box takes up all remaining space in column
             contentAlignment = Alignment.Center
         ) {
             RunbuddyLogoVertical()
         }
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .padding(bottom = 48.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .padding(bottom = 48.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.welcome_to_runbuddy),
@@ -93,10 +94,8 @@ fun IntroScreen(
 }
 
 @Composable
-private fun RunbuddyLogoVertical(
-    modifier: Modifier = Modifier
-) {
-    Column (
+private fun RunbuddyLogoVertical(modifier: Modifier = Modifier) {
+    Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -111,7 +110,6 @@ private fun RunbuddyLogoVertical(
             fontSize = 24.sp,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onBackground
-
         )
     }
 }

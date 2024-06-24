@@ -23,21 +23,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import kotlinx.coroutines.delay
-
 
 @Composable
 fun SpeechBubble(
     texts: List<String>,
     modifier: Modifier = Modifier,
     isExpanded: Boolean = true,
-    showBubbleTriangle: Boolean = true
+    showBubbleTriangle: Boolean = true,
 ) {
     var isExpanded by remember { mutableStateOf(isExpanded) }
     var selectedIndex by remember { mutableStateOf(0) }
@@ -65,28 +64,32 @@ fun SpeechBubble(
 
     // everytime we expand our speech bubble, cycle through a new text.
     LaunchedEffect(isExpanded) {
-        if (!isExpanded) // only change text after it opens up again
+        if (!isExpanded) {
+            // only change text after it opens up again
             return@LaunchedEffect
+        }
         val maxLength = texts.size
         selectedIndex++
-        if (selectedIndex >= maxLength)
+        if (selectedIndex >= maxLength) {
             selectedIndex = 0
+        }
         text = texts[selectedIndex]
     }
 
     Box(
-        modifier = modifier
-            .graphicsLayer {
-                scaleY = animatedTextAlpha
-                alpha = animatedTextAlpha
-            }
-            .defaultMinSize(minWidth = 200.dp, minHeight = 100.dp)
-            .background(Color.Transparent),
+        modifier =
+            modifier
+                .graphicsLayer {
+                    scaleY = animatedTextAlpha
+                    alpha = animatedTextAlpha
+                }.defaultMinSize(minWidth = 200.dp, minHeight = 100.dp)
+                .background(Color.Transparent),
         contentAlignment = Alignment.Center
     ) {
         Canvas(
-            modifier = Modifier
-                .matchParentSize()
+            modifier =
+                Modifier
+                    .matchParentSize()
         ) {
             val bubbleWidth = size.width
             val bubbleHeight = size.height
@@ -102,16 +105,17 @@ fun SpeechBubble(
                 cornerRadius = CornerRadius(bubbleCornerRadius, bubbleCornerRadius)
             )
 
-            if(isExpanded && showBubbleTriangle) {
+            if (isExpanded && showBubbleTriangle) {
                 // Draw the tail of the bubble towards a quarter of the way from the left
                 val tailStartX = bubbleWidth / 6
-                val path = Path().apply {
-                    moveTo(tailStartX, bubbleHeight - tailHeight)
-                    lineTo(tailStartX - tailWidth / 3, bubbleHeight - tailHeight)
-                    lineTo(tailStartX/3, bubbleHeight)
-                    lineTo(tailStartX + tailWidth / 2, bubbleHeight - tailHeight)
-                    close()
-                }
+                val path =
+                    Path().apply {
+                        moveTo(tailStartX, bubbleHeight - tailHeight)
+                        lineTo(tailStartX - tailWidth / 3, bubbleHeight - tailHeight)
+                        lineTo(tailStartX / 3, bubbleHeight)
+                        lineTo(tailStartX + tailWidth / 2, bubbleHeight - tailHeight)
+                        close()
+                    }
                 drawPath(path, Color.White)
             }
         }
@@ -122,14 +126,14 @@ fun SpeechBubble(
             color = Color.Black,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(8.dp) // Add some padding inside the bubble
-                .offset(y = (-16).dp)
-                .graphicsLayer {
-                    alpha = animatedTextAlpha
-                }
+            modifier =
+                Modifier
+                    .padding(8.dp) // Add some padding inside the bubble
+                    .offset(y = (-16).dp)
+                    .graphicsLayer {
+                        alpha = animatedTextAlpha
+                    }
         )
-
     }
 }
 

@@ -18,5 +18,4 @@ dependencies {
     implementation(projects.run.domain)
 
     implementation(projects.core.connectivity.domain)
-
 }

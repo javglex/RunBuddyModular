@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.runbuddy.android.feature.ui)
     alias(libs.plugins.mapsplatform.secrets.plugin)

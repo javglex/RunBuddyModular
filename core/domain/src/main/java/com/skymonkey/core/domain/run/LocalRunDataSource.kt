@@ -2,8 +2,8 @@ package com.skymonkey.core.domain.run
 
 import com.skymonkey.core.domain.DataError
 import com.skymonkey.core.domain.EmptyResult
-import kotlinx.coroutines.flow.Flow
 import com.skymonkey.core.domain.Result
+import kotlinx.coroutines.flow.Flow
 
 typealias RunId = String
 

@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.wear.compose.material3.ColorScheme
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Typography
-import com.skymonkey.core.presentation.designsystem.DarkColorScheme
 import com.skymonkey.core.presentation.designsystem.Poppins
+import com.skymonkey.core.presentation.designsystem.darkScheme
 
 private fun createColorScheme(): ColorScheme {
-    val phoneTheme = DarkColorScheme
+    val phoneTheme = darkScheme
     return ColorScheme(
         primary = phoneTheme.primary,
         primaryContainer = phoneTheme.primaryContainer,
@@ -29,15 +29,14 @@ private fun createColorScheme(): ColorScheme {
         background = phoneTheme.background,
         error = phoneTheme.error,
         onError = phoneTheme.onError,
-        onBackground = phoneTheme.onBackground,
+        onBackground = phoneTheme.onBackground
     )
 }
 
-private fun createTypography(): Typography {
-    return Typography(
-        defaultFontFamily = Poppins,
+private fun createTypography(): Typography =
+    Typography(
+        defaultFontFamily = Poppins
     )
-}
 
 private val WearColors = createColorScheme()
 private val WearTypography = createTypography()

@@ -21,10 +21,10 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class RunbuddyApplication: Application() {
-
+class RunbuddyApplication : Application() {
     // supervisor job means each coroutine we launch in this scope, will fail independently.
     val applicationScope = CoroutineScope(SupervisorJob())
+
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
@@ -33,7 +33,7 @@ class RunbuddyApplication: Application() {
 
         startKoin {
             androidLogger() // log koin specific code
-            androidContext(this@RunbuddyApplication) //let koin know about our application context
+            androidContext(this@RunbuddyApplication) // let koin know about our application context
             workManagerFactory()
             modules( // specify our koin modules
                 authDataModule,

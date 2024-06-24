@@ -7,14 +7,15 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val runPresentationModule = module {
-    singleOf(::RunningTracker)
-    single {
-        // get previous injected instance of running tracker
-        // and inject elapstedTime StateFlow<Duration>
-        get<RunningTracker>().elapsedTime
-    }
+val runPresentationModule =
+    module {
+        singleOf(::RunningTracker)
+        single {
+            // get previous injected instance of running tracker
+            // and inject elapstedTime StateFlow<Duration>
+            get<RunningTracker>().elapsedTime
+        }
 
-    viewModelOf(::RunOverviewViewModel)
-    viewModelOf(::ActiveRunViewModel)
-}
+        viewModelOf(::RunOverviewViewModel)
+        viewModelOf(::ActiveRunViewModel)
+    }

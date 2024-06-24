@@ -14,10 +14,10 @@ import com.skymonkey.core.database.entity.RunPendingSyncEntity
         RunEntity::class,
         RunPendingSyncEntity::class,
         DeletedRunPendingSyncEntity::class
-               ],
+    ],
     version = 1
 )
-abstract class RunDatabase: RoomDatabase() {
+abstract class RunDatabase : RoomDatabase() {
     abstract val runDao: RunDao
     abstract val runPendingSyncDao: RunPendingSyncDao
     abstract val analyticsDao: AnalyticsDao

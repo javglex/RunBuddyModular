@@ -14,30 +14,33 @@ import com.skymonkey.core.domain.location.LocationTimestamp
 @Composable
 fun RunbuddyPolylines(
     locations: List<List<LocationTimestamp>>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-   val polylines = remember(locations) {
-       locations.map {
-           it.zipWithNext { locationTimestampA, locationTimestampB ->
-               PolyLineUi(
-                   locationA = locationTimestampA.locationWithAltitude.location,
-                   locationB = locationTimestampB.locationWithAltitude.location,
-                   color = PolylineColorCalculator.locationsToColor(
-                       locationA = locationTimestampA,
-                       locationB = locationTimestampB
-                   )
-               )
-           }
-       }
-   }
+    val polylines =
+        remember(locations) {
+            locations.map {
+                it.zipWithNext { locationTimestampA, locationTimestampB ->
+                    PolyLineUi(
+                        locationA = locationTimestampA.locationWithAltitude.location,
+                        locationB = locationTimestampB.locationWithAltitude.location,
+                        color =
+                            PolylineColorCalculator.locationsToColor(
+                                locationA = locationTimestampA,
+                                locationB = locationTimestampB
+                            )
+                    )
+                }
+            }
+        }
 
     polylines.forEach { polyline ->
         polyline.forEach { polyUi ->
             Polyline(
-                points = listOf(
-                    LatLng(polyUi.locationA.latitude, polyUi.locationA.longitude),
-                    LatLng(polyUi.locationB.latitude, polyUi.locationB.longitude)
-                ),
+                points =
+                    listOf(
+                        LatLng(polyUi.locationA.latitude, polyUi.locationA.longitude),
+                        LatLng(polyUi.locationB.latitude, polyUi.locationB.longitude)
+                    ),
                 color = polyUi.color,
                 jointType = JointType.BEVEL // defines what joint looks like when going around a corner
             )

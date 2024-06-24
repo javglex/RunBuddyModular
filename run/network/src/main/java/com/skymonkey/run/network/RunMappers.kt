@@ -6,8 +6,8 @@ import java.time.Instant
 import java.time.ZoneId
 import kotlin.time.Duration.Companion.milliseconds
 
-fun RunDto.toRun(): Run {
-    return Run(
+fun RunDto.toRun(): Run =
+    Run(
         id = id,
         duration = durationMillis.milliseconds,
         dateTimeUtc = Instant.parse(dateTimeUtc).atZone(ZoneId.of("UTC")),
@@ -19,14 +19,13 @@ fun RunDto.toRun(): Run {
         avgHeartRate = avgHeartRate,
         maxHeartRate = maxHeartRate
     )
-}
 
 /**
  * We apply the not-null assertion operator on the id because we MUST have an id when creating our DTO.
  * If we don't have our ID, we want an exception.
  */
-fun Run.toCreateRunRequest(): CreateRunRequest {
-    return CreateRunRequest(
+fun Run.toCreateRunRequest(): CreateRunRequest =
+    CreateRunRequest(
         id = id!!,
         epochMillis = dateTimeUtc.toEpochSecond() * 1000,
         durationMillis = duration.inWholeMilliseconds,
@@ -39,4 +38,3 @@ fun Run.toCreateRunRequest(): CreateRunRequest {
         avgHeartRate = avgHeartRate,
         maxHeartRate = maxHeartRate
     )
-}

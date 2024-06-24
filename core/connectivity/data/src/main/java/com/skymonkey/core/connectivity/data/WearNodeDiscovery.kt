@@ -14,24 +14,28 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class WearNodeDiscovery(
-    context: Context
-): NodeDiscovery {
-
+    context: Context,
+) : NodeDiscovery {
     private val capabilityClient = Wearable.getCapabilityClient(context)
+
     override fun observeConnectedDevices(localDeviceType: DeviceType): Flow<Set<DeviceNode>> {
         return callbackFlow {
-            val remoteCapability = when(localDeviceType) {
-                DeviceType.PHONE -> "runbuddy_wear_capability"
-                DeviceType.WATCH -> "runbuddy_phone_capability"
-            }
+            val remoteCapability =
+                when (localDeviceType) {
+                    DeviceType.PHONE -> "runbuddy_wear_capability"
+                    DeviceType.WATCH -> "runbuddy_phone_capability"
+                }
 
             try {
-                val capability = capabilityClient
-                    .getCapability(remoteCapability, CapabilityClient.FILTER_REACHABLE)
-                    .await()
-                val connectedDevices = capability.nodes.map {
-                    it.toDeviceNode()
-                }.toSet()
+                val capability =
+                    capabilityClient
+                        .getCapability(remoteCapability, CapabilityClient.FILTER_REACHABLE)
+                        .await()
+                val connectedDevices =
+                    capability.nodes
+                        .map {
+                            it.toDeviceNode()
+                        }.toSet()
 
                 send(connectedDevices)
             } catch (e: ApiException) {
@@ -41,9 +45,10 @@ class WearNodeDiscovery(
 
             val listener: (CapabilityInfo) -> Unit = { capabilityInfo ->
                 trySend(
-                    capabilityInfo.nodes.map { node ->
-                        node.toDeviceNode()
-                    }.toSet()
+                    capabilityInfo.nodes
+                        .map { node ->
+                            node.toDeviceNode()
+                        }.toSet()
                 )
             }
 

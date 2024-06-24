@@ -5,5 +5,5 @@ package com.skymonkey.run.presentation.run_overview.model
  */
 data class RunCellData(
     val name: String,
-    val value: String
+    val value: String,
 )

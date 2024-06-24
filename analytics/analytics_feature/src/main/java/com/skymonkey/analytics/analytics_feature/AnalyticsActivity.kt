@@ -16,8 +16,7 @@ import org.koin.core.context.loadKoinModules
 /**
  * This activity will be launched by reflection
  */
-class AnalyticsActivity: ComponentActivity() {
-
+class AnalyticsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,7 +34,7 @@ class AnalyticsActivity: ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = "analytics_dashboard",
+                    startDestination = "analytics_dashboard"
                 ) {
                     composable("analytics_dashboard") {
                         AnalyticsDashboardScreenRoot(

@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 class RegisterViewModel(
     private val userDataValidator: UserDataValidator,
-    private val repository: AuthRepository
-): ViewModel() {
+    private val repository: AuthRepository,
+) : ViewModel() {
     var state by mutableStateOf(RegisterState())
         private set
 
@@ -34,33 +34,38 @@ class RegisterViewModel(
     init {
         // initiate flows which listen for text changes
         // as our email/password text changes, validate them
-        state.email.textAsFlow()
+        state.email
+            .textAsFlow()
             .onEach { email ->
                 val isEmailValid = userDataValidator.isValidEmail(email.toString())
                 val isPasswordValid = state.passwordValidationState.isValidPassword
-                state = state.copy(
-                    isEmailValid = isEmailValid,
-                    canRegister = isEmailValid
-                            && isPasswordValid
-                            && !state.isRegistering
-                )
+                state =
+                    state.copy(
+                        isEmailValid = isEmailValid,
+                        canRegister =
+                            isEmailValid &&
+                                isPasswordValid &&
+                                !state.isRegistering
+                    )
             }.launchIn(viewModelScope)
 
-        state.password.textAsFlow()
+        state.password
+            .textAsFlow()
             .onEach { password ->
                 val passwordValidationState = userDataValidator.validatePassword(password.toString())
-                state = state.copy(
-                    passwordValidationState = passwordValidationState,
-                    canRegister =
-                    passwordValidationState.isValidPassword
-                            && state.isEmailValid
-                            && !state.isRegistering
-                )
+                state =
+                    state.copy(
+                        passwordValidationState = passwordValidationState,
+                        canRegister =
+                            passwordValidationState.isValidPassword &&
+                                state.isEmailValid &&
+                                !state.isRegistering
+                    )
             }.launchIn(viewModelScope)
     }
 
     fun onAction(action: RegisterAction) {
-        when(action) {
+        when (action) {
             RegisterAction.OnLoginClick -> {
                 // TODO()
             }
@@ -68,9 +73,10 @@ class RegisterViewModel(
                 register()
             }
             RegisterAction.OnTogglePasswordVisibility -> {
-                state = state.copy(
-                    isPasswordVisible = !state.isPasswordVisible
-                )
+                state =
+                    state.copy(
+                        isPasswordVisible = !state.isPasswordVisible
+                    )
             }
         }
     }
@@ -78,20 +84,27 @@ class RegisterViewModel(
     private fun register() {
         viewModelScope.launch {
             state = state.copy(isRegistering = true)
-            val result = repository.register(
-                email = state.email.text.toString().trim(),
-                password = state.password.text.toString()
-            )
+            val result =
+                repository.register(
+                    email =
+                        state.email.text
+                            .toString()
+                            .trim(),
+                    password = state.password.text.toString()
+                )
             state = state.copy(isRegistering = false)
 
-            when(result) {
+            when (result) {
                 is Result.Error -> {
-                    if(result.error == DataError.Network.CONFLICT) {
-                        eventChannel.send(RegisterEvent.Error(
-                            UiText.StringResource(R.string.error_email_exists)
-                        ))
-                    } else
+                    if (result.error == DataError.Network.CONFLICT) {
+                        eventChannel.send(
+                            RegisterEvent.Error(
+                                UiText.StringResource(R.string.error_email_exists)
+                            )
+                        )
+                    } else {
                         eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
+                    }
                 }
                 is Result.Success -> {
                     eventChannel.send(RegisterEvent.RegistrationSuccess)

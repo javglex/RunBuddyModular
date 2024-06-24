@@ -7,7 +7,7 @@ import kotlin.math.sqrt
 
 data class Location(
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
 ) {
     /**
      * calculates distance between two locations (this & parameter)
@@ -17,7 +17,8 @@ data class Location(
     fun distanceTo(other: Location): Float {
         val latDistance = Math.toRadians(other.latitude - latitude)
         val longDistance = Math.toRadians(other.longitude - longitude)
-        val a = sin(latDistance / 2) * sin(latDistance / 2) +
+        val a =
+            sin(latDistance / 2) * sin(latDistance / 2) +
                 cos(Math.toRadians(latitude)) * cos(Math.toRadians(other.latitude)) *
                 sin(longDistance / 2) * sin(longDistance / 2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))

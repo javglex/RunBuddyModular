@@ -20,13 +20,14 @@ import com.skymonkey.analytics.presentation.R
 fun AnalyticsCard(
     title: String,
     value: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(15.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp),
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(15.dp))
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Text(

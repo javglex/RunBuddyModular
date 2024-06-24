@@ -11,15 +11,20 @@ import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.plugins.plugin
 
 class LogoutRepositoryImpl(
-    private val client: HttpClient
-): LogoutRepository {
+    private val client: HttpClient,
+) : LogoutRepository {
     override suspend fun logout(): EmptyResult<DataError.Network> {
-        val result = client.get<Unit>(
-            route = "/logout"
-        ).asEmptyDataResult()
+        val result =
+            client
+                .get<Unit>(
+                    route = "/logout"
+                ).asEmptyDataResult()
 
         // clear auth tokens
-        client.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>()
+        client
+            .plugin(Auth)
+            .providers
+            .filterIsInstance<BearerAuthProvider>()
             .firstOrNull()
             ?.clearToken()
 

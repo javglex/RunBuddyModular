@@ -20,7 +20,7 @@ import kotlin.time.Duration
 class RunningTracker(
     private val watchToPhoneConnector: PhoneConnector,
     private val exerciseTracker: ExerciseTracker,
-    applicationScope: CoroutineScope
+    applicationScope: CoroutineScope,
 ) {
     private val _heartRate = MutableStateFlow(0)
     val heartRate = _heartRate.asStateFlow()
@@ -34,31 +34,33 @@ class RunningTracker(
     private val _isTrackable = MutableStateFlow(false)
     val isTrackable = _isTrackable.asStateFlow()
 
-    val distanceMeters = watchToPhoneConnector
-        .messagingActions
-        .filterIsInstance<MessagingAction.DistanceUpdate>()
-        .map { it.distanceMeters }
-        .stateIn(
-            scope = applicationScope, // only use application scope if using this class in a foreground service.
-            started = SharingStarted.Lazily,
-            initialValue = 0
-        )
+    val distanceMeters =
+        watchToPhoneConnector
+            .messagingActions
+            .filterIsInstance<MessagingAction.DistanceUpdate>()
+            .map { it.distanceMeters }
+            .stateIn(
+                scope = applicationScope, // only use application scope if using this class in a foreground service.
+                started = SharingStarted.Lazily,
+                initialValue = 0
+            )
 
-    val elapsedTime = watchToPhoneConnector
-        .messagingActions
-        .filterIsInstance<MessagingAction.TimeUpdate>()
-        .map { it.elapsedDuration }
-        .stateIn(
-            scope = applicationScope, // only use application scope if using this class in a foreground service.
-            started = SharingStarted.Lazily,
-            initialValue = Duration.ZERO
-        )
+    val elapsedTime =
+        watchToPhoneConnector
+            .messagingActions
+            .filterIsInstance<MessagingAction.TimeUpdate>()
+            .map { it.elapsedDuration }
+            .stateIn(
+                scope = applicationScope, // only use application scope if using this class in a foreground service.
+                started = SharingStarted.Lazily,
+                initialValue = Duration.ZERO
+            )
 
     init {
         watchToPhoneConnector
             .messagingActions
             .onEach { action ->
-                when(action) {
+                when (action) {
                     MessagingAction.Trackable -> {
                         _isTrackable.value = true
                     }
@@ -67,22 +69,22 @@ class RunningTracker(
                     }
                     else -> Unit
                 }
-            }
-            .launchIn(applicationScope) // only use application scope if using this class in a foreground service.
+            }.launchIn(applicationScope) // only use application scope if using this class in a foreground service.
 
         watchToPhoneConnector
             .connectedNode
             .filterNotNull()
             .onEach {
                 exerciseTracker.prepareExercise()
-            }
-            .launchIn(applicationScope) // only use application scope if using this class in a foreground service.
+            }.launchIn(applicationScope) // only use application scope if using this class in a foreground service.
 
         isTracking
             .flatMapLatest { isTracking ->
                 if (isTracking) {
                     exerciseTracker.metrics
-                } else flowOf()
+                } else {
+                    flowOf()
+                }
             }.onEach { metrics ->
                 metrics.heartRate?.let { hr ->
                     watchToPhoneConnector.sendActionToPhone(MessagingAction.HeartRateUpdate(hr))
@@ -92,8 +94,7 @@ class RunningTracker(
                     watchToPhoneConnector.sendActionToPhone(MessagingAction.CaloriesUpdate(calories))
                     _calories.value = calories
                 }
-            }
-            .launchIn(applicationScope)
+            }.launchIn(applicationScope)
     }
 
     fun setIsTracking(isTracking: Boolean) {

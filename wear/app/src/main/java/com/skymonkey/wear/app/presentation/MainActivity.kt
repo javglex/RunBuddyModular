@@ -10,19 +10,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.wear.compose.material3.Button
-import androidx.wear.compose.material3.MaterialTheme
-import androidx.wear.compose.material3.Text
-import androidx.wear.compose.material3.TimeText
-import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.designsystem_wear.RunbuddyWearTheme
 import com.skymonkey.core.presentation.service.ActiveRunService
 import com.skymonkey.wear.app.R
@@ -40,10 +27,11 @@ class MainActivity : ComponentActivity() {
             RunbuddyWearTheme {
                 TrackerScreenRoot(
                     onServiceToggle = { shouldStartRunning ->
-                        if(shouldStartRunning) {
+                        if (shouldStartRunning) {
                             startService(
                                 ActiveRunService.createStartIntent(
-                                    applicationContext, MainActivity::class.java
+                                    applicationContext,
+                                    MainActivity::class.java
                                 )
                             )
                         } else {
@@ -51,7 +39,6 @@ class MainActivity : ComponentActivity() {
                                 ActiveRunService.createStopIntent(applicationContext)
                             )
                         }
-
                     }
                 )
             }

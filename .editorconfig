@@ -1,0 +1,16 @@
+root = true
+
+[*]
+indent_size = 4
+indent_style = space
+max_line_length = 140
+
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{kt,kts}]
+ij_kotlin_packages_to_use_import_on_demand = unset
+ij_kotlin_allow_trailing_comma_on_call_site = false
+ij_kotlin_allow_trailing_comma = false # Only used for declaration site

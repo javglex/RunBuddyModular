@@ -35,13 +35,14 @@ import kotlin.time.Duration.Companion.minutes
 fun RunDataCard(
     elapsedTime: Duration,
     runData: RunData,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(15.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(16.dp),
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(15.dp))
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RunDataItem(
@@ -51,30 +52,35 @@ fun RunDataCard(
         )
         Spacer(modifier = Modifier.height(24.dp))
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             RunDataItem(
                 title = stringResource(id = R.string.distance),
                 value = (runData.distanceMeters / 1000.0).toFormattedKm(),
-                modifier = Modifier
-                    .defaultMinSize(75.dp)
+                modifier =
+                    Modifier
+                        .defaultMinSize(75.dp)
             )
             RunDataItem(
                 title = stringResource(id = R.string.heart_rate),
                 value = runData.heartRates.lastOrNull().toFormattedHeartRate(),
-                modifier = Modifier
-                    .defaultMinSize(75.dp)
+                modifier =
+                    Modifier
+                        .defaultMinSize(75.dp)
             )
             RunDataItem(
                 title = stringResource(id = R.string.pace),
-                value = elapsedTime.toFormattedPace(
-                    distanceKm = (runData.distanceMeters / 1000.0)
-                ),
-                modifier = Modifier
-                    .defaultMinSize(75.dp)
+                value =
+                    elapsedTime.toFormattedPace(
+                        distanceKm = (runData.distanceMeters / 1000.0)
+                    ),
+                modifier =
+                    Modifier
+                        .defaultMinSize(75.dp)
             )
         }
     }
@@ -85,7 +91,7 @@ private fun RunDataItem(
     title: String,
     value: String,
     modifier: Modifier = Modifier,
-    valuesFontSize: TextUnit = 16.sp
+    valuesFontSize: TextUnit = 16.sp,
 ) {
     Column(
         modifier = modifier,
@@ -110,11 +116,12 @@ private fun RunDataCardPreview() {
     RunBuddyTheme {
         RunDataCard(
             elapsedTime = 10.minutes,
-            runData = RunData(
-                distanceMeters = 12,
-                pace = 3.minutes,
-                heartRates = listOf(90)
-            )
+            runData =
+                RunData(
+                    distanceMeters = 12,
+                    pace = 3.minutes,
+                    heartRates = listOf(90)
+                )
         )
     }
 }

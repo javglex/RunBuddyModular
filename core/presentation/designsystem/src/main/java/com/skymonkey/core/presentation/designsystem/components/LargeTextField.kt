@@ -53,7 +53,7 @@ fun LargeTextField(
     modifier: Modifier = Modifier,
     error: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
-    additionalInfo: String? = null
+    additionalInfo: String? = null,
 ) {
     var isFocused by remember {
         mutableStateOf(false)
@@ -62,8 +62,9 @@ fun LargeTextField(
         modifier = modifier
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -76,13 +77,13 @@ fun LargeTextField(
             if (error != null) {
                 Text(
                     text = error,
-                    color =  MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.error,
                     fontSize = 12.sp
                 )
             } else if (additionalInfo != null) {
                 Text(
                     text = additionalInfo,
-                    color =  MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )
             }
@@ -90,45 +91,49 @@ fun LargeTextField(
         Spacer(modifier = Modifier.height(4.dp))
         BasicTextField2(
             state = state,
-            textStyle = LocalTextStyle.current.copy( // use text style used in our current UI hierarchy
-                color = MaterialTheme.colorScheme.onBackground
-            ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType
-            ),
+            textStyle =
+                LocalTextStyle.current.copy( // use text style used in our current UI hierarchy
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+            keyboardOptions =
+                KeyboardOptions(
+                    keyboardType = keyboardType
+                ),
             lineLimits = TextFieldLineLimits.SingleLine,
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(
-                    if (isFocused) {
-                        MaterialTheme.colorScheme.primary.copy(
-                            alpha = 0.5f
-                        )
-                    } else {
-                        MaterialTheme.colorScheme.surface
-                    }
-                )
-                .border(
-                    width = 1.dp,
-                    color = if(isFocused) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        Color.Transparent
+            modifier =
+                Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(
+                        if (isFocused) {
+                            MaterialTheme.colorScheme.primary.copy(
+                                alpha = 0.5f
+                            )
+                        } else {
+                            MaterialTheme.colorScheme.surface
+                        }
+                    ).border(
+                        width = 1.dp,
+                        color =
+                            if (isFocused) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                Color.Transparent
+                            },
+                        shape = RoundedCornerShape(16.dp)
+                    ).padding(12.dp)
+                    .onFocusChanged {
+                        isFocused = it.isFocused
                     },
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(12.dp)
-                .onFocusChanged {
-                    isFocused = it.isFocused
-                },
-            decorator = { innerBox -> //composable lambda where we can put our text. the textfield container.
+            decorator = { innerBox ->
+                // composable lambda where we can put our text. the textfield container.
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if(startIcon != null) {
+                    if (startIcon != null) {
                         Icon(
                             imageVector = startIcon,
                             contentDescription = null,
@@ -137,28 +142,31 @@ fun LargeTextField(
                         Spacer(modifier = Modifier.width(16.dp))
                     }
                     Box(
-                        modifier = Modifier
-                            .weight(1f)
+                        modifier =
+                            Modifier
+                                .weight(1f)
                     ) {
                         if (state.text.isEmpty() && !isFocused) {
                             Text(
                                 text = hint,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = 0.4f
-                                ),
+                                color =
+                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                        alpha = 0.4f
+                                    ),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
                         innerBox()
                     }
-                    if(endIcon != null) {
+                    if (endIcon != null) {
                         Spacer(modifier = Modifier.width(16.dp))
                         Icon(
                             imageVector = endIcon,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier
-                                .padding(end = 8.dp)
+                            modifier =
+                                Modifier
+                                    .padding(end = 8.dp)
                         )
                     }
                 }
@@ -179,8 +187,9 @@ private fun LargeTextFieldPreview() {
             hint = "example@hint.com",
             title = "Email",
             additionalInfo = "Must be a valid email",
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .fillMaxWidth()
         )
     }
 }

@@ -25,30 +25,33 @@ fun RunFloatingActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    iconSize: Dp = 25.dp
+    iconSize: Dp = 25.dp,
 ) {
     Box(
-        modifier = Modifier
-            .size(75.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primary.copy(
-                alpha = 0.3f
-            ))
-            .clickable(onClick = onClick),
+        modifier =
+            modifier
+                .size(75.dp)
+                .clip(CircleShape)
+                .background(
+                    MaterialTheme.colorScheme.primary.copy(
+                        alpha = 0.3f
+                    )
+                ).clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
-                .padding(12.dp),
+            modifier =
+                Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primaryContainer)
+                    .padding(12.dp),
             contentAlignment = Alignment.Center
         ) {
-            Icon (
+            Icon(
                 imageVector = icon,
                 contentDescription = contentDescription,
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(iconSize)
             )
         }

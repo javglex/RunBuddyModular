@@ -28,6 +28,10 @@ val CrossIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.cross)
 
+val DeleteIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.delete_icon)
+
 val EmailIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.email)

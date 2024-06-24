@@ -12,5 +12,5 @@ import androidx.room.PrimaryKey
 data class DeletedRunPendingSyncEntity(
     @PrimaryKey(autoGenerate = false)
     val runId: String,
-    val userId: String
+    val userId: String,
 )

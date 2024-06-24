@@ -56,30 +56,32 @@ fun TrackerMap(
     currentLocation: Location?,
     locations: List<List<LocationTimestamp>>,
     onSnapshot: (Bitmap) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val mapStyle = remember {
-        MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
-    }
+    val mapStyle =
+        remember {
+            MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
+        }
     val cameraPositionState = rememberCameraPositionState() // zoom level, position etc.
     val markerState = rememberMarkerState() // marks current location
 
     val markerPositionLat by animateFloatAsState(
-        targetValue = currentLocation?.latitude?.toFloat()?:0f,
+        targetValue = currentLocation?.latitude?.toFloat() ?: 0f,
         animationSpec = tween(durationMillis = 500),
-        label = "" //TODO experiment with this value
+        label = "" // TODO experiment with this value
     )
 
     val markerPositionLong by animateFloatAsState(
-        targetValue = currentLocation?.longitude?.toFloat()?:0f,
+        targetValue = currentLocation?.longitude?.toFloat() ?: 0f,
         animationSpec = tween(durationMillis = 500),
-        label = "" //TODO experiment with this value
+        label = "" // TODO experiment with this value
     )
 
-    val markerPosition = remember(markerPositionLat, markerPositionLong) {
-        LatLng(markerPositionLat.toDouble(), markerPositionLong.toDouble())
-    }
+    val markerPosition =
+        remember(markerPositionLat, markerPositionLong) {
+            LatLng(markerPositionLat.toDouble(), markerPositionLong.toDouble())
+        }
 
     LaunchedEffect(key1 = markerPosition, key2 = isRunFinished) {
         if (!isRunFinished) {
@@ -100,44 +102,52 @@ fun TrackerMap(
     var triggerCapture by remember {
         mutableStateOf(false)
     }
-    var createSnapshotJob: Job? = remember { //to make sure there is only one snapshot taken at a time
-        null
-    }
+    var createSnapshotJob: Job? =
+        remember {
+            // to make sure there is only one snapshot taken at a time
+            null
+        }
 
     GoogleMap(
         cameraPositionState = cameraPositionState,
-        properties = MapProperties(
-            mapStyleOptions = mapStyle
-        ),
-        uiSettings = MapUiSettings(
-            zoomControlsEnabled = false
-        ),
-        modifier = if(isRunFinished) { // get maps ready for screenshot
-            modifier
-                .width(300.dp)
-                .aspectRatio(16 / 9f)
-                .alpha(0f)
-                .onSizeChanged {
-                    if (it.width >= 300) {
-                        triggerCapture = true
+        properties =
+            MapProperties(
+                mapStyleOptions = mapStyle
+            ),
+        uiSettings =
+            MapUiSettings(
+                zoomControlsEnabled = false
+            ),
+        modifier =
+            if (isRunFinished) { // get maps ready for screenshot
+                modifier
+                    .width(300.dp)
+                    .aspectRatio(16 / 9f)
+                    .alpha(0f)
+                    .onSizeChanged {
+                        if (it.width >= 300) {
+                            triggerCapture = true
+                        }
                     }
-                }
-        } else modifier
+            } else {
+                modifier
+            }
     ) {
-
         RunbuddyPolylines(locations = locations)
 
         // like launch effect but map specific. taken when our run is finished
         MapEffect(locations, isRunFinished, triggerCapture, createSnapshotJob) { map ->
-            if(isRunFinished && triggerCapture && createSnapshotJob == null) {
+            if (isRunFinished && triggerCapture && createSnapshotJob == null) {
                 triggerCapture = false
                 val boundsBuilder = LatLngBounds.builder() // google maps will figure out how to arrange the zoom based on our locations
                 locations.flatten().forEach { locationTimeStamp ->
                     boundsBuilder
-                        .include(LatLng(
-                            locationTimeStamp.locationWithAltitude.location.latitude,
-                            locationTimeStamp.locationWithAltitude.location.longitude
-                        ))
+                        .include(
+                            LatLng(
+                                locationTimeStamp.locationWithAltitude.location.latitude,
+                                locationTimeStamp.locationWithAltitude.location.longitude
+                            )
+                        )
                 }
                 // map and zoom into our locations
                 map.moveCamera(
@@ -150,35 +160,37 @@ fun TrackerMap(
                 // listen to when our camera stops moving
                 map.setOnCameraIdleListener {
                     createSnapshotJob?.cancel()
-                    createSnapshotJob = GlobalScope.launch { // TODO: supposedly to outlive composable and still get our screenshot. review if necessary to keep or substitute.
-                        delay(500L) // add a bit of delay to make sure map is sharp and focused, before taking screenshot
-                        map.awaitSnapshot()?.let(onSnapshot)
-                    }
+                    createSnapshotJob =
+                        GlobalScope.launch {
+                            // TODO: supposedly to outlive composable and still get our screenshot. review if necessary to keep or substitute.
+                            delay(500L) // add a bit of delay to make sure map is sharp and focused, before taking screenshot
+                            map.awaitSnapshot()?.let(onSnapshot)
+                        }
                 }
             }
         }
-        
+
         if (!isRunFinished && currentLocation != null) {
             MarkerComposable(
                 currentLocation,
                 state = markerState
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(35.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary),
+                    modifier =
+                        Modifier
+                            .size(35.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.tertiary),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = RunIcon,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                        tint = MaterialTheme.colorScheme.onTertiary,
                         modifier = Modifier.size(20.dp)
                     )
                 }
             }
         }
     }
-
 }

@@ -15,11 +15,12 @@ import org.koin.dsl.module
  * More simple than dagger2
  */
 
-val authDataModule = module {
-    single<PatternValidator> {
-        EmailPatternValidator
+val authDataModule =
+    module {
+        single<PatternValidator> {
+            EmailPatternValidator
+        }
+        singleOf(::UserDataValidator)
+        // provides AuthRepositoryImpl, for instances of AuthRepository interface
+        singleOf(::AuthRepositoryImpl).bind<AuthRepository>()
     }
-    singleOf(::UserDataValidator)
-    // provides AuthRepositoryImpl, for instances of AuthRepository interface
-    singleOf(::AuthRepositoryImpl).bind<AuthRepository>()
-}

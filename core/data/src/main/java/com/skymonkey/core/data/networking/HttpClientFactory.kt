@@ -1,8 +1,8 @@
 package com.skymonkey.core.data.networking
 
 import com.skymonkey.core.data.BuildConfig
-import com.skymonkey.core.domain.auth.AuthInfo
 import com.skymonkey.core.domain.Result
+import com.skymonkey.core.domain.auth.AuthInfo
 import com.skymonkey.core.domain.auth.SessionStorage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -22,30 +22,37 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 
 class HttpClientFactory(
-    val sessionStorage: SessionStorage
+    val sessionStorage: SessionStorage,
 ) {
-    fun build(): HttpClient {
-        return HttpClient(CIO) { //CIO is an engine similar to okhttp
-            install(ContentNegotiation) { // parsing data and converting json
+    fun build(): HttpClient =
+        HttpClient(CIO) {
+            // CIO is an engine similar to okhttp
+            install(ContentNegotiation) {
+                // parsing data and converting json
                 json(
-                    json = Json {
-                        ignoreUnknownKeys = true // ignore unknown json fields. prevents crashes
-                    }
+                    json =
+                        Json {
+                            ignoreUnknownKeys = true // ignore unknown json fields. prevents crashes
+                        }
                 )
             }
-            install(Logging) { // for debugging
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        Timber.d(message)
+            install(Logging) {
+                // for debugging
+                logger =
+                    object : Logger {
+                        override fun log(message: String) {
+                            Timber.d(message)
+                        }
                     }
-                }
                 level = LogLevel.ALL
             }
-            defaultRequest { // how standard request looks like. default content type
+            defaultRequest {
+                // how standard request looks like. default content type
                 contentType(ContentType.Application.Json)
                 header("x-api-key", BuildConfig.API_KEY)
             }
-            install(Auth) { // setup token refresh mechanisms
+            install(Auth) {
+                // setup token refresh mechanisms
                 bearer {
                     loadTokens {
                         val info = sessionStorage.get()
@@ -54,25 +61,29 @@ class HttpClientFactory(
                             refreshToken = info?.refreshToken ?: ""
                         )
                     }
-                    refreshTokens { // invoked if our status is 401
+                    refreshTokens {
+                        // invoked if our status is 401
                         val info = sessionStorage.get()
                         // fetch a new access token, using refresh token
-                        val response = client.post<AccessTokenRequest, AccessTokenResponse>(
-                            route = "/accessToken",
-                            body = AccessTokenRequest(
-                                refreshToken = info?.refreshToken ?: "",
-                                userId = info?.userId ?: ""
+                        val response =
+                            client.post<AccessTokenRequest, AccessTokenResponse>(
+                                route = "/accessToken",
+                                body =
+                                    AccessTokenRequest(
+                                        refreshToken = info?.refreshToken ?: "",
+                                        userId = info?.userId ?: ""
+                                    )
                             )
-                        )
 
                         // if successful, save new access token to local storage and return
                         // updated bearer token
                         if (response is Result.Success) {
-                            val newAuthInfo = AuthInfo(
-                                accessToken = response.data.accessToken,
-                                refreshToken = info?.refreshToken ?: "",
-                                userId = info?.userId ?: ""
-                            )
+                            val newAuthInfo =
+                                AuthInfo(
+                                    accessToken = response.data.accessToken,
+                                    refreshToken = info?.refreshToken ?: "",
+                                    userId = info?.userId ?: ""
+                                )
 
                             sessionStorage.set(newAuthInfo)
 
@@ -90,5 +101,4 @@ class HttpClientFactory(
                 }
             }
         }
-    }
 }

@@ -18,11 +18,12 @@ import org.koin.dsl.module
  * More simple than dagger2
  */
 
-val runDataModule = module {
-    workerOf(::CreateRunWorker)
-    workerOf(::FetchRunsWorker)
-    workerOf(::DeleteRunWorker)
+val runDataModule =
+    module {
+        workerOf(::CreateRunWorker)
+        workerOf(::FetchRunsWorker)
+        workerOf(::DeleteRunWorker)
 
-    singleOf(::SyncRunWorkerScheduler).bind<SyncRunScheduler>()
-    singleOf(::PhoneToWatchConnector).bind<WatchConnector>()
-}
+        singleOf(::SyncRunWorkerScheduler).bind<SyncRunScheduler>()
+        singleOf(::PhoneToWatchConnector).bind<WatchConnector>()
+    }

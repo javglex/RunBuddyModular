@@ -14,7 +14,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlin.math.log
 import kotlin.time.Duration.Companion.minutes
 
 class RunOverviewViewModel(
@@ -22,9 +21,8 @@ class RunOverviewViewModel(
     private val logoutRepository: LogoutRepository,
     private val syncRunScheduler: SyncRunScheduler,
     private val sessionStorage: SessionStorage,
-    private val applicationScope: CoroutineScope
-): ViewModel() {
-
+    private val applicationScope: CoroutineScope,
+) : ViewModel() {
     var state by mutableStateOf(RunOverviewState())
         private set
 
@@ -37,10 +35,12 @@ class RunOverviewViewModel(
         }
 
         // fetch runs from db
-        runRepository.getRuns().onEach { runs ->
-            val runsUi = runs.map { it.toRunUI() }
-            state = state.copy(runs = runsUi)
-        }.launchIn(viewModelScope)
+        runRepository
+            .getRuns()
+            .onEach { runs ->
+                val runsUi = runs.map { it.toRunUI() }
+                state = state.copy(runs = runsUi)
+            }.launchIn(viewModelScope)
 
         // fetch runs from network, which will trigger db flow
         viewModelScope.launch {
@@ -49,8 +49,8 @@ class RunOverviewViewModel(
         }
     }
 
-    fun onAction(action:RunOverviewAction) {
-        when(action) {
+    fun onAction(action: RunOverviewAction) {
+        when (action) {
             RunOverviewAction.OnAnalyticsClick -> Unit
             RunOverviewAction.OnLogoutClick -> logout()
             RunOverviewAction.OnStartClick -> Unit
@@ -73,6 +73,5 @@ class RunOverviewViewModel(
             // logout from server
             logoutRepository.logout()
         }
-
     }
 }

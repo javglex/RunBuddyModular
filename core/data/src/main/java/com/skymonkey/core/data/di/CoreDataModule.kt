@@ -11,14 +11,14 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-val coreDataModule = module {
-    single {
-        HttpClientFactory(get()).build()
+val coreDataModule =
+    module {
+        single {
+            HttpClientFactory(get()).build()
+        }
+        singleOf(::EncryptedSessionStorage).bind<SessionStorage>()
+
+        singleOf(::OfflineRunRepository).bind<RunRepository>()
+
+        singleOf(::LogoutRepositoryImpl).bind<LogoutRepository>()
     }
-    singleOf(::EncryptedSessionStorage).bind<SessionStorage>()
-
-    singleOf(::OfflineRunRepository).bind<RunRepository>()
-
-    singleOf(::LogoutRepositoryImpl).bind<LogoutRepository>()
-
-}

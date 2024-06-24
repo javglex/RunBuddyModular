@@ -1,7 +1,5 @@
 package com.skymonkey.core.domain.auth
 
-import com.skymonkey.core.domain.auth.AuthInfo
-
 /**
  * Used for storing authentication info in local disk.
  */

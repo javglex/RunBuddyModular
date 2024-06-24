@@ -28,8 +28,7 @@ import kotlinx.coroutines.flow.sample
 import org.koin.android.ext.android.inject
 import kotlin.time.Duration
 
-class ActiveRunService: Service() {
-
+class ActiveRunService : Service() {
     private val notificationManager by lazy {
         getSystemService<NotificationManager>()
     }
@@ -37,7 +36,8 @@ class ActiveRunService: Service() {
     private val elapsedTime by inject<StateFlow<Duration>>() // ellapsed time provided by RunningTracker via DI
 
     private val baseNotification by lazy {
-        NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+        NotificationCompat
+            .Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(com.skymonkey.core.presentation.designsystem.R.drawable.logo)
             .setContentTitle(getString(R.string.active_run))
             .setOnlyAlertOnce(true)
@@ -45,11 +45,16 @@ class ActiveRunService: Service() {
 
     private var serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when(intent?.action) {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int,
+    ): Int {
+        when (intent?.action) {
             ACTION_START -> {
-                val activityClass = intent.getStringExtra(EXTRA_ACTIVITY_CLASS)
-                    ?: throw IllegalArgumentException("No Activity Class provided")
+                val activityClass =
+                    intent.getStringExtra(EXTRA_ACTIVITY_CLASS)
+                        ?: throw IllegalArgumentException("No Activity Class provided")
                 start(Class.forName(activityClass)) // expecting our MainActivity
             }
             ACTION_STOP -> {
@@ -58,9 +63,8 @@ class ActiveRunService: Service() {
         }
         return START_STICKY
     }
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
+
+    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onDestroy() {
         super.onDestroy()
@@ -78,20 +82,23 @@ class ActiveRunService: Service() {
             _isServiceActive.value = false
             createNotificationChannel()
 
-            val activityIntent = Intent(applicationContext, activityClass).apply {
-                data = DEEPLINK_URI.toUri()
-                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) // if active run is already on top of back stack, reopen existing instance.
-            }
+            val activityIntent =
+                Intent(applicationContext, activityClass).apply {
+                    data = DEEPLINK_URI.toUri()
+                    addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) // if active run is already on top of back stack, reopen existing instance.
+                }
 
-            val pendingIntent = TaskStackBuilder.create(applicationContext).run {
-                addNextIntentWithParentStack(activityIntent)
-                getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
-            }
+            val pendingIntent =
+                TaskStackBuilder.create(applicationContext).run {
+                    addNextIntentWithParentStack(activityIntent)
+                    getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
+                }
 
-            val notification = baseNotification
-                .setContentText("00:00:00")
-                .setContentIntent(pendingIntent)
-                .build()
+            val notification =
+                baseNotification
+                    .setContentText("00:00:00")
+                    .setContentIntent(pendingIntent)
+                    .build()
 
             startForeground(NOTIFICATION_ID, notification)
             updateNotification()
@@ -114,22 +121,24 @@ class ActiveRunService: Service() {
         elapsedTime
             .sample(1000) // throttle but don't wait on our values
             .onEach { elapsedTime ->
-            val notification = baseNotification
-                .setContentText(elapsedTime.formatted())
-                .build()
+                val notification =
+                    baseNotification
+                        .setContentText(elapsedTime.formatted())
+                        .build()
 
-            notificationManager?.notify(NOTIFICATION_ID, notification)
-        }.launchIn(serviceScope)
+                notificationManager?.notify(NOTIFICATION_ID, notification)
+            }.launchIn(serviceScope)
     }
 
     private fun createNotificationChannel() {
         // foreground notifications only needed with 26 and newer
         if (Build.VERSION.SDK_INT >= 26) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                getString(R.string.active_run),
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
+            val channel =
+                NotificationChannel(
+                    CHANNEL_ID,
+                    getString(R.string.active_run),
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
             notificationManager?.createNotificationChannel(channel)
         }
     }
@@ -144,18 +153,18 @@ class ActiveRunService: Service() {
         private const val NOTIFICATION_ID = 1
         private const val EXTRA_ACTIVITY_CLASS = "EXTRA_ACTIVITY_CLASS"
 
-        fun createStartIntent(context: Context, activityClass: Class<*>): Intent {
-            return Intent(context, ActiveRunService::class.java).apply {
+        fun createStartIntent(
+            context: Context,
+            activityClass: Class<*>,
+        ): Intent =
+            Intent(context, ActiveRunService::class.java).apply {
                 action = ACTION_START
                 putExtra(EXTRA_ACTIVITY_CLASS, activityClass.name)
             }
-        }
 
-        fun createStopIntent(context: Context): Intent {
-            return Intent(context, ActiveRunService::class.java).apply {
+        fun createStopIntent(context: Context): Intent =
+            Intent(context, ActiveRunService::class.java).apply {
                 action = ACTION_STOP
             }
-        }
-
     }
 }

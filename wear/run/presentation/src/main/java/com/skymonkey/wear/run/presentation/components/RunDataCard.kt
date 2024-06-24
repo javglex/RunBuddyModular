@@ -2,15 +2,12 @@ package com.skymonkey.wear.run.presentation.components
 
 import android.graphics.Color
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,11 +25,12 @@ fun RunDataCard(
     value: String,
     modifier: Modifier = Modifier,
     drawableTint: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface,
-    valueTextColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface
+    valueTextColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface,
 ) {
     Column(
-        modifier = modifier
-            .padding(8.dp),
+        modifier =
+            modifier
+                .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(

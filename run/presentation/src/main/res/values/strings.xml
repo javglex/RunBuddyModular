@@ -34,4 +34,7 @@
     <string name="unavailable">N/a</string>
     <string name="avg_heart">Average HR</string>
     <string name="max_heart">Max HR</string>
+    <string name="expand">EXPAND</string>
+    <string name="delete_confirm_title">Deleting run</string>
+    <string name="delete_confirm_desc">Are you sure you want to delete this run?</string>
 </resources>

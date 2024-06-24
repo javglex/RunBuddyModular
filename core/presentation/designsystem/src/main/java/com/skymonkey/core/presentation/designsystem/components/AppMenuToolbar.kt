@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.skymonkey.core.presentation.designsystem.AnalyticsIcon
 import com.skymonkey.core.presentation.designsystem.ArrowLeftIcon
@@ -55,7 +54,7 @@ fun AppMenuToolbar(
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
     startContent: @Composable () -> Unit,
 ) {
-    var isDropDownOpen by  rememberSaveable {
+    var isDropDownOpen by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -76,9 +75,10 @@ fun AppMenuToolbar(
         },
         modifier = modifier,
         scrollBehavior = scrollBehavior,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent
-        ),
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent
+            ),
         navigationIcon = {
             if (showBackButton) {
                 IconButton(onClick = onBackClick) {
@@ -91,21 +91,22 @@ fun AppMenuToolbar(
             }
         },
         actions = {
-            if(menuItems.isNotEmpty()) {
+            if (menuItems.isNotEmpty()) {
                 Box {
                     DropdownMenu(
                         expanded = isDropDownOpen,
                         onDismissRequest = {
                             isDropDownOpen = false
-                        })
-                    {
+                        }
+                    ) {
                         menuItems.forEachIndexed { index, item ->
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .clickable { onMenuItemClick(index) }
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
+                                modifier =
+                                    Modifier
+                                        .clickable { onMenuItemClick(index) }
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
                             ) {
                                 Icon(
                                     imageVector = item.icon,
@@ -129,11 +130,9 @@ fun AppMenuToolbar(
             }
         }
     )
-
 }
 
-
-@Preview
+@PreviewLightDark
 @Composable
 private fun AppMenuToolbarPreview() {
     RunBuddyTheme {
@@ -146,20 +145,22 @@ private fun AppMenuToolbarPreview() {
                     imageVector = LogoIcon,
                     contentDescription = null,
                     tint = RunbuddyGreen,
-                    modifier = Modifier
-                        .size(36.dp)
+                    modifier =
+                        Modifier
+                            .size(36.dp)
                 )
             },
-            menuItems = listOf(
-                DropDownItem(
-                    icon = AnalyticsIcon,
-                    title = "Analytics"
-                ),
-                DropDownItem(
-                    icon = EmailIcon,
-                    title = "Email"
+            menuItems =
+                listOf(
+                    DropDownItem(
+                        icon = AnalyticsIcon,
+                        title = "Analytics"
+                    ),
+                    DropDownItem(
+                        icon = EmailIcon,
+                        title = "Email"
+                    )
                 )
-            )
         )
     }
 }

@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 
@@ -24,70 +24,95 @@ import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 fun GradientBackground(
     modifier: Modifier = Modifier,
     hasToolbar: Boolean = true,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
-    
-    val screenWidthPx = with(density) {
-        configuration.screenWidthDp.dp.roundToPx()
-    }
 
-    val smallDimension = minOf(
-        configuration.screenWidthDp.dp,
-        configuration.screenHeightDp.dp
-    )
+    val screenWidthPx =
+        with(density) {
+            configuration.screenWidthDp.dp.roundToPx()
+        }
 
-    val smallDimensionPx = with(density) {
-        smallDimension.roundToPx()
-    }
+    val smallDimension =
+        minOf(
+            configuration.screenWidthDp.dp,
+            configuration.screenHeightDp.dp
+        )
 
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val primaryColorTransparent = MaterialTheme.colorScheme.primary.copy(
-        alpha = 0.7f
-    )
+    val smallDimensionPx =
+        with(density) {
+            smallDimension.roundToPx()
+        }
+
+    val primaryColor = MaterialTheme.colorScheme.surface
+    val primaryColorTransparent =
+        MaterialTheme.colorScheme.surface.copy(
+            alpha = 0.7f
+        )
     val isAtLeastAndroid12 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
     ) {
         Box(
-            modifier = modifier
-                .fillMaxSize()
-                .then(
-                    if (isAtLeastAndroid12) {
-                        Modifier.blur(smallDimension / 4f)
-                    } else Modifier
-                )
-                .background(
-                    brush = Brush.radialGradient(
-                        colors = listOf(
-                            if (isAtLeastAndroid12) primaryColor
-                            else primaryColorTransparent,
-                            MaterialTheme.colorScheme.background
-                        ),
-                        center = Offset(
-                            x = screenWidthPx / 2f,
-                            y = -100f
-                        ),
-                        radius = smallDimensionPx / 2f,
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .then(
+                        if (isAtLeastAndroid12) {
+                            Modifier.blur(smallDimension / 4f)
+                        } else {
+                            Modifier
+                        }
+                    ).background(
+                        brush =
+                            Brush.radialGradient(
+                                colors =
+                                    listOf(
+                                        if (isAtLeastAndroid12) {
+                                            primaryColor
+                                        } else {
+                                            primaryColorTransparent
+                                        },
+                                        MaterialTheme.colorScheme.surface
+                                    ),
+                                center =
+                                    Offset(
+                                        x = screenWidthPx / 2f,
+                                        y = -100f
+                                    ),
+                                radius = smallDimensionPx / 2f
+                            )
                     )
-                )
         )
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .then(
-                    if(hasToolbar) {
-                        Modifier
-                    } else {
-                        Modifier.systemBarsPadding()
-                    }
-                )
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .then(
+                        if (hasToolbar) {
+                            Modifier
+                        } else {
+                            Modifier.systemBarsPadding()
+                        }
+                    )
         ) {
             content()
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun GradientBackgroundDarkPreview() {
+    RunBuddyTheme {
+        GradientBackground(
+            modifier = Modifier.fillMaxSize()
+        ) {
         }
     }
 }
@@ -100,7 +125,6 @@ private fun GradientBackgroundPreview() {
         GradientBackground(
             modifier = Modifier.fillMaxSize()
         ) {
-
         }
     }
 }

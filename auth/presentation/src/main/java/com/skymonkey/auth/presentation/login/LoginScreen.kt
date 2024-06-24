@@ -1,9 +1,7 @@
 package com.skymonkey.auth.presentation.login
 
-import android.graphics.Color
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,27 +43,28 @@ fun LoginScreenRoot(
     val keyboardController = LocalSoftwareKeyboardController.current
     ObserveAsEvents(flow = viewModel.events) { event ->
 
-        when(event) {
+        when (event) {
             is LoginEvent.Error -> {
                 keyboardController?.hide()
-                Toast.makeText(
-                    context,
-                    event.error.asString(context),
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        event.error.asString(context),
+                        Toast.LENGTH_LONG
+                    ).show()
             }
             LoginEvent.LoginSuccess -> {
                 keyboardController?.hide()
-                Toast.makeText(
-                    context,
-                    R.string.youre_logged_in,
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        R.string.youre_logged_in,
+                        Toast.LENGTH_LONG
+                    ).show()
 
                 onLoginSuccess()
             }
         }
-
     }
 
     LoginScreen(
@@ -86,14 +83,15 @@ fun LoginScreenRoot(
 @Composable
 private fun LoginScreen(
     state: LoginState,
-    onAction: (LoginAction) -> Unit
+    onAction: (LoginAction) -> Unit,
 ) {
     GradientBackground {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 32.dp)
-                .padding(top = 16.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 32.dp)
+                    .padding(top = 16.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.hi_there),
@@ -141,9 +139,10 @@ private fun LoginScreen(
             )
 
             Box(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .weight(1f),
                 contentAlignment = Alignment.BottomCenter
             ) {
                 ClickableEndText(

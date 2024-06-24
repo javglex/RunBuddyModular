@@ -52,33 +52,33 @@ fun RegisterScreenRoot(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     ObserveAsEvents(flow = viewModel.events) { event ->
-        when(event) {
+        when (event) {
             is RegisterEvent.Error -> {
                 keyboardController?.hide()
-                Toast.makeText(
-                    context,
-                    event.error.asString(context),
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        event.error.asString(context),
+                        Toast.LENGTH_LONG
+                    ).show()
             }
             RegisterEvent.RegistrationSuccess -> {
                 keyboardController?.hide()
-                Toast.makeText(
-                    context,
-                    R.string.registration_successful,
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        R.string.registration_successful,
+                        Toast.LENGTH_LONG
+                    ).show()
                 onSuccessfulRegistration()
             }
-
         }
-
     }
 
     RegisterScreen(
         state = viewModel.state,
         onAction = { action ->
-            when(action) {
+            when (action) {
                 RegisterAction.OnLoginClick -> {
                     onSignInClick()
                 }
@@ -93,15 +93,16 @@ fun RegisterScreenRoot(
 @Composable
 private fun RegisterScreen(
     state: RegisterState,
-    onAction: (RegisterAction) -> Unit
+    onAction: (RegisterAction) -> Unit,
 ) {
     GradientBackground {
         Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 32.dp)
-                .padding(top = 16.dp)
+            modifier =
+                Modifier
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 32.dp)
+                    .padding(top = 16.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.create_account),
@@ -116,7 +117,12 @@ private fun RegisterScreen(
             LargeTextField(
                 state = state.email,
                 startIcon = EmailIcon,
-                endIcon = if (state.isEmailValid) { CheckIcon } else { null },
+                endIcon =
+                    if (state.isEmailValid) {
+                        CheckIcon
+                    } else {
+                        null
+                    },
                 hint = stringResource(id = R.string.example_email),
                 title = stringResource(id = R.string.email),
                 modifier = Modifier.fillMaxWidth(),
@@ -170,20 +176,21 @@ private fun RegisterScreen(
 fun PasswordRequirement(
     text: String,
     isValid: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = if(isValid) {
-                CheckIcon
-            } else {
-                CrossIcon
-            },
+            imageVector =
+                if (isValid) {
+                    CheckIcon
+                } else {
+                    CrossIcon
+                },
             contentDescription = null,
-            tint = if(isValid) RunbuddyGreen else RunbuddyDarkRed
+            tint = if (isValid) RunbuddyGreen else RunbuddyDarkRed
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
@@ -199,11 +206,13 @@ fun PasswordRequirement(
 private fun RegisterScreenPreview() {
     RunBuddyTheme {
         RegisterScreen(
-            state = RegisterState(
-                passwordValidationState = PasswordValidationState(
-                    hasNumber = true
-                )
-            ),
+            state =
+                RegisterState(
+                    passwordValidationState =
+                        PasswordValidationState(
+                            hasNumber = true
+                        )
+                ),
             onAction = {}
         )
     }
@@ -214,14 +223,16 @@ private fun RegisterScreenPreview() {
 private fun RegisterScreenCanRegisterPreview() {
     RunBuddyTheme {
         RegisterScreen(
-            state = RegisterState(
-                passwordValidationState = PasswordValidationState(
-                    hasNumber = true,
-                    hasMinLength = true,
-                    hasUpperCaseCharacter = true,
-                    hasLowerCaseCharacter = true
-                )
-            ),
+            state =
+                RegisterState(
+                    passwordValidationState =
+                        PasswordValidationState(
+                            hasNumber = true,
+                            hasMinLength = true,
+                            hasUpperCaseCharacter = true,
+                            hasLowerCaseCharacter = true
+                        )
+                ),
             onAction = {}
         )
     }

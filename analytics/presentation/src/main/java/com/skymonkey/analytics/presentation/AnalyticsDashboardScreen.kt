@@ -1,7 +1,6 @@
 package com.skymonkey.analytics.presentation
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,10 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +28,7 @@ fun AnalyticsDashboardScreenRoot(
     AnalyticsDashboardScreen(
         state = viewModel.state,
         onAction = { action ->
-            when(action) {
+            when (action) {
                 AnalyticsAction.OnBackClick -> onBackClick()
             }
             viewModel.onAction(action)
@@ -43,7 +40,7 @@ fun AnalyticsDashboardScreenRoot(
 @Composable
 private fun AnalyticsDashboardScreen(
     state: AnalyticsDashboardState,
-    onAction: (AnalyticsAction) -> Unit
+    onAction: (AnalyticsAction) -> Unit,
 ) {
     RunBuddyScaffold(
         topAppBar = {
@@ -57,15 +54,17 @@ private fun AnalyticsDashboardScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
             ) {
                 AnalyticsCard(
                     title = stringResource(id = R.string.total_distance_run),
@@ -80,9 +79,10 @@ private fun AnalyticsDashboardScreen(
                 )
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
             ) {
                 AnalyticsCard(
                     title = stringResource(id = R.string.fastest_run),
@@ -97,9 +97,10 @@ private fun AnalyticsDashboardScreen(
                 )
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
             ) {
                 AnalyticsCard(
                     title = stringResource(id = R.string.avg_pace_per_run),
@@ -114,15 +115,16 @@ private fun AnalyticsDashboardScreen(
 @Preview
 @Composable
 private fun AnalyticsDashboardScreenPreview() {
-    RunBuddyTheme   {
+    RunBuddyTheme {
         AnalyticsDashboardScreen(
-            state = AnalyticsDashboardState(
-                totalDistanceRun = "0.2 km",
-                totalTimeRun = "0d 0h 0m",
-                fastestRun = "134.9 km/h",
-                avgDistance = "0.1km",
-                avgPace = "07:10"
-            ),
+            state =
+                AnalyticsDashboardState(
+                    totalDistanceRun = "0.2 km",
+                    totalTimeRun = "0d 0h 0m",
+                    fastestRun = "134.9 km/h",
+                    avgDistance = "0.1km",
+                    avgPace = "07:10"
+                ),
             onAction = {}
         )
     }

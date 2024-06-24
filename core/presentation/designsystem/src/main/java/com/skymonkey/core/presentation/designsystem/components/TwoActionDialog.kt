@@ -29,16 +29,17 @@ fun TwoActionDialog(
     description: String,
     primaryButton: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
-    secondaryButton: @Composable RowScope.() -> Unit = {}
+    secondaryButton: @Composable RowScope.() -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = onDismiss
     ) {
         Column(
-            modifier = modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(15.dp),
+            modifier =
+                modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(15.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -55,8 +56,9 @@ fun TwoActionDialog(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -73,9 +75,9 @@ private fun TwoActionDialogPreview() {
     RunBuddyTheme {
         TwoActionDialog(
             title = "test title",
-            onDismiss = { /*TODO*/ },
+            onDismiss = {},
             description = "test description",
-            primaryButton = { /*TODO*/ })
+            primaryButton = {}
+        )
     }
-    
 }

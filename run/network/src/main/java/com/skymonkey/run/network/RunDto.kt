@@ -15,5 +15,5 @@ data class RunDto(
     val totalElevationMeters: Int,
     val mapPictureUrl: String?,
     val avgHeartRate: Int?,
-    val maxHeartRate: Int?
+    val maxHeartRate: Int?,
 )

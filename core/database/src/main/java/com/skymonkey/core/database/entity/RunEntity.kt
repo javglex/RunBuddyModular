@@ -18,5 +18,5 @@ data class RunEntity(
     val avgHeartRate: Int?,
     val maxHeartRate: Int?,
     @PrimaryKey(autoGenerate = false)
-    val id: String = ObjectId().toHexString() // id will be generated using mongoDb
+    val id: String = ObjectId().toHexString(), // id will be generated using mongoDb
 )

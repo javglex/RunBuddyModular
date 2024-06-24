@@ -1,6 +1,5 @@
 package com.skymonkey.wear.run.data
 
-import android.app.Application
 import com.skymonkey.core.connectivity.domain.DeviceNode
 import com.skymonkey.core.connectivity.domain.DeviceType
 import com.skymonkey.core.connectivity.domain.NodeDiscovery
@@ -17,37 +16,33 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 
 @OptIn(ExperimentalCoroutinesApi::class)
-
 class WatchToPhoneConnector(
     nodeDiscovery: NodeDiscovery,
     applicationScope: CoroutineScope,
-    private val messagingClient: MessagingClient
-): PhoneConnector {
-
+    private val messagingClient: MessagingClient,
+) : PhoneConnector {
     private val _connectedNode = MutableStateFlow<DeviceNode?>(null)
     override val connectedNode: StateFlow<DeviceNode?>
         get() = _connectedNode.asStateFlow()
 
-    override val messagingActions = nodeDiscovery
-        .observeConnectedDevices(DeviceType.WATCH) // listen to devices from perspective of watch
-        .flatMapLatest { connectedNodes ->
-            val node = connectedNodes.firstOrNull()
-            if (node != null && node.isNearby) {
-                _connectedNode.value = node
-                messagingClient.connectToNode(node.id)
-            } else flowOf()
-        }
-        .shareIn(
-            applicationScope,
-            SharingStarted.Eagerly
-        )
+    override val messagingActions =
+        nodeDiscovery
+            .observeConnectedDevices(DeviceType.WATCH) // listen to devices from perspective of watch
+            .flatMapLatest { connectedNodes ->
+                val node = connectedNodes.firstOrNull()
+                if (node != null && node.isNearby) {
+                    _connectedNode.value = node
+                    messagingClient.connectToNode(node.id)
+                } else {
+                    flowOf()
+                }
+            }.shareIn(
+                applicationScope,
+                SharingStarted.Eagerly
+            )
 
-    override suspend fun sendActionToPhone(action: MessagingAction): EmptyResult<MessagingError> {
-        return messagingClient.sendOrQueueAction(action)
-    }
+    override suspend fun sendActionToPhone(action: MessagingAction): EmptyResult<MessagingError> = messagingClient.sendOrQueueAction(action)
 }

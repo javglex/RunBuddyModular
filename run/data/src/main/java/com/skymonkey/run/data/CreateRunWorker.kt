@@ -12,20 +12,21 @@ class CreateRunWorker(
     context: Context,
     private val params: WorkerParameters,
     private val remoteRunDataSource: RemoteRunDataSource,
-    private val pendingSyncDao: RunPendingSyncDao
-): CoroutineWorker(context, params) {
+    private val pendingSyncDao: RunPendingSyncDao,
+) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
-        if(runAttemptCount >= MAX_TRIES) {
+        if (runAttemptCount >= MAX_TRIES) {
             return Result.failure()
         }
 
         val pendingRunId = params.inputData.getString(RUN_ID) ?: return Result.failure()
-        val pendingRunEntity = pendingSyncDao.getRunPendingSyncEntity(pendingRunId)
-            ?: return Result.failure()
+        val pendingRunEntity =
+            pendingSyncDao.getRunPendingSyncEntity(pendingRunId)
+                ?: return Result.failure()
 
         val run = pendingRunEntity.run.toRun()
 
-        return when(val result = remoteRunDataSource.postRun(run, pendingRunEntity.mapPictureBytes)) {
+        return when (val result = remoteRunDataSource.postRun(run, pendingRunEntity.mapPictureBytes)) {
             is com.skymonkey.core.domain.Result.Error -> result.error.toWorkerResult()
             is com.skymonkey.core.domain.Result.Success -> {
                 pendingSyncDao.deleteRunPendingSyncEntity(pendingRunId)

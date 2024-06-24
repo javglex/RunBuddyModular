@@ -30,38 +30,44 @@ fun ActionButton(
     isLoading: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = RunbuddyGray,
-            disabledContentColor = RunbuddyBlack
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor = RunbuddyGray,
+                disabledContentColor = RunbuddyBlack
+            ),
         shape = RoundedCornerShape(100f),
-        modifier = modifier
-            .height(IntrinsicSize.Min) // which child composable takes less height? Use that height.
+        modifier =
+            modifier
+                .height(IntrinsicSize.Min)
+        // which child composable takes less height? Use that height.
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
-                modifier = Modifier
-                    .size(15.dp)
-                    .alpha(if (isLoading) 1f else 0f),
+                modifier =
+                    Modifier
+                        .size(15.dp)
+                        .alpha(if (isLoading) 1f else 0f),
                 strokeWidth = 1.5.dp,
                 color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
                 text = text,
-                modifier = Modifier
-                    .alpha(if (isLoading) 0f else 1f)
+                modifier =
+                    Modifier
+                        .alpha(if (isLoading) 0f else 1f)
             )
         }
     }
@@ -73,39 +79,45 @@ fun OutlinedActionButton(
     isLoading: Boolean,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     OutlinedButton(
         onClick = onClick,
         enabled = enabled,
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.onBackground,
-        ),
-        border = BorderStroke(
-            width = 0.5.dp,
-            color = MaterialTheme.colorScheme.onBackground
-        ),
+        colors =
+            ButtonDefaults.outlinedButtonColors(
+                contentColor = MaterialTheme.colorScheme.onBackground
+            ),
+        border =
+            BorderStroke(
+                width = 0.5.dp,
+                color = MaterialTheme.colorScheme.onBackground
+            ),
         shape = RoundedCornerShape(100f),
-        modifier = modifier
-            .height(IntrinsicSize.Min) // which child composable takes less height? Use that height.
+        modifier =
+            modifier
+                .height(IntrinsicSize.Min) // which child composable takes less height? Use that height.
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
-                modifier = Modifier
-                    .size(15.dp)
-                    .alpha(if (isLoading) 1f else 0f),
+                modifier =
+                    Modifier
+                        .size(15.dp)
+                        .alpha(if (isLoading) 1f else 0f),
                 strokeWidth = 1.5.dp,
                 color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
                 text = text,
-                modifier = Modifier
-                    .alpha(if (isLoading) 0f else 1f)
+                modifier =
+                    Modifier
+                        .alpha(if (isLoading) 0f else 1f)
             )
         }
     }

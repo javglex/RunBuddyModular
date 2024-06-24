@@ -13,10 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text2.BasicSecureTextField
-import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.input.TextFieldLineLimits
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.foundation.text2.input.TextObfuscationMode
 import androidx.compose.foundation.text2.input.rememberTextFieldState
@@ -36,20 +33,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.skymonkey.core.presentation.designsystem.CheckIcon
-import com.skymonkey.core.presentation.designsystem.EmailIcon
 import com.skymonkey.core.presentation.designsystem.EyeClosedIcon
 import com.skymonkey.core.presentation.designsystem.EyeOpenedIcon
 import com.skymonkey.core.presentation.designsystem.LockIcon
 import com.skymonkey.core.presentation.designsystem.R
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -59,7 +51,7 @@ fun PasswordTextField(
     onTogglePasswordVisibility: () -> Unit,
     hint: String,
     title: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var isFocused by remember {
         mutableStateOf(false)
@@ -69,9 +61,10 @@ fun PasswordTextField(
         modifier = modifier
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             if (title != null) {
                 Text(
@@ -83,44 +76,48 @@ fun PasswordTextField(
         Spacer(modifier = Modifier.height(4.dp))
         BasicSecureTextField(
             state = state,
-            textObfuscationMode = if(isPasswordVisible) {
-                TextObfuscationMode.Visible
-            } else {
-                TextObfuscationMode.Hidden
-            },
-            textStyle = LocalTextStyle.current.copy( // use text style used in our current UI hierarchy
-                color = MaterialTheme.colorScheme.onBackground
-            ),
+            textObfuscationMode =
+                if (isPasswordVisible) {
+                    TextObfuscationMode.Visible
+                } else {
+                    TextObfuscationMode.Hidden
+                },
+            textStyle =
+                LocalTextStyle.current.copy( // use text style used in our current UI hierarchy
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
             keyboardType = KeyboardType.Password,
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(
-                    if (isFocused) {
-                        MaterialTheme.colorScheme.primary.copy(
-                            alpha = 0.5f
-                        )
-                    } else {
-                        MaterialTheme.colorScheme.surface
-                    }
-                )
-                .border(
-                    width = 1.dp,
-                    color = if (isFocused) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        Color.Transparent
+            modifier =
+                Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(
+                        if (isFocused) {
+                            MaterialTheme.colorScheme.primary.copy(
+                                alpha = 0.5f
+                            )
+                        } else {
+                            MaterialTheme.colorScheme.surface
+                        }
+                    ).border(
+                        width = 1.dp,
+                        color =
+                            if (isFocused) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                Color.Transparent
+                            },
+                        shape = RoundedCornerShape(16.dp)
+                    ).padding(horizontal = 12.dp)
+                    .onFocusChanged {
+                        isFocused = it.isFocused
                     },
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(horizontal = 12.dp)
-                .onFocusChanged {
-                    isFocused = it.isFocused
-                },
-            decorator = { innerBox -> //composable lambda where we can put our text. the textfield container.
+            decorator = { innerBox ->
+                // composable lambda where we can put our text. the textfield container.
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -130,15 +127,17 @@ fun PasswordTextField(
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Box(
-                        modifier = Modifier
-                            .weight(1f)
+                        modifier =
+                            Modifier
+                                .weight(1f)
                     ) {
                         if (state.text.isEmpty() && !isFocused) {
                             Text(
                                 text = hint,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = 0.4f
-                                ),
+                                color =
+                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                        alpha = 0.4f
+                                    ),
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
@@ -148,12 +147,18 @@ fun PasswordTextField(
                         onClick = onTogglePasswordVisibility
                     ) {
                         Icon(
-                            imageVector = if(!isPasswordVisible) { EyeClosedIcon } else { EyeOpenedIcon },
-                            contentDescription = if(isPasswordVisible) {
-                                stringResource(id = R.string.show_password)
-                            } else {
-                                stringResource(id = R.string.hide_password)
-                            },
+                            imageVector =
+                                if (!isPasswordVisible) {
+                                    EyeClosedIcon
+                                } else {
+                                    EyeOpenedIcon
+                                },
+                            contentDescription =
+                                if (isPasswordVisible) {
+                                    stringResource(id = R.string.show_password)
+                                } else {
+                                    stringResource(id = R.string.hide_password)
+                                },
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -174,8 +179,9 @@ private fun PasswordTextFieldPreview() {
             title = "Password",
             isPasswordVisible = true,
             onTogglePasswordVisibility = {},
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .fillMaxWidth()
         )
     }
 }

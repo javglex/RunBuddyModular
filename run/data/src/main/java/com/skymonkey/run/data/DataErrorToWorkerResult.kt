@@ -3,8 +3,8 @@ package com.skymonkey.run.data
 import androidx.work.ListenableWorker
 import com.skymonkey.core.domain.DataError
 
-fun DataError.toWorkerResult(): ListenableWorker.Result {
-    return when(this) {
+fun DataError.toWorkerResult(): ListenableWorker.Result =
+    when (this) {
         DataError.Local.DISK_FULL -> ListenableWorker.Result.failure()
         DataError.Local.OTHER -> ListenableWorker.Result.retry()
         DataError.Network.REQUEST_TIMEOUT -> ListenableWorker.Result.retry()
@@ -17,4 +17,3 @@ fun DataError.toWorkerResult(): ListenableWorker.Result {
         DataError.Network.SERIALIZATION -> ListenableWorker.Result.failure()
         DataError.Network.UNKNOWN -> ListenableWorker.Result.failure()
     }
-}

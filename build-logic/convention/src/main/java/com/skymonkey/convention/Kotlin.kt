@@ -9,16 +9,23 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
-internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *>
-) {
+internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *>) {
     commonExtension.apply {
         /*
          * aliases must match versions in libs.versions.toml
          */
-        compileSdk = libs.findVersion("projectCompileSdkVersion").get().toString().toInt()
-        defaultConfig.minSdk = libs.findVersion("projectMinSdkVersion").get().toString().toInt()
+        compileSdk =
+            libs
+                .findVersion("projectCompileSdkVersion")
+                .get()
+                .toString()
+                .toInt()
+        defaultConfig.minSdk =
+            libs
+                .findVersion("projectMinSdkVersion")
+                .get()
+                .toString()
+                .toInt()
 
         compileOptions {
             // isCoreLibraryDesugaringEnabled = true // TODO: do we need this for version 17?

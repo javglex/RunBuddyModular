@@ -3,8 +3,8 @@ package com.skymonkey.core.domain
 /**
  * Represents error from a network or local db request
  */
-sealed interface DataError: Error {
-    enum class Network: DataError {
+sealed interface DataError : Error {
+    enum class Network : DataError {
         REQUEST_TIMEOUT,
         UNAUTHORIZED,
         CONFLICT,
@@ -13,11 +13,11 @@ sealed interface DataError: Error {
         PAYLOAD_TOO_LARGE,
         SERVER_ERROR,
         SERIALIZATION,
-        UNKNOWN
+        UNKNOWN,
     }
 
-    enum class Local: DataError {
+    enum class Local : DataError {
         DISK_FULL,
-        OTHER
+        OTHER,
     }
 }

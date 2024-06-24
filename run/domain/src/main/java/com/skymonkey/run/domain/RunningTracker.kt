@@ -35,9 +35,8 @@ import kotlin.time.Duration.Companion.seconds
 class RunningTracker(
     private val locationObserver: LocationObserver,
     private val applicationScope: CoroutineScope,
-    private val watchConnector: WatchConnector
+    private val watchConnector: WatchConnector,
 ) {
-
     private val _runData = MutableStateFlow(RunData())
     val runData = _runData.asStateFlow()
 
@@ -50,70 +49,74 @@ class RunningTracker(
     val elapsedTime = _elapsedTime.asStateFlow()
 
     // maps current location if our isObservingLocation boolean is true
-    val currentLocation = isObservingLocation
-        .flatMapLatest {  isObservingLocation ->
-            if (isObservingLocation){
-                locationObserver.observerLocation(1000L)
-            } else flowOf()
-
-        }
-        .stateIn(
-            applicationScope,
-            SharingStarted.Lazily, // only start producing if we are listening to it
-            null
-        )
+    val currentLocation =
+        isObservingLocation
+            .flatMapLatest { isObservingLocation ->
+                if (isObservingLocation) {
+                    locationObserver.observerLocation(1000L)
+                } else {
+                    flowOf()
+                }
+            }.stateIn(
+                applicationScope,
+                SharingStarted.Lazily, // only start producing if we are listening to it
+                null
+            )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val heartRates = isTracking
-        .flatMapLatest { isTracking ->
-            if(isTracking) {
-                watchConnector.messagingActions
-            } else flowOf()
-        }
-        .filterIsInstance<MessagingAction.HeartRateUpdate>()
-        .map {
-            it.heartRate
-        }
-        .runningFold(initial = emptyList<Int>()) { currentHeartRates, newHeartRate -> // keeps track of emitted values
-            currentHeartRates + newHeartRate
-        }
-        .stateIn(
-            applicationScope,
-            SharingStarted.Lazily,
-            emptyList()
-        )
+    private val heartRates =
+        isTracking
+            .flatMapLatest { isTracking ->
+                if (isTracking) {
+                    watchConnector.messagingActions
+                } else {
+                    flowOf()
+                }
+            }.filterIsInstance<MessagingAction.HeartRateUpdate>()
+            .map {
+                it.heartRate
+            }.runningFold(initial = emptyList<Int>()) { currentHeartRates, newHeartRate ->
+                // keeps track of emitted values
+                currentHeartRates + newHeartRate
+            }.stateIn(
+                applicationScope,
+                SharingStarted.Lazily,
+                emptyList()
+            )
 
     init {
         isTracking
-            .onEach { isTracking -> // when no longer tracking, append an empty list
-                if(!isTracking) {
-                    val newList = buildList {
-                        addAll(runData.value.locations)
-                        add(emptyList<LocationTimestamp>())
-                    }.toList()
+            .onEach { isTracking ->
+                // when no longer tracking, append an empty list
+                if (!isTracking) {
+                    val newList =
+                        buildList {
+                            addAll(runData.value.locations)
+                            add(emptyList<LocationTimestamp>())
+                        }.toList()
                     _runData.update {
                         it.copy(
                             locations = newList // update our location state with new list which includes empty list at end
                         )
                     }
                 }
-            }
-            .flatMapLatest {  isTracking ->
+            }.flatMapLatest { isTracking ->
                 if (isTracking) {
                     Timer.timeAndEmit()
-                } else flowOf()
-            }
-            .onEach {
+                } else {
+                    flowOf()
+                }
+            }.onEach {
                 _elapsedTime.value += it
-            }
-            .launchIn(applicationScope)
+            }.launchIn(applicationScope)
 
         currentLocation
             .filterNotNull()
             // combineTransform block triggers when there is either a new location value, or new isTracking value
             .combineTransform(isTracking) { location, isTracking ->
-                if(isTracking)
+                if (isTracking) {
                     emit(location)
+                }
             }
             // similar to combine, but will only trigger when there are new values for both location & elapsedTime
             .zip(_elapsedTime) { location, elapsedTime ->
@@ -121,30 +124,34 @@ class RunningTracker(
                     locationWithAltitude = location,
                     durationTimeStamp = elapsedTime
                 )
-            }
-            .combine(heartRates) { locationTimeStamp, heartRates ->
+            }.combine(heartRates) { locationTimeStamp, heartRates ->
                 val currentLocations = runData.value.locations
                 // grab our latest location line
-                val lastLocationsList = if(currentLocations.isNotEmpty()) {
-                    //update our line with newest location
-                    currentLocations.last() + locationTimeStamp
-                } else listOf(locationTimeStamp) // else create a new line with the newest location
+                val lastLocationsList =
+                    if (currentLocations.isNotEmpty()) {
+                        // update our line with newest location
+                        currentLocations.last() + locationTimeStamp
+                    } else {
+                        listOf(locationTimeStamp) // else create a new line with the newest location
+                    }
 
                 val newLocationList = currentLocations.replaceLast(lastLocationsList)
 
-                val distanceMeters = LocationDataCalculator.getTotalDistanceMeters(
-                    locations = newLocationList
-                )
+                val distanceMeters =
+                    LocationDataCalculator.getTotalDistanceMeters(
+                        locations = newLocationList
+                    )
 
                 val distanceKm = distanceMeters / 1000.0
 
                 val currentDuration = locationTimeStamp.durationTimeStamp
 
-                val avgSecondsPerKm = if (distanceKm == 0.0) {
-                    0
-                } else {
-                    (currentDuration.inWholeSeconds / distanceKm).roundToInt()
-                }
+                val avgSecondsPerKm =
+                    if (distanceKm == 0.0) {
+                        0
+                    } else {
+                        (currentDuration.inWholeSeconds / distanceKm).roundToInt()
+                    }
 
                 _runData.update {
                     RunData(
@@ -165,16 +172,14 @@ class RunningTracker(
         elapsedTime
             .onEach {
                 watchConnector.sendActionToWatch(MessagingAction.TimeUpdate(it))
-            }
-            .launchIn(applicationScope)
+            }.launchIn(applicationScope)
 
         runData
-            .map {it.distanceMeters }
+            .map { it.distanceMeters }
             .distinctUntilChanged() // if distance did not change don't send it.
             .onEach {
                 watchConnector.sendActionToWatch(MessagingAction.DistanceUpdate(it))
-            }
-            .launchIn(applicationScope)
+            }.launchIn(applicationScope)
     }
 
     fun setIsTracking(isTracking: Boolean) {
@@ -189,8 +194,6 @@ class RunningTracker(
     fun stopObservingLocation() {
         isObservingLocation.value = false
         watchConnector.setIsTrackable(false)
-
-
     }
 
     fun finishRun() {
@@ -202,7 +205,7 @@ class RunningTracker(
 }
 
 private fun <T> List<List<T>>.replaceLast(replacement: List<T>): List<List<T>> {
-    if(this.isEmpty()) {
+    if (this.isEmpty()) {
         return listOf(replacement)
     }
     // first drop the last inner list, and then append the new replacement inner-list

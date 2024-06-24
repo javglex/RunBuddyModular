@@ -11,19 +11,19 @@ import androidx.navigation.navDeepLink
 import com.skymonkey.auth.presentation.intro.IntroScreenRoot
 import com.skymonkey.auth.presentation.login.LoginScreenRoot
 import com.skymonkey.auth.presentation.register.RegisterScreenRoot
-import com.skymonkey.run.presentation.active_run.ActiveRunScreenRoot
 import com.skymonkey.core.presentation.service.ActiveRunService
+import com.skymonkey.run.presentation.active_run.ActiveRunScreenRoot
 import com.skymonkey.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable
 fun NavigationRoot(
     navController: NavHostController,
     onAnalyticsClick: () -> Unit,
-    isLoggedIn: Boolean
+    isLoggedIn: Boolean,
 ) {
     NavHost(
         navController = navController,
-        startDestination = if(isLoggedIn) "run" else "auth"
+        startDestination = if (isLoggedIn) "run" else "auth"
     ) {
         authGraph(navController)
         runGraph(navController, onAnalyticsClick = onAnalyticsClick)
@@ -65,7 +65,8 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
             LoginScreenRoot(
                 onLoginSuccess = {
                     navController.navigate("run") {
-                        popUpTo("auth") { // pop everything from the auth graph
+                        popUpTo("auth") {
+                            // pop everything from the auth graph
                             inclusive = true
                         }
                     }
@@ -86,7 +87,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
 
 private fun NavGraphBuilder.runGraph(
     navController: NavHostController,
-    onAnalyticsClick: () -> Unit
+    onAnalyticsClick: () -> Unit,
 ) {
     navigation(
         startDestination = "run_overview",
@@ -109,27 +110,27 @@ private fun NavGraphBuilder.runGraph(
         }
         composable(
             route = "active_run",
-            deepLinks = listOf(
-                navDeepLink {
-                    uriPattern = ActiveRunService.DEEPLINK_URI
-                }
-            )
+            deepLinks =
+                listOf(
+                    navDeepLink {
+                        uriPattern = ActiveRunService.DEEPLINK_URI
+                    }
+                )
         ) {
             val context = LocalContext.current
             ActiveRunScreenRoot(
                 onNavigateBack = {
-                     navController.navigateUp()
+                    navController.navigateUp()
                 },
                 onFinishRun = {
                     navController.navigateUp()
                 },
                 onServiceToggle = { shouldServiceRun ->
-                    if(shouldServiceRun) {
+                    if (shouldServiceRun) {
                         context.startService(ActiveRunService.createStartIntent(context, MainActivity::class.java))
                     } else {
                         context.startService(ActiveRunService.createStopIntent(context))
                     }
-
                 }
             )
         }

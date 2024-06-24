@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface RunDao {
-
     @Upsert
     suspend fun upsertRun(run: RunEntity)
 

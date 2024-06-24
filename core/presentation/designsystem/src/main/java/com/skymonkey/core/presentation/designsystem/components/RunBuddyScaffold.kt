@@ -12,14 +12,14 @@ fun RunBuddyScaffold(
     withGradient: Boolean = true,
     topAppBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         topBar = topAppBar,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = FabPosition.Center,
         modifier = modifier
-    ) { paddingValues ->  
+    ) { paddingValues ->
         if (withGradient) {
             GradientBackground {
                 content(paddingValues)

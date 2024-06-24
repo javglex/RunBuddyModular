@@ -6,7 +6,10 @@ android {
     namespace = "com.skymonkey.wear.app"
 
     defaultConfig {
-        minSdk = libs.versions.projectMinWearSdkVersion.get().toInt()
+        minSdk =
+            libs.versions.projectMinWearSdkVersion
+                .get()
+                .toInt()
     }
 }
 
@@ -27,6 +30,4 @@ dependencies {
     implementation(projects.core.presentation.ui)
     implementation(projects.core.connectivity.domain)
     implementation(projects.core.connectivity.data)
-
-
 }
