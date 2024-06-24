@@ -43,7 +43,8 @@ class RunningTracker(
     private val _isTracking = MutableStateFlow(false) // is the run active?
     val isTracking = _isTracking.asStateFlow()
 
-    private val isObservingLocation = MutableStateFlow(false) // are we listening to locations? e.g not just for tracking runs but also for updating user on the map
+    // are we listening to locations? e.g not just for tracking runs but also for updating user on the map
+    private val isObservingLocation = MutableStateFlow(false)
 
     private val _elapsedTime = MutableStateFlow(Duration.ZERO)
     val elapsedTime = _elapsedTime.asStateFlow()
