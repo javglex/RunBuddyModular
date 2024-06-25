@@ -20,7 +20,7 @@ themeing, styling, and clean code practices.
 
 | Home Dark | Home Light | Tracking Run |
 |--------------|--------------|--------------|
-| ![Screenshot_20240624_220552](https://github.com/javglex/RunBuddyModular/assets/6698872/34215616-bc0f-4520-8aa8-36f7751fad45) | ![Screenshot_20240624_220254](https://github.com/javglex/RunBuddyModular/assets/6698872/d1b94e55-7db3-4cdf-8123-bf637678d8e9) | ![Screenshot_20240624_220325](https://github.com/javglex/RunBuddyModular/assets/6698872/873c4ce6-abdd-40eb-8c63-c5620f44884d) |
+| ![Screenshot_20240624_220552](https://github.com/javglex/RunBuddyModular/assets/6698872/34215616-bc0f-4520-8aa8-36f7751fad45) | ![Screenshot_20240624_220254](https://github.com/javglex/RunBuddyModular/assets/6698872/d1b94e55-7db3-4cdf-8123-bf637678d8e9) | ![Screenshot_20240624_222814](https://github.com/javglex/RunBuddyModular/assets/6698872/bd644636-01bd-4de0-bfc3-a3bfac470f97) |
 
 | Intro | Sign-In Light | Sign-in Dark |
 |--------------|--------------|--------------|
@@ -29,9 +29,6 @@ themeing, styling, and clean code practices.
 | WearOS pre-workout | WearOS in-workout
 |--------------|--------------|
 | ![Screenshot_20240624_221608](https://github.com/javglex/RunBuddyModular/assets/6698872/f5f54a80-0218-46b2-b74e-63a316addbb1) | ![Screenshot_20240624_221524](https://github.com/javglex/RunBuddyModular/assets/6698872/270cc30b-122a-478d-91ed-81b1981c1d41) |
-
-
-
 
 Main features:
 
