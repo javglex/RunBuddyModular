@@ -6,7 +6,7 @@ import androidx.room.Query
 @Dao
 interface AnalyticsDao {
     @Query("SELECT SUM(distanceMeters) FROM runentity")
-    suspend fun getTotalDistance(): Int
+    suspend fun getTotalDistance(): Double
 
     @Query("SELECT SUM(durationMillis) FROM runentity")
     suspend fun getTotalTimeRun(): Long

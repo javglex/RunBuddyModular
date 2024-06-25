@@ -37,4 +37,9 @@
     <string name="expand">EXPAND</string>
     <string name="delete_confirm_title">Deleting run</string>
     <string name="delete_confirm_desc">Are you sure you want to delete this run?</string>
+    <string name="weekly_progress_title">Weekly Streak</string>
+    <string name="complete">complete</string>
+    <string name="goal">Your Goal</string>
+    <string name="total_distance">Total distance</string>
+    <string name="target_distance">Target</string>
 </resources>

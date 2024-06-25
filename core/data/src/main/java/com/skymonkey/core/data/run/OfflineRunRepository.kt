@@ -1,5 +1,6 @@
 package com.skymonkey.core.data.run
 
+import com.skymonkey.core.database.dao.AnalyticsDao
 import com.skymonkey.core.database.dao.RunPendingSyncDao
 import com.skymonkey.core.database.mappers.toRun
 import com.skymonkey.core.domain.DataError
@@ -24,6 +25,7 @@ class OfflineRunRepository(
     private val localRunDataSource: LocalRunDataSource,
     private val remoteRunDataSource: RemoteRunDataSource,
     private val runPendingSyncDao: RunPendingSyncDao,
+    private val analyticsDao: AnalyticsDao,
     private val sessionStorage: SessionStorage,
     private val syncRunScheduler: SyncRunScheduler,
     private val applicationScope: CoroutineScope
@@ -33,6 +35,12 @@ class OfflineRunRepository(
      * When we update our database, our flow will automatically trigger with the new data.
      */
     override fun getRuns(): Flow<List<Run>> = localRunDataSource.getRuns()
+
+    /**
+     * Get the most recent runs saved in our local database.
+     */
+    override fun getRecentRuns(size: Int): Flow<List<Run>> =
+        localRunDataSource.getRecentRuns(size)
 
     /**
      * Fetch runs from the network and, if successful, insert into our local db
@@ -189,6 +197,13 @@ class OfflineRunRepository(
 
             createJobs.forEach { it.join() }
             deleteJobs.forEach { it.join() }
+        }
+    }
+
+    override suspend fun getTotalDistance(): Double {
+        return withContext(Dispatchers.IO) {
+            val totalDistance = async { analyticsDao.getTotalDistance() }
+            totalDistance.await()
         }
     }
 }

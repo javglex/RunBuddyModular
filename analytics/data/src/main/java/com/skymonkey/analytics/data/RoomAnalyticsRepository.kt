@@ -20,7 +20,7 @@ class RoomAnalyticsRepository(
             val avgPacePerRun = async { analyticsDao.getAveragePacePerRun() }
 
             AnalyticsValues(
-                totalDistanceRun = totalDistance.await(),
+                totalDistanceRun = totalDistance.await().toInt(),
                 totalTimeRun = totalTimeMillis.await().milliseconds,
                 fastestEverRun = maxRunSpeed.await(),
                 avgDistanceRun = avgDistancePerRun.await(),

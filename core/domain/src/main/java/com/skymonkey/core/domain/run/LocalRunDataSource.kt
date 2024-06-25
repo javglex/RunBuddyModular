@@ -13,6 +13,8 @@ typealias RunId = String
 interface LocalRunDataSource {
     fun getRuns(): Flow<List<Run>>
 
+    fun getRecentRuns(size: Int): Flow<List<Run>>
+
     /**
      * Inserts or updates a run.
      * @param run the run session to insert or update

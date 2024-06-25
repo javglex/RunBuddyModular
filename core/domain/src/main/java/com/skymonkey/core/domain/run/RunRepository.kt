@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface RunRepository {
     fun getRuns(): Flow<List<Run>>
 
+    fun getRecentRuns(size: Int): Flow<List<Run>>
+
     suspend fun fetchRuns(): EmptyResult<DataError>
 
     suspend fun upsertRun(
@@ -19,4 +21,6 @@ interface RunRepository {
     suspend fun deleteAllRuns(): EmptyResult<DataError>
 
     suspend fun syncPendingRuns()
+
+    suspend fun getTotalDistance(): Double
 }

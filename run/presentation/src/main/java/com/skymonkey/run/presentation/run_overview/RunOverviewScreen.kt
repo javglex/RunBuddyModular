@@ -37,7 +37,10 @@ import com.skymonkey.core.presentation.designsystem.components.RunFloatingAction
 import com.skymonkey.core.presentation.designsystem.components.util.DropDownItem
 import com.skymonkey.run.presentation.R
 import com.skymonkey.run.presentation.run_overview.components.RunListItem
+import com.skymonkey.run.presentation.run_overview.components.UserOverview
+import com.skymonkey.run.presentation.run_overview.components.WeeklyStreakIndicator
 import com.skymonkey.run.presentation.run_overview.model.RunUi
+import com.skymonkey.run.presentation.run_overview.model.WeeklyProgress
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -116,12 +119,11 @@ private fun RunOverviewScreen(
 
         if (state.runs.isEmpty()) {
             Column(
-                modifier =
-                    Modifier
-                        .padding(horizontal = 24.dp)
-                        .padding(paddingValues)
-                        .padding(top = 32.dp)
-                        .fillMaxSize()
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .padding(paddingValues)
+                    .padding(top = 32.dp)
+                    .fillMaxSize()
             ) {
 //                    BuddyMainCard(isExpanded = state.runs.isEmpty())
                 Spacer(modifier = Modifier.padding(16.dp))
@@ -132,22 +134,34 @@ private fun RunOverviewScreen(
                 )
             }
         } else {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize(),
-                contentAlignment = Alignment.BottomEnd
+            Column (
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 LazyColumn(
                     modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .nestedScroll(scrollBehavior.nestedScrollConnection) // hide our toolbar when scrolling
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 16.dp)
-                            .padding(paddingValues),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    Modifier
+                        .fillMaxSize()
+                        .nestedScroll(scrollBehavior.nestedScrollConnection) // hide our toolbar when scrolling
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+
+                    item {
+                        UserOverview(
+                            totalDistance = state.goalMetrics.totalDistance,
+                            target = state.goalMetrics.goalDistance
+                        )
+                    }
+
+                    item {
+                        WeeklyStreakIndicator(progress = state.weeklyProgress)
+                    }
+
                     items(
                         items = state.runs,
                         key = { it.id } // unique identifiers optimize our lazy list
@@ -155,18 +169,11 @@ private fun RunOverviewScreen(
                         RunListItem(
                             runUi = it,
                             onDeleteClick = { onAction(RunOverviewAction.DeleteRun(it)) },
-                            modifier =
-                                Modifier
-                                    .animateItemPlacement()
+                            modifier = Modifier
+                                .animateItemPlacement()
                         )
                     }
                 }
-//                    BuddyMainCard(
-//                        isExpanded = state.runs.isEmpty(),
-//                        modifier = Modifier
-//                            .padding(paddingValues)
-//                            .padding(bottom = 42.dp)
-//                    )
             }
         }
     }
@@ -189,35 +196,41 @@ private fun RunOverviewScreenWithRunsPreview() {
     RunBuddyTheme {
         RunOverviewScreen(
             RunOverviewState(
-                runs =
-                    listOf(
-                        RunUi(
-                            id = "",
-                            duration = "34mins",
-                            dateTime = "nov 4",
-                            distance = "45m",
-                            avgSpeed = "34 kmh",
-                            maxSpeed = "900 kmh",
-                            pace = "4:00",
-                            totalElevation = "5m",
-                            mapPictureUrl = "",
-                            avgHeartRate = "90 bpm",
-                            maxHeartRate = "100 bpm"
-                        ),
-                        RunUi(
-                            id = "12",
-                            duration = "34mins",
-                            dateTime = "nov 4",
-                            distance = "45m",
-                            avgSpeed = "34 kmh",
-                            maxSpeed = "900 kmh",
-                            pace = "4:00",
-                            totalElevation = "5m",
-                            mapPictureUrl = "",
-                            avgHeartRate = "90 bpm",
-                            maxHeartRate = "100 bpm"
-                        )
+                weeklyProgress = listOf(
+                    WeeklyProgress("M", false),
+                    WeeklyProgress("T", true),
+                    WeeklyProgress("W", false),
+                    WeeklyProgress("TH", true),
+                    WeeklyProgress("G", true),
+                ),
+                runs = listOf(
+                    RunUi(
+                        id = "",
+                        duration = "34mins",
+                        dateTime = "nov 4",
+                        distance = "45m",
+                        avgSpeed = "34 kmh",
+                        maxSpeed = "900 kmh",
+                        pace = "4:00",
+                        totalElevation = "5m",
+                        mapPictureUrl = "",
+                        avgHeartRate = "90 bpm",
+                        maxHeartRate = "100 bpm"
+                    ),
+                    RunUi(
+                        id = "12",
+                        duration = "34mins",
+                        dateTime = "nov 4",
+                        distance = "45m",
+                        avgSpeed = "34 kmh",
+                        maxSpeed = "900 kmh",
+                        pace = "4:00",
+                        totalElevation = "5m",
+                        mapPictureUrl = "",
+                        avgHeartRate = "90 bpm",
+                        maxHeartRate = "100 bpm"
                     )
+                )
             ),
             onAction = {}
         )

@@ -77,15 +77,14 @@ fun RunListItem(
 
     Box {
         Column(
-            modifier =
-                modifier
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                    .combinedClickable(
-                        onClick = {
-                            isExpanded = !isExpanded
-                        }
-                    ).padding(16.dp),
+            modifier = modifier
+                .clip(RoundedCornerShape(15.dp))
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .combinedClickable(
+                    onClick = {
+                        isExpanded = !isExpanded
+                    }
+                ).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             MapImage(imageUrl = runUi.mapPictureUrl)
@@ -95,9 +94,8 @@ fun RunListItem(
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 RunningTimeSection(
                     duration = runUi.duration
@@ -207,7 +205,7 @@ private fun RunningTimeSection(
             Icon(
                 imageVector = RunOutlinedIcon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onTertiaryContainer
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -332,27 +330,6 @@ private fun DataGrid(
                         }
             )
         }
-    }
-}
-
-@Composable
-private fun DataGridCell(
-    run: RunCellData,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(
-            text = run.name,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontSize = 12.sp
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = run.value,
-            color = MaterialTheme.colorScheme.onSurface
-        )
     }
 }
 

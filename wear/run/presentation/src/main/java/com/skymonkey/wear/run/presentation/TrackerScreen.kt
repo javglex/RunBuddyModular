@@ -197,7 +197,9 @@ private fun TrackerScreen(
                         } else {
                             MaterialTheme.colorScheme.error
                         },
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .offset(y = 10.dp)
                 )
                 RunDataCard(
                     drawable = R.drawable.calories_burned_icon,
@@ -212,7 +214,9 @@ private fun TrackerScreen(
                     drawable = R.drawable.run_icon,
                     drawableTint = RunbuddyBlue,
                     value = (state.distanceMeters / 1000.0).toFormattedKm(),
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .offset(y = 10.dp)
                 )
             }
 

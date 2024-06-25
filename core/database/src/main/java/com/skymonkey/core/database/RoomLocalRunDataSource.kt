@@ -20,8 +20,13 @@ class RoomLocalRunDataSource(
     private val runDao: RunDao
 ) : LocalRunDataSource {
     override fun getRuns(): Flow<List<Run>> =
-        runDao
-            .getRuns()
+        runDao.getRuns()
+            .map { runEntities ->
+                runEntities.map { it.toRun() }
+            }
+
+    override fun getRecentRuns(size: Int): Flow<List<Run>> =
+        runDao.getRecentRuns(size)
             .map { runEntities ->
                 runEntities.map { it.toRun() }
             }
