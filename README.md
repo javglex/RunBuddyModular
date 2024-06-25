@@ -1,4 +1,4 @@
-RunBuddy (READ ME AND PROJECT UNDER CONSTRUCTION. FUNCTIONAL BUT DO NOT BUILD.)
+RunBuddy (READ ME AND PROJECT UNDER CONSTRUCTION)
 -----
 
 Offline-first Android application for tracking runs (ktor/room/koin/multi-module/convention-plugins).
@@ -18,6 +18,21 @@ One feature in particular (analytics screen) is separated into a dynamic feature
 This app is an exercise for ATEC. It showcases the use of uses BLOC architecture,
 themeing, styling, and clean code practices.
 
+| Home Dark | Home Light | Tracking Run |
+|--------------|--------------|--------------|
+| ![Screenshot_20240624_220552](https://github.com/javglex/RunBuddyModular/assets/6698872/34215616-bc0f-4520-8aa8-36f7751fad45) | ![Screenshot_20240624_220254](https://github.com/javglex/RunBuddyModular/assets/6698872/d1b94e55-7db3-4cdf-8123-bf637678d8e9) | ![Screenshot_20240624_220325](https://github.com/javglex/RunBuddyModular/assets/6698872/873c4ce6-abdd-40eb-8c63-c5620f44884d) |
+
+| Intro | Sign-In Light | Sign-in Dark |
+|--------------|--------------|--------------|
+| ![Screenshot_20240624_220410](https://github.com/javglex/RunBuddyModular/assets/6698872/ffd29cb5-6718-4c7f-85a2-e38fd7f5f5b3) | ![Screenshot_20240624_220443](https://github.com/javglex/RunBuddyModular/assets/6698872/a010a3f2-0dea-462d-adfe-664519b1e367) | ![Screenshot_20240624_220509](https://github.com/javglex/RunBuddyModular/assets/6698872/4cf310b6-1927-4cac-9ca4-e4e1e9979387) |
+
+| WearOS pre-workout | WearOS in-workout
+|--------------|--------------|
+| ![Screenshot_20240624_221608](https://github.com/javglex/RunBuddyModular/assets/6698872/f5f54a80-0218-46b2-b74e-63a316addbb1) | ![Screenshot_20240624_221524](https://github.com/javglex/RunBuddyModular/assets/6698872/270cc30b-122a-478d-91ed-81b1981c1d41) |
+
+
+
+
 Main features:
 
 * Registration (currently offline, but ready for online support)
@@ -31,7 +46,10 @@ Main features:
 * Foreground service for tracking runs while app is closed or in background.
 * WearOS heart-rate tracking
 * WearOS workout controls
-* 
+
+
+
+
 ## Tech Stack (Dependencies)
 * **ktor** for network api requests
 * **room** for storing data locally
