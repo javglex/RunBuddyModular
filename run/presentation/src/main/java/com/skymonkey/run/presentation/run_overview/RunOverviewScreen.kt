@@ -133,7 +133,6 @@ private fun RunOverviewScreen(
                     .padding(top = 32.dp)
                     .fillMaxSize()
             ) {
-//                    BuddyMainCard(isExpanded = state.runs.isEmpty())
                 Spacer(modifier = Modifier.padding(16.dp))
                 Text(
                     text = stringResource(id = R.string.no_runs_recorded),

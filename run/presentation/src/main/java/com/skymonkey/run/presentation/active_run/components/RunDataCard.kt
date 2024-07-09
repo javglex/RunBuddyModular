@@ -28,13 +28,14 @@ import com.skymonkey.core.presentation.ui.toFormattedKm
 import com.skymonkey.core.presentation.ui.toFormattedPaceMetric
 import com.skymonkey.run.domain.RunData
 import com.skymonkey.run.presentation.R
+import com.skymonkey.run.presentation.active_run.model.RunDataUi
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
 fun RunDataCard(
     elapsedTime: Duration,
-    runData: RunData,
+    runData: RunDataUi,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -52,35 +53,28 @@ fun RunDataCard(
         )
         Spacer(modifier = Modifier.height(24.dp))
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             RunDataItem(
                 title = stringResource(id = R.string.distance),
-                value = (runData.distanceMeters / 1000.0).toFormattedKm(),
-                modifier =
-                    Modifier
-                        .defaultMinSize(75.dp)
+                value = runData.distance,
+                modifier = Modifier
+                    .defaultMinSize(75.dp)
             )
             RunDataItem(
                 title = stringResource(id = R.string.heart_rate),
                 value = runData.heartRates.lastOrNull().toFormattedHeartRate(),
-                modifier =
-                    Modifier
-                        .defaultMinSize(75.dp)
+                modifier = Modifier
+                    .defaultMinSize(75.dp)
             )
             RunDataItem(
                 title = stringResource(id = R.string.pace),
-                value =
-                    elapsedTime.toFormattedPaceMetric(
-                        distanceKm = (runData.distanceMeters / 1000.0)
-                    ),
-                modifier =
-                    Modifier
-                        .defaultMinSize(75.dp)
+                value = runData.pace,
+                modifier = Modifier
+                    .defaultMinSize(75.dp)
             )
         }
     }
@@ -117,9 +111,10 @@ private fun RunDataCardPreview() {
         RunDataCard(
             elapsedTime = 10.minutes,
             runData =
-                RunData(
+                RunDataUi(
                     distanceMeters = 12,
-                    pace = 3.minutes,
+                    distance = "12",
+                    pace = "3:00",
                     heartRates = listOf(90)
                 )
         )

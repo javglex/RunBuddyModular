@@ -12,11 +12,14 @@ import com.skymonkey.core.domain.location.Location
 import com.skymonkey.core.domain.location.LocationTimestamp
 import com.skymonkey.core.domain.run.Run
 import com.skymonkey.core.domain.run.RunRepository
+import com.skymonkey.core.domain.user.UserInfoStorage
 import com.skymonkey.core.presentation.service.ActiveRunService
 import com.skymonkey.core.presentation.ui.asUiText
 import com.skymonkey.run.domain.LocationDataCalculator
+import com.skymonkey.run.domain.RunData
 import com.skymonkey.run.domain.RunningTracker
 import com.skymonkey.run.domain.WatchConnector
+import com.skymonkey.run.presentation.active_run.model.toRunDataUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -38,12 +41,14 @@ import timber.log.Timber
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.math.roundToInt
+import kotlin.time.Duration
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker,
     private val runRepository: RunRepository,
     private val watchConnector: WatchConnector,
+    private val userInfoStorage: UserInfoStorage,
     private val applicationScope: CoroutineScope
 ) : ViewModel() {
     private var previousLocations: List<List<LocationTimestamp>> = emptyList()
@@ -58,6 +63,8 @@ class ActiveRunViewModel(
 
     private val eventChannel = Channel<ActiveRunEvent>()
     val events = eventChannel.receiveAsFlow()
+
+    private var elapsedTime: Duration = Duration.ZERO
 
     private val shouldTrack =
         snapshotFlow {
@@ -111,29 +118,33 @@ class ActiveRunViewModel(
                 state = state.copy(currentLocation = it?.location)
             }.launchIn(viewModelScope)
 
-        runningTracker
-            .runData
-            .flatMapConcat { runData ->
-                throttleRunData(
-                    runData.locations,
-                    previousLocations,
-                    loading = {
-                        state = state.copy(showLoadingChunks = true)
-                    },
-                    finished = {
-                        state = state.copy(showLoadingChunks = false)
+        viewModelScope.launch {
+            val isMetricUnits = userInfoStorage.getMetricUnitSetting()
+            runningTracker
+                .runData
+                .flatMapConcat { runData ->
+                    throttleRunData(
+                        runData.locations,
+                        previousLocations,
+                        loading = {
+                            state = state.copy(showLoadingChunks = true)
+                        },
+                        finished = {
+                            state = state.copy(showLoadingChunks = false)
+                        }
+                    ).map { locations ->
+                        runData.copy(locations = locations)
                     }
-                ).map { locations ->
-                    runData.copy(locations = locations)
-                }
-            }.onEach { runData ->
-                previousLocations = runData.locations
-                state = state.copy(runData = runData)
-            }.launchIn(viewModelScope)
+                }.onEach { runData ->
+                    previousLocations = runData.locations
+                    state = state.copy(runData = runData.toRunDataUi(isMetricUnits, elapsedTime))
+                }.launchIn(this)
+        }
 
         runningTracker
             .elapsedTime
             .onEach {
+                elapsedTime = it
                 state = state.copy(elapsedTime = it)
             }.launchIn(viewModelScope)
 
@@ -165,50 +176,43 @@ class ActiveRunViewModel(
 
         when (action) {
             ActiveRunAction.OnFinishRunClick -> {
-                state =
-                    state.copy(
-                        isRunFinished = true,
-                        isSaving = true
-                    )
+                state = state.copy(
+                    isRunFinished = true,
+                    isSaving = true
+                )
             }
             ActiveRunAction.OnResumeRunClick -> {
-                state =
-                    state.copy(
-                        shouldTrack = true
-                    )
+                state = state.copy(
+                    shouldTrack = true
+                )
             }
             ActiveRunAction.OnBackClick -> {
-                state =
-                    state.copy(
-                        shouldTrack = false
-                    )
+                state = state.copy(
+                    shouldTrack = false
+                )
             }
             ActiveRunAction.OnToggleRunClick -> {
-                state =
-                    state.copy(
-                        hasStartedRunning = true,
-                        shouldTrack = !state.shouldTrack
-                    )
+                state = state.copy(
+                    hasStartedRunning = true,
+                    shouldTrack = !state.shouldTrack
+                )
             }
             is ActiveRunAction.SubmitLocationPermissionInfo -> {
                 hasLocationPermission.value = action.acceptedLocationPermission
-                state =
-                    state.copy(
-                        showLocationRationale = action.showLocationRationale
-                    )
+                state = state.copy(
+                    showLocationRationale = action.showLocationRationale
+                )
             }
             is ActiveRunAction.SubmitNotificationPermissionInfo -> {
-                state =
-                    state.copy(
-                        showNotificationRationale = action.showNotificationRationale
-                    )
+                state = state.copy(
+                    showNotificationRationale = action.showNotificationRationale
+                )
             }
             is ActiveRunAction.DismissRationaleDialog -> {
-                state =
-                    state.copy(
-                        showNotificationRationale = false,
-                        showLocationRationale = false
-                    )
+                state = state.copy(
+                    showNotificationRationale = false,
+                    showLocationRationale = false
+                )
             }
             is ActiveRunAction.OnRunProcessed -> {
                 finishRun(action.mapPictureBytes)
@@ -255,8 +259,7 @@ class ActiveRunViewModel(
         }
 
         viewModelScope.launch {
-            val run =
-                Run(
+            val run = Run(
                     id = null,
                     duration = state.elapsedTime,
                     dateTimeUtc =

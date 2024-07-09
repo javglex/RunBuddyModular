@@ -197,8 +197,7 @@ private fun ActiveRunScreen(
         },
         floatingActionButton = {
             RunFloatingActionButton(
-                icon =
-                    if (state.shouldTrack) {
+                icon = if (state.shouldTrack) {
                         StopIcon
                     } else {
                         StartIcon
@@ -207,8 +206,7 @@ private fun ActiveRunScreen(
                     onAction(ActiveRunAction.OnToggleRunClick)
                 },
                 iconSize = 20.dp,
-                contentDescription =
-                    if (state.shouldTrack) {
+                contentDescription = if (state.shouldTrack) {
                         stringResource(id = R.string.pause_run)
                     } else {
                         stringResource(id = R.string.start_run)
@@ -217,10 +215,9 @@ private fun ActiveRunScreen(
         }
     ) { paddingValues ->
         Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             TrackerMap(
                 isRunFinished = state.isRunFinished,
@@ -244,18 +241,16 @@ private fun ActiveRunScreen(
             RunDataCard(
                 elapsedTime = state.elapsedTime,
                 runData = state.runData,
-                modifier =
-                    Modifier
-                        .padding(16.dp)
-                        .padding(paddingValues)
-                        .fillMaxWidth()
+                modifier = Modifier
+                    .padding(16.dp)
+                    .padding(paddingValues)
+                    .fillMaxWidth()
             )
             if (state.showLoadingChunks) {
                 Box(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(.75f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(.75f),
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     Column(

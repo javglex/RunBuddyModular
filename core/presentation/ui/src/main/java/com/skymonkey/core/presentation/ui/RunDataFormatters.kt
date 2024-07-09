@@ -27,7 +27,7 @@ fun Double.toFormattedMph(): String = "${this.roundToDecimals(1)} mph"
 
 fun Int.toFormattedMeters(): String = "$this m"
 fun Int.toFormattedFeet(): String = "$this ft"
-fun Double.metersToKm(): String = "${(this/1000.0)} km"
+fun Double.metersToKm(): String = "${(this/1000.0).roundToDecimals(1)} km"
 
 fun Duration.toFormattedPaceMetric(distanceKm: Double): String {
     if (this == Duration.ZERO || distanceKm <= 0.0) {

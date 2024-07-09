@@ -90,11 +90,10 @@ class RunningTracker(
             .onEach { isTracking ->
                 // when no longer tracking, append an empty list
                 if (!isTracking) {
-                    val newList =
-                        buildList {
-                            addAll(runData.value.locations)
-                            add(emptyList<LocationTimestamp>())
-                        }.toList()
+                    val newList = buildList {
+                        addAll(runData.value.locations)
+                        add(emptyList<LocationTimestamp>())
+                    }.toList()
                     _runData.update {
                         it.copy(
                             locations = newList // update our location state with new list which includes empty list at end
