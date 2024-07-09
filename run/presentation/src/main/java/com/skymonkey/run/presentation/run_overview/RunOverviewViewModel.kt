@@ -17,6 +17,7 @@ import com.skymonkey.run.presentation.run_overview.model.WeeklyProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.minutes
 
@@ -28,6 +29,7 @@ class RunOverviewViewModel(
     private val userInfoStorage: UserInfoStorage,
     private val applicationScope: CoroutineScope
 ) : ViewModel() {
+
     var state by mutableStateOf(RunOverviewState())
         private set
 
@@ -56,12 +58,15 @@ class RunOverviewViewModel(
         }
 
         // fetch runs from db
-        runRepository
-            .getRecentRuns(5)
-            .onEach { runs ->
-                val runsUi = runs.map { it.toRunUI() }
-                state = state.copy(runs = runsUi)
-            }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            val isMetricUnits = userInfoStorage.getMetricUnitSetting()
+            runRepository
+                .getRecentRuns(5)
+                .onEach { runs ->
+                    val runsUi = runs.map { it.toRunUI(isMetric = isMetricUnits) }
+                    state = state.copy(runs = runsUi)
+                }.launchIn(this)
+        }
 
         // fetch total distance used for overview metrics card
         viewModelScope.launch {
@@ -82,14 +87,13 @@ class RunOverviewViewModel(
 
     fun onAction(action: RunOverviewAction) {
         when (action) {
-            RunOverviewAction.OnAnalyticsClick -> Unit
             RunOverviewAction.OnLogoutClick -> logout()
-            RunOverviewAction.OnStartClick -> Unit
             is RunOverviewAction.DeleteRun -> {
                 viewModelScope.launch {
                     runRepository.deleteRun(action.runUi.id)
                 }
             }
+            else -> Unit
         }
     }
 

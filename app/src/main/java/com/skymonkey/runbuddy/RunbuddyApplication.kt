@@ -12,6 +12,7 @@ import com.skymonkey.run.data.di.runDataModule
 import com.skymonkey.run.location.di.locationModule
 import com.skymonkey.run.network.di.networkModule
 import com.skymonkey.run.presentation.di.runPresentationModule
+import com.skymonkey.run.presentation.settings.di.settingPresentationModule
 import com.skymonkey.runbuddy.di.appModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -44,6 +45,7 @@ class RunbuddyApplication : Application() {
                 networkModule,
                 coreDataModule,
                 runDataModule,
+                settingPresentationModule,
                 coreConnectivityDataModule,
                 appModule
             )

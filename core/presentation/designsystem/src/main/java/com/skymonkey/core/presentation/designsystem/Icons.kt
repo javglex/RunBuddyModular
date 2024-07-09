@@ -92,6 +92,10 @@ val RunIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.run)
 
+val SettingsIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.settings_icon)
+
 val StartIcon: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.start)

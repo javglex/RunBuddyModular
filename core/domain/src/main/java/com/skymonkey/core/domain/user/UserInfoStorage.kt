@@ -12,4 +12,10 @@ interface UserInfoStorage {
 
     suspend fun setGoals(userGoals: UserGoals?)
 
+    /**
+     * Fetches units setting to determine whether to display imperial or metric units.
+     */
+    suspend fun getMetricUnitSetting(): Boolean
+    suspend fun setMetricUnitSetting(enabled: Boolean)
+
 }

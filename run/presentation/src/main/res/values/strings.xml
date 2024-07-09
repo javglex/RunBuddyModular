@@ -42,4 +42,6 @@
     <string name="goal">Your Goal</string>
     <string name="total_distance">Total distance</string>
     <string name="target_distance">Target</string>
+    <string name="settings">Settings</string>
+    <string name="enable_metric_units">Use metric units</string>
 </resources>

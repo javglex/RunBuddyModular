@@ -21,12 +21,15 @@ fun Duration.formatted(): String {
 }
 
 fun Double.toFormattedKm(): String = "${this.roundToDecimals(1)} km"
+fun Double.toFormattedMi(): String = "${this.roundToDecimals(1)} mi"
 fun Double.toFormattedKmh(): String = "${this.roundToDecimals(1)} km/h"
+fun Double.toFormattedMph(): String = "${this.roundToDecimals(1)} mph"
 
 fun Int.toFormattedMeters(): String = "$this m"
+fun Int.toFormattedFeet(): String = "$this ft"
 fun Double.metersToKm(): String = "${(this/1000.0)} km"
 
-fun Duration.toFormattedPace(distanceKm: Double): String {
+fun Duration.toFormattedPaceMetric(distanceKm: Double): String {
     if (this == Duration.ZERO || distanceKm <= 0.0) {
         return "-"
     }
@@ -35,6 +38,17 @@ fun Duration.toFormattedPace(distanceKm: Double): String {
     val avgPaceSeconds = String.format(Locale.ROOT, "%02d", secondsPerKm % 60) // modulus removes minutes from secondsPerJm
 
     return "$avgPaceMinutes:$avgPaceSeconds / km"
+}
+
+fun Duration.toFormattedPaceImperial(distanceMi: Double): String {
+    if (this == Duration.ZERO || distanceMi <= 0.0) {
+        return "-"
+    }
+    val secondsPerMi = (this.inWholeSeconds / distanceMi).roundToInt()
+    val avgPaceMinutes = secondsPerMi / 60
+    val avgPaceSeconds = String.format(Locale.ROOT, "%02d", secondsPerMi % 60) // modulus removes minutes from secondsPerJm
+
+    return "$avgPaceMinutes:$avgPaceSeconds / mi"
 }
 
 // rounds decimal places by decimalCount. e.g:

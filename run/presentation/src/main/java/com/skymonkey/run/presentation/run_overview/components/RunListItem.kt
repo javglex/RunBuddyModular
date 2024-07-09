@@ -189,17 +189,15 @@ private fun RunningTimeSection(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier =
-                Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(
-                        MaterialTheme.colorScheme.surfaceContainerLow
-                    ).border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        shape = RoundedCornerShape(10.dp)
-                    ).padding(4.dp),
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    shape = RoundedCornerShape(10.dp)
+                ).padding(4.dp),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -286,7 +284,7 @@ private fun DataGrid(
             ),
             RunCellData(
                 name = stringResource(id = R.string.avg_speed),
-                value = run.distance
+                value = run.avgSpeed
             ),
             RunCellData(
                 name = stringResource(id = R.string.max_speed),

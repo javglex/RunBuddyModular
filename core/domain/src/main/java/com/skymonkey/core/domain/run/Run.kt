@@ -22,4 +22,13 @@ data class Run(
 ) {
     val avgSpeedKmh: Double
         get() = (distanceMeters / 1000.0) / duration.toDouble(DurationUnit.HOURS)
+
+    val avgSpeedMph: Double
+        get() = (distanceMeters / 1609.344) / duration.toDouble(DurationUnit.HOURS)
+
+    val maxSpeedMph: Double
+        get() = (maxSpeedKmh * 0.621371)
+
+    val totalElevationFeet: Int
+        get() = (totalElevationMeters * 3.28084).toInt()
 }

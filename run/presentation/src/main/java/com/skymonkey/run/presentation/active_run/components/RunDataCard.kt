@@ -25,7 +25,7 @@ import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.ui.formatted
 import com.skymonkey.core.presentation.ui.toFormattedHeartRate
 import com.skymonkey.core.presentation.ui.toFormattedKm
-import com.skymonkey.core.presentation.ui.toFormattedPace
+import com.skymonkey.core.presentation.ui.toFormattedPaceMetric
 import com.skymonkey.run.domain.RunData
 import com.skymonkey.run.presentation.R
 import kotlin.time.Duration
@@ -75,7 +75,7 @@ fun RunDataCard(
             RunDataItem(
                 title = stringResource(id = R.string.pace),
                 value =
-                    elapsedTime.toFormattedPace(
+                    elapsedTime.toFormattedPaceMetric(
                         distanceKm = (runData.distanceMeters / 1000.0)
                     ),
                 modifier =

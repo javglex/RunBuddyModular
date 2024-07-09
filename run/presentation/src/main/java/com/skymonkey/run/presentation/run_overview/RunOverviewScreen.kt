@@ -31,6 +31,7 @@ import com.skymonkey.core.presentation.designsystem.LogoIcon
 import com.skymonkey.core.presentation.designsystem.LogoutIcon
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.designsystem.RunIcon
+import com.skymonkey.core.presentation.designsystem.SettingsIcon
 import com.skymonkey.core.presentation.designsystem.components.AppMenuToolbar
 import com.skymonkey.core.presentation.designsystem.components.RunBuddyScaffold
 import com.skymonkey.core.presentation.designsystem.components.RunFloatingActionButton
@@ -48,6 +49,7 @@ fun RunOverviewScreenRoot(
     onStartRunClick: () -> Unit,
     onLogoutClick: () -> Unit,
     onAnalyticsClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     viewModel: RunOverviewViewModel = koinViewModel()
 ) {
     RunOverviewScreen(
@@ -57,6 +59,7 @@ fun RunOverviewScreenRoot(
                 RunOverviewAction.OnAnalyticsClick -> onAnalyticsClick()
                 RunOverviewAction.OnStartClick -> onStartRunClick()
                 RunOverviewAction.OnLogoutClick -> onLogoutClick()
+                RunOverviewAction.OnSettingsClick -> onSettingsClick()
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -85,6 +88,10 @@ private fun RunOverviewScreen(
                 menuItems =
                     listOf(
                         DropDownItem(
+                            icon = SettingsIcon,
+                            title = stringResource(id = R.string.settings)
+                        ),
+                        DropDownItem(
                             icon = AnalyticsIcon,
                             title = stringResource(id = R.string.analytics)
                         ),
@@ -95,8 +102,9 @@ private fun RunOverviewScreen(
                     ),
                 onMenuItemClick = { index ->
                     when (index) {
-                        0 -> onAction(RunOverviewAction.OnAnalyticsClick)
-                        1 -> onAction(RunOverviewAction.OnLogoutClick)
+                        0 -> onAction(RunOverviewAction.OnSettingsClick)
+                        1 -> onAction(RunOverviewAction.OnAnalyticsClick)
+                        2 -> onAction(RunOverviewAction.OnLogoutClick)
                     }
                 },
                 startContent = {

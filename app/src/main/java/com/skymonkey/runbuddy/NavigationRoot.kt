@@ -1,5 +1,6 @@
 package com.skymonkey.runbuddy
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -14,6 +15,7 @@ import com.skymonkey.auth.presentation.register.RegisterScreenRoot
 import com.skymonkey.core.presentation.service.ActiveRunService
 import com.skymonkey.run.presentation.active_run.ActiveRunScreenRoot
 import com.skymonkey.run.presentation.run_overview.RunOverviewScreenRoot
+import com.skymonkey.run.presentation.settings.SettingScreenRoot
 
 @Composable
 fun NavigationRoot(
@@ -105,6 +107,9 @@ private fun NavGraphBuilder.runGraph(
                 onStartRunClick = {
                     navController.navigate("active_run")
                 },
+                onSettingsClick = {
+                    navController.navigate("settings")
+                },
                 onAnalyticsClick = onAnalyticsClick
             )
         }
@@ -131,6 +136,15 @@ private fun NavGraphBuilder.runGraph(
                     } else {
                         context.startService(ActiveRunService.createStopIntent(context))
                     }
+                }
+            )
+        }
+        composable(
+            route = "settings",
+        ) {
+            SettingScreenRoot(
+                onNavigateBack = {
+                    navController.navigateUp()
                 }
             )
         }
