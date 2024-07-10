@@ -14,6 +14,7 @@ import com.skymonkey.core.domain.run.Run
 import com.skymonkey.core.domain.run.RunId
 import com.skymonkey.core.domain.run.RunRepository
 import com.skymonkey.core.domain.run.SyncRunScheduler
+import com.skymonkey.core.domain.run.Weekday
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -59,6 +60,12 @@ class OfflineRunRepository(
                     }.await()
             }
         }
+
+    /**
+     * Fetches days in the current week in which user completed at least one run.
+     */
+    override suspend fun fetchWeekDaysRan(): Flow<List<Weekday>> =
+        localRunDataSource.getWeekdaysCompleted()
 
     override suspend fun upsertRun(
         run: Run,

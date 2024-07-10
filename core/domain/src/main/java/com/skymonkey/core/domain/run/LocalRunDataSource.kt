@@ -15,6 +15,8 @@ interface LocalRunDataSource {
 
     fun getRecentRuns(size: Int): Flow<List<Run>>
 
+    fun getWeekdaysCompleted(): Flow<List<Weekday>>
+
     /**
      * Inserts or updates a run.
      * @param run the run session to insert or update

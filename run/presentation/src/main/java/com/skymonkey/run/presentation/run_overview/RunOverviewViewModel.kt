@@ -35,15 +35,18 @@ class RunOverviewViewModel(
 
     init {
 
-        state = state.copy(weeklyProgress = listOf(
-            WeeklyProgress("M", true),
-            WeeklyProgress("T", false),
-            WeeklyProgress("W", true),
-            WeeklyProgress("TH", false),
-            WeeklyProgress("F", true),
-            WeeklyProgress("Sa", false),
-            WeeklyProgress("Su", true),
-        ))
+        viewModelScope.launch {
+            runRepository.fetchWeekDaysRan().onEach { weekdays ->
+
+                val weekdaysMapped = weekdays.map {
+                    WeeklyProgress(it.dayOfWeek.name.substring(0..1), it.completedRun)
+                }
+                state = state.copy(
+                    weeklyProgress = weekdaysMapped
+                )
+            }.launchIn(this)
+
+        }
 
         viewModelScope.launch {
             userInfoStorage.setGoals(UserGoals(300_000.0, 1))

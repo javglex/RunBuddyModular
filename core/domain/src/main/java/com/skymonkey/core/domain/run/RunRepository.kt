@@ -11,6 +11,8 @@ interface RunRepository {
 
     suspend fun fetchRuns(): EmptyResult<DataError>
 
+    suspend fun fetchWeekDaysRan(): Flow<List<Weekday>>
+
     suspend fun upsertRun(
         run: Run,
         mapPicture: ByteArray
