@@ -65,7 +65,7 @@ internal fun Project.configureBuildTypes(
 
 private fun BuildType.configureDebugBuildType(apiKey: String) {
     buildConfigField("String", "API_KEY", "\"$apiKey\"")
-    buildConfigField("String", "BASE_URL", "\"https://runique.pl-coding.com:8080\"")
+    buildConfigField("String", "BASE_URL", "\" https://runbuddy-45efafb71efb.herokuapp.com\"")
 }
 
 private fun BuildType.configureReleaseBuildType(
@@ -73,7 +73,7 @@ private fun BuildType.configureReleaseBuildType(
     apiKey: String
 ) {
     buildConfigField("String", "API_KEY", "\"$apiKey\"")
-    buildConfigField("String", "BASE_URL", "\"https://runique.pl-coding.com:8080\"")
+    buildConfigField("String", "BASE_URL", "\" https://runbuddy-45efafb71efb.herokuapp.com\"")
 
     isMinifyEnabled = true // true enabled 8 to shrink apk to remove unecessary resources and obfuscate code.
     proguardFiles(

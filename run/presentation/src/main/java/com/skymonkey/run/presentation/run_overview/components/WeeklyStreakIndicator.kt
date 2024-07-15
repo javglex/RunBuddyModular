@@ -3,10 +3,12 @@ package com.skymonkey.run.presentation.run_overview.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,7 +37,9 @@ fun WeeklyStreakIndicator(
         modifier = modifier
             .clip(RoundedCornerShape(15.dp))
             .background(MaterialTheme.colorScheme.surfaceContainer)
+            .fillMaxWidth()
             .padding(16.dp),
+        horizontalAlignment = Alignment.Start
     ) {
         Text(
             text = stringResource(id = R.string.weekly_progress_title),
@@ -44,10 +48,12 @@ fun WeeklyStreakIndicator(
         Spacer(modifier = Modifier.padding(4.dp))
         Row(
             modifier = modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             progress.forEach { day ->
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         modifier = Modifier,

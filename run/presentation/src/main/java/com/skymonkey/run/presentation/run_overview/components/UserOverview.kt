@@ -56,10 +56,10 @@ fun UserOverview(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
             .clip(RoundedCornerShape(15.dp))
-            .background(MaterialTheme.colorScheme.secondaryContainer),
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
     ){
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -81,10 +81,11 @@ fun UserOverview(
             )
         }
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(32.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 8.dp)
+                .padding(bottom = 16.dp)
         ) {
             DataGridCell(
                 modifier = Modifier

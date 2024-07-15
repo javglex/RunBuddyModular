@@ -30,20 +30,18 @@ class HttpClientFactory(
             install(ContentNegotiation) {
                 // parsing data and converting json
                 json(
-                    json =
-                        Json {
-                            ignoreUnknownKeys = true // ignore unknown json fields. prevents crashes
-                        }
+                    json = Json {
+                        ignoreUnknownKeys = true // ignore unknown json fields. prevents crashes
+                    }
                 )
             }
             install(Logging) {
                 // for debugging
-                logger =
-                    object : Logger {
-                        override fun log(message: String) {
-                            Timber.d(message)
-                        }
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        Timber.d(message)
                     }
+                }
                 level = LogLevel.ALL
             }
             defaultRequest {
