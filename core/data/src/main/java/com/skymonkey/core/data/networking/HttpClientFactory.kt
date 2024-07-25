@@ -27,6 +27,7 @@ class HttpClientFactory(
     fun build(): HttpClient =
         HttpClient(CIO) {
             // CIO is an engine similar to okhttp
+
             install(ContentNegotiation) {
                 // parsing data and converting json
                 json(
@@ -65,7 +66,7 @@ class HttpClientFactory(
                         // fetch a new access token, using refresh token
                         val response =
                             client.post<AccessTokenRequest, AccessTokenResponse>(
-                                route = "/accessToken",
+                                route = "/refreshToken",
                                 body =
                                     AccessTokenRequest(
                                         refreshToken = info?.refreshToken ?: "",

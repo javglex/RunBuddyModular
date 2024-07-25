@@ -40,7 +40,7 @@ class KtorRemoteRunDataSource(
         val result =
             safeCall<RunDto> {
                 httpClient.submitFormWithBinaryData(
-                    url = constructRoute("/run"),
+                    url = constructRoute("/runs"),
                     formData =
                         formData {
                             append(
@@ -72,7 +72,7 @@ class KtorRemoteRunDataSource(
 
     override suspend fun deleteRun(id: String): EmptyResult<DataError.Network> =
         httpClient.delete(
-            route = "/run",
+            route = "/runs",
             queryParameters =
                 mapOf(
                     "id" to id

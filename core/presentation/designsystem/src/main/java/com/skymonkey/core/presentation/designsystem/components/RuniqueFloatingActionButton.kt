@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.designsystem.RunIcon
+import com.skymonkey.core.presentation.designsystem.RunbuddyGreen
 
 @Composable
 fun RunFloatingActionButton(
@@ -28,30 +29,28 @@ fun RunFloatingActionButton(
     iconSize: Dp = 25.dp
 ) {
     Box(
-        modifier =
-            modifier
-                .size(75.dp)
-                .clip(CircleShape)
-                .background(
-                    MaterialTheme.colorScheme.primary.copy(
-                        alpha = 0.3f
-                    )
-                ).clickable(onClick = onClick),
+        modifier = modifier
+            .size(75.dp)
+            .clip(CircleShape)
+            .background(
+                MaterialTheme.colorScheme.primary.copy(
+                    alpha = 0.4f
+                )
+            ).clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier =
-                Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-                    .padding(12.dp),
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(12.dp),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = contentDescription,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                tint = RunbuddyGreen,
                 modifier = Modifier.size(iconSize)
             )
         }
