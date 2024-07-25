@@ -15,14 +15,12 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
          * aliases must match versions in libs.versions.toml
          */
         compileSdk =
-            libs
-                .findVersion("projectCompileSdkVersion")
+            libs.findVersion("projectCompileSdkVersion")
                 .get()
                 .toString()
                 .toInt()
         defaultConfig.minSdk =
-            libs
-                .findVersion("projectMinSdkVersion")
+            libs.findVersion("projectMinSdkVersion")
                 .get()
                 .toString()
                 .toInt()

@@ -53,7 +53,7 @@ internal fun Project.configureBuildTypes(
                             configureDebugBuildType(apiKey)
                         }
                         release {
-                            configureReleaseBuildType(commonExtension, apiKey)
+                            configureReleaseBuildTypeDynamicFeature(commonExtension, apiKey)
                             isMinifyEnabled = false
                         }
                     }
@@ -80,4 +80,15 @@ private fun BuildType.configureReleaseBuildType(
         commonExtension.getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"
     )
+}
+
+private fun BuildType.configureReleaseBuildTypeDynamicFeature(
+    commonExtension: CommonExtension<*, *, *, *, *>,
+    apiKey: String
+) {
+    buildConfigField("String", "API_KEY", "\"$apiKey\"")
+    buildConfigField("String", "BASE_URL", "\"https://runbuddy-45efafb71efb.herokuapp.com\"")
+
+    isMinifyEnabled = true
+    proguardFiles("proguard-rules.pro")
 }

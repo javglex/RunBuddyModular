@@ -30,6 +30,13 @@ class AndroidDynamicFeatureConventionPlugin : Plugin<Project> {
                 addUiLayerDependencies(target)
                 "testImplementation"(kotlin("test"))
             }
+
+            afterEvaluate {
+                // Declare task dependency
+                tasks.named("exportReleaseConsumerProguardFiles").configure {
+                    dependsOn("extractProguardFiles")
+                }
+            }
         }
     }
 }
