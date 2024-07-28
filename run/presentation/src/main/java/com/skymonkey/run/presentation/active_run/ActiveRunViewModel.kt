@@ -217,7 +217,6 @@ class ActiveRunViewModel(
             is ActiveRunAction.OnRunProcessed -> {
                 finishRun(action.mapPictureBytes)
             }
-            else -> {}
         }
     }
 
@@ -225,24 +224,21 @@ class ActiveRunViewModel(
         // handle ui action for our view
         when (action) {
             ActiveRunAction.OnFinishRunClick -> {
-                state =
-                    state.copy(
-                        isRunFinished = true,
-                        isSaving = true
-                    )
+                state = state.copy(
+                    isRunFinished = true,
+                    isSaving = true
+                )
             }
             ActiveRunAction.OnToggleRunClick -> {
-                state =
-                    state.copy(
-                        hasStartedRunning = true,
-                        shouldTrack = !state.shouldTrack
-                    )
+                state = state.copy(
+                    hasStartedRunning = true,
+                    shouldTrack = !state.shouldTrack
+                )
             }
             ActiveRunAction.OnResumeRunClick -> {
-                state =
-                    state.copy(
-                        shouldTrack = true
-                    )
+                state = state.copy(
+                    shouldTrack = true
+                )
             }
             else -> Unit
         }

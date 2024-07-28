@@ -62,12 +62,11 @@ fun ActiveRunScreenRoot(
     ObserveAsEvents(flow = viewModel.events) { event ->
         when (event) {
             is ActiveRunEvent.Error -> {
-                Toast
-                    .makeText(
-                        context,
-                        event.error.asString(context),
-                        Toast.LENGTH_LONG
-                    ).show()
+                Toast.makeText(
+                    context,
+                    event.error.asString(context),
+                    Toast.LENGTH_LONG
+                ).show()
             }
             is ActiveRunEvent.RunSaved -> {
                 onFinishRun()

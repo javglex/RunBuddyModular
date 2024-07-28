@@ -33,7 +33,7 @@ class ActiveRunService : Service() {
         getSystemService<NotificationManager>()
     }
 
-    private val elapsedTime by inject<StateFlow<Duration>>() // ellapsed time provided by RunningTracker via DI
+    private val elapsedTime by inject<StateFlow<Duration>>() // elapsed time provided by RunningTracker via DI
 
     private val baseNotification by lazy {
         NotificationCompat
@@ -79,7 +79,7 @@ class ActiveRunService : Service() {
      */
     private fun start(activityClass: Class<*>) {
         if (!isServiceActive.value) {
-            _isServiceActive.value = false
+            _isServiceActive.value = true
             createNotificationChannel()
 
             val activityIntent =
