@@ -13,4 +13,5 @@ dependencies {
     implementation(projects.analytics.domain)
     implementation(projects.analytics.data)
     implementation(projects.core.database)
+    implementation(libs.feature.delivery.ktx)
 }
