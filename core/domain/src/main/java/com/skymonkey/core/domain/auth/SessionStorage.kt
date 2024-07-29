@@ -1,14 +1,17 @@
 package com.skymonkey.core.domain.auth
 
+import kotlinx.coroutines.flow.StateFlow
+
 /**
  * Used for storing authentication info in local disk.
  */
 interface SessionStorage {
+
     /**
      * Fetches auth info stored in disk.
      * @return [AuthInfo] object containing access & refresh tokens
      */
-    suspend fun get(): AuthInfo?
+    suspend fun get(): StateFlow<AuthInfo?>
 
     /**
      * Saves auth info to disk.

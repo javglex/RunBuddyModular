@@ -4,7 +4,6 @@ package com.skymonkey.run.presentation.run_overview
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -47,7 +47,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun RunOverviewScreenRoot(
     onStartRunClick: () -> Unit,
-    onLogoutClick: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     onAnalyticsClick: () -> Unit,
     onSettingsClick: () -> Unit,
     viewModel: RunOverviewViewModel = koinViewModel()
@@ -58,8 +58,8 @@ fun RunOverviewScreenRoot(
             when (action) {
                 RunOverviewAction.OnAnalyticsClick -> onAnalyticsClick()
                 RunOverviewAction.OnStartClick -> onStartRunClick()
-                RunOverviewAction.OnLogoutClick -> onLogoutClick()
                 RunOverviewAction.OnSettingsClick -> onSettingsClick()
+                RunOverviewAction.OnNavigateLogin -> onNavigateToLogin()
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -74,10 +74,9 @@ private fun RunOverviewScreen(
     onAction: (RunOverviewAction) -> Unit
 ) {
     val topAppBarState = rememberTopAppBarState()
-    var scrollBehavior =
-        TopAppBarDefaults.enterAlwaysScrollBehavior(
-            state = topAppBarState
-        )
+    var scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
+        state = topAppBarState
+    )
 
     RunBuddyScaffold(
         topAppBar = {
@@ -125,6 +124,12 @@ private fun RunOverviewScreen(
         }
     ) { paddingValues ->
 
+        LaunchedEffect(key1 = state.isLoggedIn) {
+            if (!state.isLoggedIn) {
+                onAction(RunOverviewAction.OnNavigateLogin)
+            }
+        }
+
         if (state.runs.isEmpty()) {
             Column(
                 modifier = Modifier
@@ -148,8 +153,7 @@ private fun RunOverviewScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 LazyColumn(
-                    modifier =
-                    Modifier
+                    modifier = Modifier
                         .fillMaxSize()
                         .nestedScroll(scrollBehavior.nestedScrollConnection) // hide our toolbar when scrolling
                         .padding(horizontal = 16.dp)

@@ -5,7 +5,9 @@ import com.skymonkey.core.domain.Result
 import com.skymonkey.core.domain.auth.AuthInfo
 import com.skymonkey.core.domain.auth.SessionStorage
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -14,10 +16,16 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.observer.ResponseObserver
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 
@@ -27,7 +35,6 @@ class HttpClientFactory(
     fun build(): HttpClient =
         HttpClient(CIO) {
             // CIO is an engine similar to okhttp
-
             install(ContentNegotiation) {
                 // parsing data and converting json
                 json(
@@ -54,7 +61,7 @@ class HttpClientFactory(
                 // setup token refresh mechanisms
                 bearer {
                     loadTokens {
-                        val info = sessionStorage.get()
+                        val info = sessionStorage.get().value
                         BearerTokens(
                             accessToken = info?.accessToken ?: "",
                             refreshToken = info?.refreshToken ?: ""
@@ -62,27 +69,31 @@ class HttpClientFactory(
                     }
                     refreshTokens {
                         // invoked if our status is 401
-                        val info = sessionStorage.get()
+                        val info = sessionStorage.get().value
                         // fetch a new access token, using refresh token
-                        val response =
-                            client.post<AccessTokenRequest, AccessTokenResponse>(
-                                route = "/refreshToken",
-                                body =
-                                    AccessTokenRequest(
-                                        refreshToken = info?.refreshToken ?: "",
-                                        userId = info?.userId ?: ""
-                                    )
+                        val response = postTokenRefresh<AccessTokenRequest, AccessTokenResponse>(
+                            client = client,
+                            route = "/refreshToken",
+                            body = AccessTokenRequest(
+                                refreshToken = info?.refreshToken ?: "",
+                                userId = info?.userId ?: ""
                             )
+                        )
+//
+//                        client.post("https://vivek-modi.com/api/v1/session/refresh") {
+//                            markAsRefreshTokenRequest()
+//                            contentType(ContentType.Application.Json)
+//                            setBody(AccessTokenRequest(refreshToken = info?.refreshToken ?: "", userId = info?.userId ?: ""))
+//                        }
 
                         // if successful, save new access token to local storage and return
                         // updated bearer token
                         if (response is Result.Success) {
-                            val newAuthInfo =
-                                AuthInfo(
-                                    accessToken = response.data.accessToken,
-                                    refreshToken = info?.refreshToken ?: "",
-                                    userId = info?.userId ?: ""
-                                )
+                            val newAuthInfo = AuthInfo(
+                                accessToken = response.data.accessToken,
+                                refreshToken = info?.refreshToken ?: "",
+                                userId = info?.userId ?: ""
+                            )
 
                             sessionStorage.set(newAuthInfo)
 
@@ -91,6 +102,7 @@ class HttpClientFactory(
                                 refreshToken = newAuthInfo.refreshToken
                             )
                         } else {
+                            sessionStorage.set(null)
                             BearerTokens(
                                 accessToken = "",
                                 refreshToken = ""

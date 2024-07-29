@@ -14,15 +14,10 @@ class LogoutRepositoryImpl(
     private val client: HttpClient
 ) : LogoutRepository {
     override suspend fun logout(): EmptyResult<DataError.Network> {
-        val result =
-            client
-                .get<Unit>(
-                    route = "/logout"
-                ).asEmptyDataResult()
+        val result = client.get<Unit>(route = "/logout").asEmptyDataResult()
 
         // clear auth tokens
-        client
-            .plugin(Auth)
+        client.plugin(Auth)
             .providers
             .filterIsInstance<BearerAuthProvider>()
             .firstOrNull()

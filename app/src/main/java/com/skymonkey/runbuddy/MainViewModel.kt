@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skymonkey.core.domain.auth.SessionStorage
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -17,10 +19,11 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             state = state.copy(isCheckingAuth = true)
-            state =
-                state.copy(
-                    isLoggedIn = sessionStorage.get() != null
+            sessionStorage.get().onEach {
+                state = state.copy(
+                    isLoggedIn = it != null
                 )
+            }.launchIn(viewModelScope)
             state = state.copy(isCheckingAuth = false)
         }
     }

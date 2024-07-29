@@ -30,6 +30,9 @@ internal fun Project.configureBuildTypes(
                         release {
                             configureReleaseBuildType(commonExtension, apiKey)
                         }
+                        create("staging") {
+                            configureStagingBuildType(apiKey)
+                        }
                     }
                 }
             }
@@ -41,6 +44,9 @@ internal fun Project.configureBuildTypes(
                         }
                         release {
                             configureReleaseBuildType(commonExtension, apiKey)
+                        }
+                        create("staging") {
+                            configureStagingBuildType(apiKey)
                         }
                     }
                 }
@@ -56,6 +62,9 @@ internal fun Project.configureBuildTypes(
                             configureReleaseBuildTypeDynamicFeature(commonExtension, apiKey)
                             isMinifyEnabled = false
                         }
+                        create("staging") {
+                            configureStagingBuildType(apiKey)
+                        }
                     }
                 }
             }
@@ -65,7 +74,12 @@ internal fun Project.configureBuildTypes(
 
 private fun BuildType.configureDebugBuildType(apiKey: String) {
     buildConfigField("String", "API_KEY", "\"$apiKey\"")
-    buildConfigField("String", "BASE_URL", "\" https://runbuddy-45efafb71efb.herokuapp.com\"")
+    buildConfigField("String", "BASE_URL", "\"http://192.168.1.11:8080\"")
+}
+
+private fun BuildType.configureStagingBuildType(apiKey: String) {
+    buildConfigField("String", "API_KEY", "\"$apiKey\"")
+    buildConfigField("String", "BASE_URL", "\"https://runbuddy-45efafb71efb.herokuapp.com\"")
 }
 
 private fun BuildType.configureReleaseBuildType(
@@ -73,7 +87,7 @@ private fun BuildType.configureReleaseBuildType(
     apiKey: String
 ) {
     buildConfigField("String", "API_KEY", "\"$apiKey\"")
-    buildConfigField("String", "BASE_URL", "\" https://runbuddy-45efafb71efb.herokuapp.com\"")
+    buildConfigField("String", "BASE_URL", "\"https://runbuddy-45efafb71efb.herokuapp.com\"")
 
     isMinifyEnabled = true // true enabled 8 to shrink apk to remove unecessary resources and obfuscate code.
     proguardFiles(

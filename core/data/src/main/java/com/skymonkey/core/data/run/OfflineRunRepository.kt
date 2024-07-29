@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -156,7 +157,7 @@ class OfflineRunRepository(
 
     override suspend fun syncPendingRuns() {
         withContext(Dispatchers.IO) {
-            val userId = sessionStorage.get()?.userId ?: return@withContext
+            val userId = sessionStorage.get().value?.userId ?: return@withContext
 
             val createdRuns =
                 async {

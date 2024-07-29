@@ -20,26 +20,23 @@ class AuthRepositoryImpl(
     ): EmptyResult<DataError.Network> =
         httpClient.post<RegisterRequest, Unit>(
             route = "/register",
-            body =
-                RegisterRequest(
-                    email = email,
-                    password = password
-                )
+            body = RegisterRequest(
+                email = email,
+                password = password
+            )
         )
 
     override suspend fun login(
         email: String,
         password: String
     ): EmptyResult<DataError.Network> {
-        val result =
-            httpClient.post<LoginRequest, LoginResponse>(
-                route = "/login",
-                body =
-                    LoginRequest(
-                        email = email,
-                        password = password
-                    )
+        val result = httpClient.post<LoginRequest, LoginResponse>(
+            route = "/login",
+            body = LoginRequest(
+                email = email,
+                password = password
             )
+        )
         if (result is Result.Success) {
             sessionStorage.set(
                 AuthInfo(

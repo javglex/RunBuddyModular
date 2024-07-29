@@ -5,6 +5,8 @@ import com.skymonkey.core.domain.DataError
 import com.skymonkey.core.domain.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.auth.providers.RefreshTokensParams
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -54,6 +56,23 @@ suspend inline fun <reified Request, reified Response : Any?> HttpClient.post(
 ): Result<Response, DataError.Network> =
     safeCall {
         post {
+            url(constructRoute(route))
+            setBody(body)
+        }
+    }
+
+/**
+ * As opposed to just calling post from the http client, this extends from the RefreshTokenParams in order to tell the HttpRequestBuilder
+ * that we are requesting a token refresh. This allows us to catch 401 without getting into a loop.
+ */
+suspend inline fun <reified Request, reified Response : Any?> RefreshTokensParams.postTokenRefresh(
+    client: HttpClient,
+    route: String,
+    body: Request
+): Result<Response, DataError.Network> =
+    safeCall {
+        client.post {
+            markAsRefreshTokenRequest()
             url(constructRoute(route))
             setBody(body)
         }

@@ -19,6 +19,7 @@ import com.skymonkey.core.domain.run.RunId
 import com.skymonkey.core.domain.run.SyncRunScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -46,7 +47,7 @@ class SyncRunWorkerScheduler(
     }
 
     private suspend fun scheduleDeleteRunWorker(runId: RunId) {
-        val userId = sessionStorage.get()?.userId ?: return
+        val userId = sessionStorage.get().value?.userId ?: return
         val entity =
             DeletedRunPendingSyncEntity(
                 runId = runId,
@@ -84,7 +85,7 @@ class SyncRunWorkerScheduler(
         run: Run,
         mapPictureBytes: ByteArray
     ) {
-        val userId = sessionStorage.get()?.userId ?: return
+        val userId = sessionStorage.get().value?.userId ?: return
         val pendingRun =
             RunPendingSyncEntity(
                 run = run.toRunEntity(),

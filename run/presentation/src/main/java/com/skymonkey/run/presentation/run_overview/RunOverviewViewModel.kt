@@ -17,7 +17,6 @@ import com.skymonkey.run.presentation.run_overview.model.WeeklyProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.minutes
 
@@ -58,6 +57,14 @@ class RunOverviewViewModel(
             syncRunScheduler.scheduleSync(
                 type = SyncRunScheduler.SyncType.FetchRuns(30.minutes)
             )
+        }
+
+        viewModelScope.launch {
+            sessionStorage.get().onEach { authInfo ->
+                state = state.copy(
+                    isLoggedIn = authInfo != null
+                )
+            }.launchIn(this)
         }
 
         // fetch runs from db

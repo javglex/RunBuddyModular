@@ -1,6 +1,5 @@
 package com.skymonkey.runbuddy
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -97,7 +96,7 @@ private fun NavGraphBuilder.runGraph(
     ) {
         composable("run_overview") {
             RunOverviewScreenRoot(
-                onLogoutClick = {
+                onNavigateToLogin = {
                     navController.navigate("auth") {
                         popUpTo("run") {
                             inclusive = true

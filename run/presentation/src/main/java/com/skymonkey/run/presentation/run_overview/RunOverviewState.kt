@@ -13,5 +13,6 @@ import com.skymonkey.run.presentation.run_overview.model.WeeklyProgress
 data class RunOverviewState(
     val runs: List<RunUi> = emptyList(),
     val weeklyProgress: List<WeeklyProgress> = emptyList(),
-    val goalMetrics: GoalMetrics = GoalMetrics(0.0,0.0)
+    val goalMetrics: GoalMetrics = GoalMetrics(0.0,0.0),
+    val isLoggedIn: Boolean = true
 )
