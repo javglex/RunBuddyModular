@@ -1,22 +1,20 @@
-RunBuddy (READ ME AND PROJECT UNDER CONSTRUCTION)
+RunBuddy (⚠️ under construction ⚠️)
 -----
 
-Offline-first Android application for tracking runs (ktor/room/koin/multi-module/convention-plugins).
-Includes wearOS implementation for controlling workouts and sending heart rate data.
+Offline-first Android application for tracking runs (ktor/room/koin/multi-module/convention-plugins). Create accounts, track runs, and perform background syncs.
+Includes wearOS app for controlling workouts and sending heart rate data.
 
 ## Getting Started
 Clone this repository (main branch), build & run.
 
-No auth key currently provided and app will only store data locally. (until backend migration is complete)
+For auth key, please email me directly at javglex@gmail.com. Otherwise, you'll be able to download the app from the playstore shortly.
 
 ## Introduction
-This run tracking application uses multi-module architecture to separate features and layers, each module configured via convention plugins to facilitate build config management.
+This run tracking application demonstrates multi-module architecture to separate features and layers, each module configured via convention plugins to facilitate build config management.
 This enforces the data flow rule when communicating between layers (data/domain/presentation).
 One feature in particular (analytics screen) is separated into a dynamic feature, to showcase benefits of multi-module architecture.
 
 ## Overview
-This app is an exercise for ATEC. It showcases the use of uses BLOC architecture,
-themeing, styling, and clean code practices.
 
 | Home Dark | Home Light | Tracking Run |
 |--------------|--------------|--------------|
