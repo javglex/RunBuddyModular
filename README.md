@@ -15,18 +15,20 @@ This enforces the data flow rule when communicating between layers (data/domain/
 One feature in particular (analytics screen) is separated into a dynamic feature, to showcase benefits of multi-module architecture.
 
 ## Overview
+Some of the main screens include:
 
 | Home Dark | Home Light | Tracking Run |
 |--------------|--------------|--------------|
-| ![Screenshot_20240624_220552](https://github.com/javglex/RunBuddyModular/assets/6698872/34215616-bc0f-4520-8aa8-36f7751fad45) | ![Screenshot_20240624_220254](https://github.com/javglex/RunBuddyModular/assets/6698872/d1b94e55-7db3-4cdf-8123-bf637678d8e9) | ![Screenshot_20240624_222814](https://github.com/javglex/RunBuddyModular/assets/6698872/bd644636-01bd-4de0-bfc3-a3bfac470f97) |
+| ![Screenshot_20240624_220552](https://github.com/user-attachments/assets/61c32225-55ee-42ef-a4db-0a34dccbc319) | ![Screenshot_20240624_220254](https://github.com/user-attachments/assets/feca1c32-6686-4746-bc94-4f7d42882a5e) | ![Screenshot_20240624_222814](https://github.com/user-attachments/assets/0edc07a5-6c7f-43f4-af17-c71796cb74ed) |
 
 | Intro | Sign-In Light | Sign-in Dark |
 |--------------|--------------|--------------|
-| ![Screenshot_20240624_220410](https://github.com/javglex/RunBuddyModular/assets/6698872/ffd29cb5-6718-4c7f-85a2-e38fd7f5f5b3) | ![Screenshot_20240624_220443](https://github.com/javglex/RunBuddyModular/assets/6698872/a010a3f2-0dea-462d-adfe-664519b1e367) | ![Screenshot_20240624_220509](https://github.com/javglex/RunBuddyModular/assets/6698872/4cf310b6-1927-4cac-9ca4-e4e1e9979387) |
+| ![Screenshot_20240624_220410](https://github.com/user-attachments/assets/3e590b86-cad8-4df4-a687-ee1a9691c330) | ![Screenshot_20240624_220443](https://github.com/user-attachments/assets/b088be28-caba-47da-9979-932cbb80e314) | ![Screenshot_20240624_220509](https://github.com/user-attachments/assets/f570931d-f9c5-41f9-80ae-8b181d6886d3) |
 
 | WearOS pre-workout | WearOS in-workout
 |--------------|--------------|
 | ![Screenshot_20240624_221608](https://github.com/javglex/RunBuddyModular/assets/6698872/f5f54a80-0218-46b2-b74e-63a316addbb1) | ![Screenshot_20240624_221524](https://github.com/javglex/RunBuddyModular/assets/6698872/270cc30b-122a-478d-91ed-81b1981c1d41) |
+
 
 Main features:
 
