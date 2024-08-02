@@ -1,5 +1,6 @@
 package com.skymonkey.runbuddy
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -13,6 +14,7 @@ import com.skymonkey.auth.presentation.login.LoginScreenRoot
 import com.skymonkey.auth.presentation.register.RegisterScreenRoot
 import com.skymonkey.core.presentation.service.ActiveRunService
 import com.skymonkey.run.presentation.active_run.ActiveRunScreenRoot
+import com.skymonkey.run.presentation.run_history.RunHistoryScreenRoot
 import com.skymonkey.run.presentation.run_overview.RunOverviewScreenRoot
 import com.skymonkey.run.presentation.settings.SettingScreenRoot
 
@@ -103,6 +105,9 @@ private fun NavGraphBuilder.runGraph(
                         }
                     }
                 },
+                onNavigateToHistory = {
+                    navController.navigate("history")
+                },
                 onStartRunClick = {
                     navController.navigate("active_run")
                 },
@@ -146,6 +151,11 @@ private fun NavGraphBuilder.runGraph(
                     navController.navigateUp()
                 }
             )
+        }
+        composable(
+            route = "history"
+        ) {
+            RunHistoryScreenRoot()
         }
     }
 }

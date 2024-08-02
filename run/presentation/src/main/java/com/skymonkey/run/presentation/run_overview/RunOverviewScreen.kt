@@ -3,10 +3,12 @@
 package com.skymonkey.run.presentation.run_overview
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,6 +35,7 @@ import com.skymonkey.core.presentation.designsystem.RunBuddyTheme
 import com.skymonkey.core.presentation.designsystem.RunIcon
 import com.skymonkey.core.presentation.designsystem.SettingsIcon
 import com.skymonkey.core.presentation.designsystem.components.AppMenuToolbar
+import com.skymonkey.core.presentation.designsystem.components.OutlinedActionButton
 import com.skymonkey.core.presentation.designsystem.components.RunBuddyScaffold
 import com.skymonkey.core.presentation.designsystem.components.RunFloatingActionButton
 import com.skymonkey.core.presentation.designsystem.components.util.DropDownItem
@@ -50,6 +53,7 @@ fun RunOverviewScreenRoot(
     onNavigateToLogin: () -> Unit,
     onAnalyticsClick: () -> Unit,
     onSettingsClick: () -> Unit,
+    onNavigateToHistory: () -> Unit,
     viewModel: RunOverviewViewModel = koinViewModel()
 ) {
     RunOverviewScreen(
@@ -59,7 +63,8 @@ fun RunOverviewScreenRoot(
                 RunOverviewAction.OnAnalyticsClick -> onAnalyticsClick()
                 RunOverviewAction.OnStartClick -> onStartRunClick()
                 RunOverviewAction.OnSettingsClick -> onSettingsClick()
-                RunOverviewAction.OnNavigateLogin -> onNavigateToLogin()
+                RunOverviewAction.OnNavigateToLogin -> onNavigateToLogin()
+                RunOverviewAction.OnNavigateToHistory -> onNavigateToHistory()
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -126,7 +131,7 @@ private fun RunOverviewScreen(
 
         LaunchedEffect(key1 = state.isLoggedIn) {
             if (!state.isLoggedIn) {
-                onAction(RunOverviewAction.OnNavigateLogin)
+                onAction(RunOverviewAction.OnNavigateToLogin)
             }
         }
 
@@ -182,6 +187,19 @@ private fun RunOverviewScreen(
                             onDeleteClick = { onAction(RunOverviewAction.DeleteRun(it)) },
                             modifier = Modifier
                                 .animateItemPlacement()
+                        )
+                    }
+
+                    item {
+                        OutlinedActionButton(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            text = stringResource(R.string.tap_to_see_more),
+                            isLoading = false,
+                            onClick = {
+                                onAction(RunOverviewAction.OnNavigateToHistory)
+                            }
                         )
                     }
                 }

@@ -10,5 +10,6 @@ android {
 dependencies {
     implementation(libs.org.mongodb.bson)
     implementation(libs.bundles.koin)
+    implementation(libs.androidx.paging.common)
     implementation(projects.core.domain)
 }

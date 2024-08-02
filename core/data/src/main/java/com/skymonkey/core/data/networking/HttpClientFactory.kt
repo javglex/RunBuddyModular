@@ -79,12 +79,6 @@ class HttpClientFactory(
                                 userId = info?.userId ?: ""
                             )
                         )
-//
-//                        client.post("https://vivek-modi.com/api/v1/session/refresh") {
-//                            markAsRefreshTokenRequest()
-//                            contentType(ContentType.Application.Json)
-//                            setBody(AccessTokenRequest(refreshToken = info?.refreshToken ?: "", userId = info?.userId ?: ""))
-//                        }
 
                         // if successful, save new access token to local storage and return
                         // updated bearer token

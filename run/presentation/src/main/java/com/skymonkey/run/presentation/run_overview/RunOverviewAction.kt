@@ -11,7 +11,9 @@ sealed interface RunOverviewAction {
 
     data object OnSettingsClick : RunOverviewAction
 
-    data object OnNavigateLogin: RunOverviewAction
+    data object OnNavigateToLogin: RunOverviewAction
+
+    data object OnNavigateToHistory: RunOverviewAction
 
     data class DeleteRun(
         val runUi: RunUi
